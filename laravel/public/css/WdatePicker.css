@@ -1,0 +1,9 @@
+
+.Wdate{margin-right:5px;background-color:#fff;color:#333;border:1px solid #ccc;height:30px;line-height:30px;cursor:hand;
+	background:#fff url(date2.gif) no-repeat right;}
+.Wdate:hover{border:1px solid #1E8FC6;}
+
+.WdateFmtErr{
+	font-weight:bold;
+	color:red;
+}
