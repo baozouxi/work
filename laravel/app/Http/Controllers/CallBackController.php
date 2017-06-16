@@ -13,7 +13,6 @@ class CallBackController extends Controller
         //验证数据
     public function check(Request $req, $model, $action, $args)
     {
-
         $error = '';
         if (!$modelObj = $this->_factory($model)) $error = '非法访问';
         if (!$error) {
@@ -21,8 +20,6 @@ class CallBackController extends Controller
                 if (!$res) return ['code'=>'0','msg'=>'数据正常', 'date' => date('Y-m-d H:i:s')];
                 $error = '数据重复'; 
         }
-
-
          return ['code'=> '1', 'msg' => $error, 'date'=> date('Y-m-d H:i:s')];
 
     }
@@ -63,7 +60,7 @@ SSS;
 
     public static function area($province, $city, $town)
     {
-                $area = array();
+        $area = array();
         $area += array("0_0_0"=>["东城区", "西城区", "崇文区", "宣武区", "朝阳区", "丰台区", "石景山区", "海淀区", "门头沟区", "房山区", "通州区", "顺义区", "昌平区", "大兴区", "怀柔区", "平谷区", "密云县", "延庆县", "延庆镇"]);
         $area += array("0_0"=>["北京市"]);
         $area += array("0_1_0"=>["和平区", "河东区", "河西区", "南开区", "河北区", "红桥区", "塘沽区", "汉沽区", "大港区", "东丽区", "西青区", "津南区", "北辰区", "武清区", "宝坻区", "蓟县", "宁河县", "芦台镇", "静海县", "静海镇"]);
@@ -446,7 +443,6 @@ SSS;
         $cityName = count($area[$cityPrefix]) > 1 ? $area[$cityPrefix][$city] : array_pop($area[$cityPrefix]) ;
         $townName = $area[$areaPrefix][$town];
         return $result = array('province'=>$provinceName, 'city'=>$cityName, 'town'=>$townName);
-
     }
 
 }

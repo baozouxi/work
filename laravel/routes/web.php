@@ -22,10 +22,14 @@
 
 		Route::get('/book/chatlog/{id}', 'BookController@getChatlog')->name('chatlog');
 
+
+		Route::get('/book/sheet/{date?}/{admin?}', 'BookController@sheet')->name('bookSheet');
+			
+
 		Route::Resource('book', 'BookController');
 
 		Route::Resource('booktrack', 'TrackController');
-		
+
 	});
 
 	//患者模块

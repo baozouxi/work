@@ -42,7 +42,6 @@ class PatientController extends Controller
                 if ($patientItem->id == $trackItem['patient_id']) {
                     $tmp[] = $trackItem;
                 }   
-
             }
             $patientItem->tracks = $tmp;
         }
@@ -68,7 +67,6 @@ class PatientController extends Controller
         $data = $req->all();
         $data['medical_num'] = $data['bid'];
         $data['admin_id'] = '1';
-    
         try{
             DB::beginTransaction();
             if (isset($data['book_id']) && $data['book_id'] !== '0') {
@@ -85,8 +83,6 @@ class PatientController extends Controller
             DB::rollback();
             return ['code'=>'1', 'msg'=>$e->getMessage(), 'time'=>getNow()];
          }
-       
-        
     }
 
     public function edit(Request $req, $id)

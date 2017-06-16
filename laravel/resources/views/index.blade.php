@@ -76,7 +76,7 @@
                         <a url="{{ route('booktrack.index') }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this,1);fastH(this,&#39;main&#39;);">
                             <font id="now_track" style="display: none;">0</font><span class="icon">į</span>回访记录</a>
                     </li>
-                    <li><a url="stat_rep_res.asp?s=1&amp;to=m" href="javascript:void(0);" hidefocus="" onclick="getChange(this,1);fastH(this,&#39;main&#39;);"><span class="icon">Ő</span>预约报表</a></li>
+                    <li><a url="{{ route('bookSheet') }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this,1);fastH(this,&#39;main&#39;);"><span class="icon">Ő</span>预约报表</a></li>
                     <li><a url="stat_res.asp?s=1&amp;to=m" href="javascript:void(0);" hidefocus="" onclick="getChange(this,1);fastH(this,&#39;main&#39;);"><span class="icon">ŏ</span>预约统计</a></li>
                 </ol>
             </li>

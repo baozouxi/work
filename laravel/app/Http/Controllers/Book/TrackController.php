@@ -61,8 +61,7 @@ class TrackController extends Controller
         if(!$id = $req->session()->pull('track_book_id')) return $error;
 
         if(!$aModel = $this->getData($id)) return $error;
-        
-
+    
     	return view('book.track.create',['AppData'=>$aModel]);
     }
 
@@ -73,8 +72,6 @@ class TrackController extends Controller
         $id = (int)$id;
         $bookId = $req->session()->pull('track_book_id');
         if(!$aModel = $this->getData($bookId)) return ['code'=>'1', 'msg'=>'该预约不存在，请刷新后重试', 'time'=>date('Y-m-d H:i:s')];
-
-
         if(!$TrackData = Track::find($id)) return ['code'=>'1', 'msg'=>'该回访不存在，请刷新后重试', 'time'=>date('Y-m-d H:i:s')];
         return view('book.track.edit',['trackData'=>$TrackData, 'AppData'=>$aModel]);
     }

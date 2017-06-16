@@ -28,7 +28,7 @@ class BookController extends Controller
         foreach ($appointData as &$item) {
             $item->status = '1';
 
-            //此处可以做权限判断 是否有权限生成病人
+            //此处可以做权限判断 是否有权限生成病人 以便生成路由
             $item->url = route('book.edit', ['id'=>$item->id]);
 
             //$item->url = route('patient.create', ['bookId' => $item->id]);
@@ -99,8 +99,6 @@ class BookController extends Controller
         $data = $req->all();
         
         if(!$model = Appointment::find($id)) return ['code'=>'1', 'msg'=> '该预约不存在，请刷新后重试', 'time'=>date('Y-m-d H:i:s')];
-            
-    
 
         try{
             
@@ -132,9 +130,6 @@ class BookController extends Controller
         }
 
         return ['code'=>'0', 'msg'=> route('book.index'), 'time'=>date('Y-m-d H:i:s') ];
-
-
-
         
     }  
 
@@ -168,6 +163,34 @@ class BookController extends Controller
         }
         
     }
+
+
+    //预约报表
+    public function sheet(Request $req)
+    {
+        $date = time();
+        if($req->date) $date = strtotime($req->date);
+        $monthStart = date('Y-m-01', $date);
+        $monthEnd = date('Y-m-d', strtotime("last day of $monthStart"));
+        $data = Appointment::whereBetween('postdate', [$monthStart, $monthEnd])->get(['is_hospital', 'postdate', 'id'])->toArray();
+        $total = array();
+        $is_hospital  =  array_filter($data, function($v, $key){
+            if($v['is_hospital'] == '1') return $v;
+
+        }, ARRAY_FILTER_USE_BOTH);
+        $total['app_sum'] = count($data);
+        $total['patient_sum'] = count($is_hospital);
+
+        //当日到
+        $sql = "select DATE_FORMAT(p.add_time, '%Y-%c-%d') as add_time from patients as p";
+        $sql .= " join appointments as ap on p.book_id = ap.id";
+        $sql .= " where p.add_time between DATE_FORMAT(ap.postdate, '%Y-%c-%d 00:00:00') AND DATE_FORMAT(ap.postdate, '%Y-%c-%d 23:59:59');";
+        //
+        $on_that_day =  DB::select($sql);
+        $total['on_that_day'] = count($on_that_day);
+
+
+    }       
 
 
     public function getChatlog($id)
