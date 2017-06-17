@@ -67,9 +67,10 @@
                             </div>
                         </td>
                     </tr>
+                    @foreach($data as )
                     <tr class="t2">
                         <td>
-                            <center><i>2017-06-02</i></center>
+                            <center><i>{{ $date }}</i></center>
                         </td>
                         <td>
                             <center><a href="javascript:void(0);" onclick="msgbox(this,800);" url="res.asp?m=stat&amp;mo=dateline&amp;ds=2017-06-02">1</a></center>
@@ -89,6 +90,7 @@
                             </div>
                         </td>
                     </tr>
+                    @endforeach
                     <tr class="t1">
                         <td>
                             <center><i>2017-06-08</i></center>

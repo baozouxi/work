@@ -179,15 +179,28 @@ class BookController extends Controller
         }, ARRAY_FILTER_USE_BOTH);
         $total['app_sum'] = count($data);
         $total['patient_sum'] = count($is_hospital);
-
         //当日到
-        $sql = "select DATE_FORMAT(p.add_time, '%Y-%c-%d') as add_time from patients as p";
+        $sql = "select DATE_FORMAT(p.add_time, '%Y-%c-%d') as add_time,p.id from patients as p";
         $sql .= " join appointments as ap on p.book_id = ap.id";
         $sql .= " where p.add_time between DATE_FORMAT(ap.postdate, '%Y-%c-%d 00:00:00') AND DATE_FORMAT(ap.postdate, '%Y-%c-%d 23:59:59');";
         $on_that_day =  DB::select($sql);
-        $total['on_that_day'] = count($on_that_day);
-        
 
+        $total['on_that_day'] = count($on_that_day);
+        $on_that_day = array_column($on_that_day, null, 'add_time');
+
+        //拼装数据
+        $data_arr = [];
+        foreach ($data as $item) {
+            $data_arr[formatDate($item['postdate'], 'Y-m-d')][] = $item;
+        }
+        unset($data);
+        $on_that_day_arr = [];
+        foreach ($on_that_day as $onItem) {
+            $on_that_day_arr[formatDate($onItem->add_time, 'Y-m-d')][] = $onItem;
+        }
+        unset($on_that_day);
+        
+        return view('Book.sheet');
     }       
 
 
