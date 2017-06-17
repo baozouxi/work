@@ -67,7 +67,7 @@
                             </div>
                         </td>
                     </tr>
-                    @foreach($data as )
+                 
                     <tr class="t2">
                         <td>
                             <center><i>{{ $date }}</i></center>
@@ -90,7 +90,7 @@
                             </div>
                         </td>
                     </tr>
-                    @endforeach
+               
                     <tr class="t1">
                         <td>
                             <center><i>2017-06-08</i></center>

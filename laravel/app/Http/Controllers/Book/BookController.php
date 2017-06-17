@@ -199,7 +199,6 @@ class BookController extends Controller
             $on_that_day_arr[formatDate($onItem->add_time, 'Y-m-d')][] = $onItem;
         }
         unset($on_that_day);
-        
         return view('Book.sheet');
     }       
 
