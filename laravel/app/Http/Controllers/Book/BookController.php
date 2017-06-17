@@ -176,7 +176,6 @@ class BookController extends Controller
         $total = array();
         $is_hospital  =  array_filter($data, function($v, $key){
             if($v['is_hospital'] == '1') return $v;
-
         }, ARRAY_FILTER_USE_BOTH);
         $total['app_sum'] = count($data);
         $total['patient_sum'] = count($is_hospital);
@@ -185,10 +184,9 @@ class BookController extends Controller
         $sql = "select DATE_FORMAT(p.add_time, '%Y-%c-%d') as add_time from patients as p";
         $sql .= " join appointments as ap on p.book_id = ap.id";
         $sql .= " where p.add_time between DATE_FORMAT(ap.postdate, '%Y-%c-%d 00:00:00') AND DATE_FORMAT(ap.postdate, '%Y-%c-%d 23:59:59');";
-        //
         $on_that_day =  DB::select($sql);
         $total['on_that_day'] = count($on_that_day);
-
+        
 
     }       
 
