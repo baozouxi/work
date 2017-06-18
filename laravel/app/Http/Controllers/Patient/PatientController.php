@@ -64,9 +64,12 @@ class PatientController extends Controller
     {
 
         if(!$req->session()->has('medical_num')) return ['code'=>'1','msg'=>'请勿重复提交','time'=>date('Y-m-d H:i:s')];
+      
         $data = $req->all();
+        if($req->has('undate')) $data['undate'] = '0';
         $data['medical_num'] = $data['bid'];
         $data['admin_id'] = '1';
+
         try{
             DB::beginTransaction();
             if (isset($data['book_id']) && $data['book_id'] !== '0') {

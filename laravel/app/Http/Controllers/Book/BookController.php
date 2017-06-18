@@ -188,7 +188,7 @@ class BookController extends Controller
         //
         $on_that_day =  DB::select($sql);
         $total['on_that_day'] = count($on_that_day);
-
+        
 
     }       
 
