@@ -50,69 +50,66 @@
                             <center><b><i>合 计</i></b></center>
                         </td>
                         <td>
-                            <center><b><i>2</i></b></center>
+                            <center><b><i>{{ $total['app_sum'] }}</i></b></center>
                         </td>
                         <td>
-                            <center><b><i>2</i></b></center>
+                            <center><b><i>{{ $total['patient_sum'] }}</i></b></center>
                         </td>
                         <td>
-                            <center><b><i>1</i></b></center>
+                            <center><b><i>{{ $total['on_that_day'] }}</i></b></center>
                         </td>
                         <td>
+                            @if($total['arrived'] != 0)
                             <div class="pers">
-                                <div class="per" style="width:100.0%" title="100%"><span>100%</span></div>
+                                <div class="per" style="width:{{ $total['arrived'] }}%" title="{{ $total['arrived'] }}%"><span>{{ $total['arrived'] }}%</span></div>
                             </div>
+                            @else
+                            <div class="pers">
+                                <div class="per" style="width:10.0%;background-color:#999;" title="0%"><span>0%</span></div>
+                            </div>
+                            @endif
                             <div class="perts">
-                                <div class="pert" style="width:50.0%" title="50%"><span class="persize">50%</span></div>
+                                <div class="pert" style="width:{{ $total['arrive_on_that_day'] == '0' ? '10' : $total['arrive_on_that_day'] }}%" title="{{ $total['arrive_on_that_day'] }}%"><span class="persize">{{ $total['arrive_on_that_day'] }}%</span></div>
                             </div>
                         </td>
                     </tr>
                  
+                 @foreach($data_arr as $date => $item)
+                 @if(is_int($loop->index /2))
                     <tr class="t2">
+                 @else
+                    <tr class="t1">
+                 @endif
                         <td>
                             <center><i>{{ $date }}</i></center>
                         </td>
                         <td>
-                            <center><a href="javascript:void(0);" onclick="msgbox(this,800);" url="res.asp?m=stat&amp;mo=dateline&amp;ds=2017-06-02">1</a></center>
+                            <center><a href="javascript:void(0);" onclick="msgbox(this,800);" url="res.asp?m=stat&amp;mo=dateline&amp;ds=2017-06-02">{{ $item['app_sum'] }}</a></center>
                         </td>
                         <td>
-                            <center><a href="javascript:void(0);" onclick="msgbox(this,800);" url="res.asp?m=stat&amp;mo=todate&amp;ds=2017-06-02">2</a></center>
+                            <center><a href="javascript:void(0);" onclick="msgbox(this,800);" url="res.asp?m=stat&amp;mo=todate&amp;ds=2017-06-02">{{ $item['patient_sum'] }}</a></center>
                         </td>
                         <td>
-                            <center><i>1</i></center>
+                            <center><i>{{ $item['on_that_day'] }}</i></center>
                         </td>
                         <td>
+                            @if($item['arrived'] != 0)
                             <div class="pers">
-                                <div class="per" style="width:100.0%" title="100%"><span>100%</span></div>
+                                <div class="per" style="width:{{ $item['arrived'] }}%" title="{{ $item['arrived'] }}%"><span>{{ $item['arrived'] }}%</span></div>
                             </div>
+                            @else
+
+                            <div class="pers">
+                                <div class="per" style="width:10.0%;background-color:#999;" title="0%"><span>0%</span></div>
+                            </div>
+                            @endif
+
                             <div class="perts">
-                                <div class="pert" style="width:100.0%" title="100%"><span class="persize">100%</span></div>
+                                <div class="pert" style="width:{{ $item['arrive_on_that_day'] == '0' ? '10' : $item['arrive_on_that_day'] }}%" title="{{ $item['arrive_on_that_day'] }}%"><span class="persize">{{ $item['arrive_on_that_day'] }}%</span></div>
                             </div>
                         </td>
                     </tr>
-               
-                    <tr class="t1">
-                        <td>
-                            <center><i>2017-06-08</i></center>
-                        </td>
-                        <td>
-                            <center><a href="javascript:void(0);" onclick="msgbox(this,800);" url="res.asp?m=stat&amp;mo=dateline&amp;ds=2017-06-08">1</a></center>
-                        </td>
-                        <td>
-                            <center><em>0</em></center>
-                        </td>
-                        <td>
-                            <center><em>0</em></center>
-                        </td>
-                        <td>
-                            <div class="pers">
-                                <div class="per" style="width:10%;background-color:#999;" title="0%"><span>0%</span></div>
-                            </div>
-                            <div class="perts">
-                                <div class="pert" style="width:10%" title="0%"><span class="persize">0%</span></div>
-                            </div>
-                        </td>
-                    </tr>
+               @endforeach
                 </tbody>
             </table>
             <input type="hidden" name="this_url" id="this_url" value="/stat_rep_res.asp?to=m">
