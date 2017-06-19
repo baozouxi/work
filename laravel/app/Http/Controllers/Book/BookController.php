@@ -237,14 +237,6 @@ class BookController extends Controller
 
 
 
-    /**
-     * 预约统计 
-     * @return [view] [预约统计页面]
-     */
-    public function dataStatistics()
-    {   
-        
-    }
 
 
     public function getChatlog($id)
