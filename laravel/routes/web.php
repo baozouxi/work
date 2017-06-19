@@ -11,6 +11,8 @@
 |
 */
 
+// 完成后记得对每个路由进行注释
+
 // Route::group(['middleware' => 'checkLogin'], function(){
 // 
 	// Route::controller('request','BookController');
@@ -21,14 +23,15 @@
 	Route::group(['namespace' => 'Book'], function(){
 
 		Route::get('/book/chatlog/{id}', 'BookController@getChatlog')->name('chatlog');
-
-
 		Route::get('/book/sheet/{date?}/{admin?}', 'BookController@sheet')->name('bookSheet');
-			
+
+		//预约统计模块
+		Route::get('/book/statistics/{date?}', 'StatisticsController@index')->name('bookStatisticsByAdmin');
+
 
 		Route::Resource('book', 'BookController');
-
 		Route::Resource('booktrack', 'TrackController');
+
 
 	});
 

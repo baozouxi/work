@@ -198,8 +198,44 @@ class BookController extends Controller
             $on_that_day_arr[formatDate($onItem->add_time, 'Y-m-d')][] = $onItem;
         }
         unset($on_that_day);
-        return view('Book.sheet');
+        
+        //总到诊率
+        $total['arrived'] = $total['app_sum'] == '0' ? '0' : ceil($total['patient_sum']/$total['app_sum']*100);
+        //总当日率
+        $total['arrive_on_that_day'] = $total['app_sum'] == '0' ? '0' : ceil($total['on_that_day']/$total['app_sum']*100);
+ 
+        //统计结果 便于前台展示  通过遍历将所有数据进行整合 存于另一个数组 以格式化后的日期作为数组索引
+        $data_after_filter = array();
+        foreach ($data_arr as $date => $onItem) {
+            foreach ($onItem as $dateItem) {
+                $data_after_filter[$date]['app_sum'] = count($onItem);
+                if (!isset($data_after_filter[$date]['patient_sum'])) {
+                    $data_after_filter[$date]['patient_sum']  = 0;
+                }
+                if ($dateItem['is_hospital'] == '1') {
+                    $data_after_filter[$date]['patient_sum']  += 1;                                                           
+                }
+                if (isset($on_that_day_arr[$date])) {
+                    $data_after_filter[$date]['on_that_day'] = count($on_that_day_arr[$date]);
+                    continue;
+                }
+                $data_after_filter[$date]['on_that_day'] = 0;
+            }
+        }
+        unset($data_arr);
+        //计算当日率 到诊率
+        array_walk($data_after_filter, function(&$item){
+            $item['arrived'] = $item['app_sum'] == 0 ? 0 : ceil($item['patient_sum']/$item['app_sum']*100);
+            $item['arrive_on_that_day'] = $item['app_sum'] == 0 ? 0 : ceil($item['on_that_day']/$item['app_sum']*100);
+        });
+
+        return view('Book.sheet',['total' => $total, 'data_arr' => $data_after_filter]);
+
     }       
+
+
+
+
 
 
     public function getChatlog($id)
