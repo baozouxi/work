@@ -1,49 +1,5 @@
 
-<div class="guide">
-    <ul class="left">
-        <li><span class="icon">Ă</span><a href="javascript:void(0);" onclick="getChange(0);fastH(this,'main')" url="main.asp?s=1">首页</a><span class="ider">&gt;</span></li>
-        <li><a href="javascript:void(0);" onclick="fastH(this);set_title('全部');" url="stat_res.asp">预约统计</a></li>
-    </ul>
-</div>
-<div id="wrap" class="wrap">
-    <!--整体内容-->
-    <div id="container" class="container">
-        <div class="top">
-            <h3 class="left"><span class="icon">ŏ</span>预约统计</h3>
-            <p class="nlink right"><a href="javascript:void(0);" onclick="display('fun')"><span class="icon">Ş</span>快捷查找</a></p>
-        </div>
-        <div class="fun none" id="fun">
-            <div id="fun-n" class="right block">
-                <form name="form_date" id="form_date" onsubmit="return(fastK(this,'ds'));" action="stat_res.asp?m=">
-                    <input name="ds" id="ds" class="inp" type="text" value="" onfocus="WdatePicker({onpicked:function(){de.focus();},maxDate:'#F{$dp.$D(\'de\')||\'%y-%M-%d\'}'})"><i class="calendar icon">ğ</i>
-                    <input name="de" id="de" class="inp" value="" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'ds\')}',maxDate:'%y-%M-%d'})">
-                    <button type="submit" class="search"><span class="icon">ĺ</span></button>
-                </form>
-            </div>
-            <select class="select" onchange="To('stat_res.asp?s=1&amp;to='+this.options[this.selectedIndex].value+'','main');">
-                <option value="0">按月查询</option>
-                <option value="2017-6">2017年6月</option>
-                <option value="2017-5">2017年5月</option>
-            </select>
-        </div>
-        <div id="box" class="box">
-            <div id="tab">
-                <ul>
-                    <li onclick="fastT('{{ route('bookStatistics',['way'=>'save', 'date'=>'20170816']) }}','0')" class="now">按录入</li>
-                    <li onclick="fastT('{{ route('bookStatistics',['way'=>'time']) }}','1')">按时段</li>
-                    <li onclick="fastT('{{ route('bookStatistics',['way'=>'day']) }}','2')">按日期</li>
-                    <li onclick="fastT('{{ route('bookStatistics',['way'=>'week']) }}','3')">按星期</li>
-                    <li onclick="fastT('{{ route('bookStatistics',['way'=>'month']) }}','4')">按月份</li>
-                    <li onclick="fastT('{{ route('bookStatistics',['way'=>'dis']) }}','5')">按病种</li>
-                    <li onclick="fastT('{{ route('bookStatistics',['way'=>'doc']) }}','6')">按医生</li>
-                    <li onclick="fastT('{{ route('bookStatistics',['way'=>'area']) }}','7')">按地区</li>
-                    <li onclick="fastT('{{ route('bookStatistics',['way'=>'way']) }}','8')">按途径</li>
-                    <li onclick="fastT('{{ route('bookStatistics',['way'=>'ads']) }}','9')">按媒介</li>
-                    <li onclick="fastT('{{ route('bookStatistics',['way'=>'age']) }}','10')">按年龄</li>
-                    <li onclick="fastT('{{ route('bookStatistics',['way'=>'gender']) }}','11')">按性别</li>
-                </ul>
-            </div>
-            <div id="tablist">
+
                 <table cellspacing="1" cellpadding="0">
                     <thead>
                         <tr>
@@ -125,8 +81,3 @@
                     @endforeach
                     </tbody>
                 </table>
-            </div>
-            <input type="hidden" name="this_url" id="this_url" value="/stat_res.asp?to=m">
-        </div>
-    </div>
-</div>

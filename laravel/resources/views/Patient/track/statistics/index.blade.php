@@ -124,37 +124,51 @@
                                 <center><b><i>{{ $total['treatment_sum'] }}</i></b></center>
                             </td>
                             <td>
-                                <center><b><i>{{ ceil($total['treatment_sum'] / $total['patient_sum']*100) }}%</i></b></center>
+                                <center><b><i>
+            {{ $total['patient_sum'] == '0' ? '0' :  ceil($total['treatment_sum'] / $total['patient_sum']*100) }}%
+                            </i></b></center>
                             </td>
                             <td>
                                 <center><b><i>{{ $total['treatment_cost_sum'] }}</i></b></center>
                             </td>
                             <td>
-                                <center><b><i>{{ ceil($total['treatment_cost_sum'] / $total['treatment_sum']) }}</i></b></center>
+                                <center><b><i>
+            {{ $total['treatment_sum'] == '0' ? '0' :  ceil($total['treatment_cost_sum'] / $total['treatment_sum']) }}
+                            </i></b></center>
                             </td>
                             <td>
-                                <center><b><i>{{ ceil($total['treatment_cost_sum'] / $total['patient_sum']) }}</i></b></center>
+                                <center><b><i>
+            {{ $total['patient_sum'] == '0' ? '0' :   ceil($total['treatment_cost_sum'] / $total['patient_sum']) }}
+                                </i></b></center>
                             </td>
                             <td>
                                 <center><b><i>{{ $total['re_treatment_sum'] }}</i></b></center>
                             </td>
                             <td>
-                                <center><b><i>{{ ceil($total['re_treatment_sum'] / $total['treatment_sum']*100) }}%</i></b></center>
+                                <center><b><i>
+         {{  $total['treatment_sum'] == '0' ? '0' :  ceil($total['re_treatment_sum'] / $total['treatment_sum']*100) }}%
+                                </i></b></center>
                             </td>
                             <td>
                                 <center><b><i>{{ $total['re_treatment_takes_sum'] }}</i></b></center>
                             </td>
                             <td>
-                                <center><b><i>{{ ceil($total['re_treatment_takes_sum'] / $total['re_treatment_sum']) }}</i></b></center>
+                                <center><b><i>
+    {{ $total['re_treatment_sum'] == '0' ? '0' : ceil($total['re_treatment_takes_sum'] / $total['re_treatment_sum']) }}
+                                </i></b></center>
                             </td>
                             <td>
                                 <center><b><i>{{ $total['take_sum'] }}</i></b></center>
                             </td>
                             <td>
-                                <center><b><i>{{ ceil($total['take_sum'] / $total['patient_sum']) }}</i></b></center>
+                                <center><b><i>
+                {{ $total['patient_sum'] == '0' ? '0' : ceil($total['take_sum'] / $total['patient_sum']) }}
+                                </i></b></center>
                             </td>
                             <td>
-                                <center><b><i>{{ ceil($total['take_sum'] / $total['treatment_sum']) }}</i></b></center>
+                                <center><b><i>
+         {{ $total['treatment_sum'] == '0' ? '0' :  ceil($total['take_sum'] / $total['treatment_sum']) }}
+                                </i></b></center>
                             </td>
                             <td></td>
                         </tr>

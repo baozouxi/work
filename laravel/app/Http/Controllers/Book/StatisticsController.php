@@ -64,9 +64,10 @@ class StatisticsController extends Controller
 	  	$total['arrive_per'] = $total['app_sum'] == '0' ? '0' : ceil($total['patient_sum']/$total['app_sum']*100);
     	$total['un_arrive'] = $total['app_sum'] - $total['patient_sum']; 
 	  	unset($data);
-	  	dd($data_arr);
 
-//    	return view('Book.Statistics.index', ['data' => $data_arr, 'total'=>$total]); 
+        if($req->has('way'))  return 'asdas';
+
+ 	    return view('Book.Statistics.index', ['data' => $data_arr, 'total'=>$total]); 
 
     }
 

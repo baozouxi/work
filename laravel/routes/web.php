@@ -21,14 +21,10 @@
 
 	//预约模块
 	Route::group(['namespace' => 'Book'], function(){
-
+		Route::get('/book/statistics/{date?}/{way?}', 'StatisticsController@index')->name('bookStatistics');
 		Route::get('/book/chatlog/{id}', 'BookController@getChatlog')->name('chatlog');
 		Route::get('/book/sheet/{date?}/{admin?}', 'BookController@sheet')->name('bookSheet');
-
-		//预约统计模块
-		Route::get('/book/statistics/{date?}', 'StatisticsController@index')->name('bookStatisticsByAdmin');
-
-
+		
 		Route::Resource('book', 'BookController');
 		Route::Resource('booktrack', 'TrackController');
 
@@ -37,13 +33,13 @@
 
 	//患者模块
 	Route::group(['namespace'=>'Patient'], function(){
-		Route::Resource('patient', 'PatientController');
 		Route::get('/patient/book/{id}', 'PatientController@patientBookUpdate');
-		Route::Resource('patienttrack', 'TrackController');
 		Route::get('/patient/track/withinfo/{patientId}', 'TrackController@indexWithInfo')->name('trackWithInfo');
 		Route::get('/patient/track/statistics/{way?}/{date?}', 'TrackController@statistics')->name('trackStatistics');
 		Route::get('/Patient/report/{date?}/{doctor?}', 'PatientController@patientReport')->name('patientReport');
 		Route::get('/Patient/statistics/{way?}/{date?}', 'PatientController@statistics')->name('patientStatistics');
+		Route::Resource('patienttrack', 'TrackController');
+		Route::Resource('patient', 'PatientController');
 	});
 
 	//消费记录
