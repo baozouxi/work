@@ -21,7 +21,7 @@
 
 	//预约模块
 	Route::group(['namespace' => 'Book'], function(){
-		Route::get('/book/statistics/{date?}/{way?}', 'StatisticsController@index')->name('bookStatistics');
+		Route::get('/book/statistics/{way?}/{date?}', 'StatisticsController@index')->name('bookStatistics');
 		Route::get('/book/chatlog/{id}', 'BookController@getChatlog')->name('chatlog');
 		Route::get('/book/sheet/{date?}/{admin?}', 'BookController@sheet')->name('bookSheet');
 		
@@ -64,20 +64,30 @@
 		Route::Resource('call', 'CallController');
 	});
 
+	//对话模块 
 	Route::group(['namespace'=>'Dialog'], function(){
+
+		Route::get('/dialog/sheet/{date?}/{admin?}', 'DialogController@sheet')->name('dialogSheet');
 
 		Route::Resource('dialog', 'DialogController');
 
 	});
 
 
+	//回拨模块 医院网站提交， 提交到本系统的recall.store  index负责显示
+	Route::group(['namespace'=>'ReCall'], function(){
+		Route::Resource('recall', 'ReCallController');
+	});
+
+	
+
+
+	//异步请求页面
 	Route::get('/callback/check/{model}/{action}/{args}', 'CallBackController@check')->name('check');
 
 	Route::get('/callback/checkNow', 'CallBackController@checkNow')->name('checkNow');
 
 	Route::get('/callback/uploadhtml', 'CallBackController@uploadHtml')->name('uploadHtml');
-
-
 
 // });
 

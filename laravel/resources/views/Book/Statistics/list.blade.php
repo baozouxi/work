@@ -1,5 +1,4 @@
 
-
                 <table cellspacing="1" cellpadding="0">
                     <thead>
                         <tr>
@@ -59,7 +58,7 @@
                                 <center>{{ $item['un_arrive'] }}</center>
                             </td>
                             <td>
-                                <center>{{ $item['arrive'] }}</center>
+                                <center>{{ $item['arrive'] }}%</center>
                             </td>
                             <td>
                             

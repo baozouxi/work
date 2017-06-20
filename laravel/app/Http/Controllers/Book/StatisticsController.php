@@ -19,37 +19,72 @@ use App\Models\Consult;
 class StatisticsController extends Controller
 {
     
-    public function index(Request $req)
+    public function index(Request $req, $way='admin_id', $date=null)
     {
     	$date = date('Y-m-d', time());
-    	$way = 'admin_id';
-    	if($req->has('date')) $date = $req->date;
+        if($req->date !== null) $date = $req->date;
+        if($req->way !== null) $way = $req->way;
     	$monthStart = date('Y-m-01', strtotime($date));
     	$monthEnd = date('Y-m-d', strtotime("last day of $monthStart"));
     	$data = Appointment::whereBetween('postdate', [$monthStart, $monthEnd])->get()->toArray();
     	$consult_count = Consult::whereBetween('add_time', [$monthStart, $monthEnd])->where('status', '!=', '0')->count();
     	//判断传过来的way是否合法
-    	if (!empty($data) && array_search($req->way, array_keys($data['0'])))  $way = $req->way;
 
     	//数据统计
     	$total['app_sum'] = count($data);
     	$total['patient_sum'] = 0;
     	$total['consult_sum'] = $consult_count;
     	$data_arr = array();
-    	foreach ($data as $item) { 
-    		if (!isset($data_arr[$item[$way]]['app_sum'])) {
-    			$data_arr[$item[$way]]['app_sum'] = 0;	
-    		} 
- 
-    		$data_arr[$item[$way]]['app_sum'] += 1;	
-    		
+        $week = '星期天,星期一,星期二,星期三,星期四,星期五,星期六';
+        $week_arr = explode(',', $week);
 
-    		if (!isset($data_arr[$item[$way]]['patient_sum'])) $data_arr[$item[$way]]['patient_sum'] = 0;
+    	foreach ($data as $item) {
+
+            //此处取消了swtich的break  目的是为了在处理数组之前先生成键值
+            switch ($way) {
+
+                case 'time':
+                    $way_filter = formatDate($item['postdate'], 'G').'点';
+                    break;
+                case 'day':
+                    $way_filter = formatDate($item['postdate'], 'j').'号';
+                    break;
+                case 'save':
+                    $way_filter = $item['admin_id'];
+                    break;
+                case 'week':
+                    $way_filter = $week_arr[formatDate($item['postdate'], 'w')];
+                    break;
+                case 'month':
+                    $way_filter = formatDate($item['postdate'], 'n').'月';
+                    break;
+                case 'area':
+                    $way_filter = $item['town'];
+                    break;
+             }
+
+            if(isset($way_filter)){
+                $way_after_filter = $way_filter;  
+            } else {
+                $way_after_filter = $item[$way];
+            }
+
+            if (!isset($data_arr[$way_after_filter]['app_sum'])) {
+                $data_arr[$way_after_filter]['app_sum'] = 0;  
+            }
+
+            $data_arr[$way_after_filter]['app_sum'] += 1; 
+            
+
+            if (!isset($data_arr[$way_after_filter]['patient_sum'])) $data_arr[$way_after_filter]['patient_sum'] = 0;
+            
+            if ($item['is_hospital'] == '1') {
+                $data_arr[$way_after_filter]['patient_sum'] += 1;
+                $total['patient_sum'] += 1;
+            }
+               
+           
     		
-    		if ($item['is_hospital'] == '1') {
-    			$data_arr[$item[$way]]['patient_sum'] += 1;
-    			$total['patient_sum'] += 1;
-    		}
     	}
 
 
@@ -64,11 +99,9 @@ class StatisticsController extends Controller
 	  	$total['arrive_per'] = $total['app_sum'] == '0' ? '0' : ceil($total['patient_sum']/$total['app_sum']*100);
     	$total['un_arrive'] = $total['app_sum'] - $total['patient_sum']; 
 	  	unset($data);
-
-        if($req->has('way'))  return 'asdas';
-
+        if($req->way != null)  return view('Book.Statistics.list', ['data' => $data_arr, 'total'=>$total, 'way'=>$way]); 
  	    return view('Book.Statistics.index', ['data' => $data_arr, 'total'=>$total]); 
-
+        
     }
 
 

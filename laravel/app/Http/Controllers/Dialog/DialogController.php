@@ -48,6 +48,18 @@ class DialogController extends Controller
     	return ['code'=>'0', 'msg'=>route('dialog.index'), 'time'=>getNow()];
     }
 
+    //对话报表
+    public function sheet()
+    {
+        return view('Dialog.sheet');
+    }
+
+    //对话统计
+    public function statistics()
+    {
+
+    }
+
 
 
 

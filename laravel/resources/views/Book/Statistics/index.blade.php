@@ -1,4 +1,5 @@
 
+
 <div class="guide">
     <ul class="left">
         <li><span class="icon">Ă</span><a href="javascript:void(0);" onclick="getChange(0);fastH(this,'main')" url="main.asp?s=1">首页</a><span class="ider">&gt;</span></li>
@@ -29,16 +30,15 @@
         <div id="box" class="box">
             <div id="tab">
                 <ul>
-                    <li onclick="fastT('{{ route('bookStatistics',['way'=>'save', 'date'=>'20170816']) }}','0')" class="now">按录入</li>
+                    <li onclick="fastT('{{ route('bookStatistics',['way'=>'save']) }}','0')" class="now">按录入</li>
                     <li onclick="fastT('{{ route('bookStatistics',['way'=>'time']) }}','1')">按时段</li>
                     <li onclick="fastT('{{ route('bookStatistics',['way'=>'day']) }}','2')">按日期</li>
                     <li onclick="fastT('{{ route('bookStatistics',['way'=>'week']) }}','3')">按星期</li>
                     <li onclick="fastT('{{ route('bookStatistics',['way'=>'month']) }}','4')">按月份</li>
-                    <li onclick="fastT('{{ route('bookStatistics',['way'=>'dis']) }}','5')">按病种</li>
-                    <li onclick="fastT('{{ route('bookStatistics',['way'=>'doc']) }}','6')">按医生</li>
+                    <li onclick="fastT('{{ route('bookStatistics',['way'=>'disease']) }}','5')">按病种</li>
+                    <li onclick="fastT('{{ route('bookStatistics',['way'=>'res']) }}','6')">按医生</li>
                     <li onclick="fastT('{{ route('bookStatistics',['way'=>'area']) }}','7')">按地区</li>
                     <li onclick="fastT('{{ route('bookStatistics',['way'=>'way']) }}','8')">按途径</li>
-                    <li onclick="fastT('{{ route('bookStatistics',['way'=>'ads']) }}','9')">按媒介</li>
                     <li onclick="fastT('{{ route('bookStatistics',['way'=>'age']) }}','10')">按年龄</li>
                     <li onclick="fastT('{{ route('bookStatistics',['way'=>'gender']) }}','11')">按性别</li>
                 </ul>

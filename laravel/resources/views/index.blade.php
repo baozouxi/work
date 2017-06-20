@@ -89,13 +89,13 @@
                     <font id="now_tel" style="display: none;">0</font><span class="icon">ĕ</span>电话记录</a>
             </li>
             <li>
-                <a id="a_call" url="{{ route('call.index') }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);">
+                <a id="a_call" url="{{ route('recall.index') }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);">
                     <font id="now_call" style="display: none;">0</font><span class="icon">Ĕ</span>回拨记录</a>
             </li>
             <li>
                 <p><a url="{{ route('dialog.index') }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);sidebar(2);"><span class="icon">İ</span>对话管理</a></p>
                 <ol id="bar_2">
-                    <li><a url="stat_rep_dia.asp?s=1&amp;to=m" href="javascript:void(0);" hidefocus="" onclick="getChange(this,1);fastH(this,&#39;main&#39;);"><span class="icon">Ő</span>对话报表</a></li>
+                    <li><a url="{{ route('dialogSheet') }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this,1);fastH(this,&#39;main&#39;);"><span class="icon">Ő</span>对话报表</a></li>
                     <li><a url="stat_dia.asp?s=1&amp;to=m" href="javascript:void(0);" hidefocus="" onclick="getChange(this,1);fastH(this,&#39;main&#39;);"><span class="icon">ŏ</span>对话统计</a></li>
                 </ol>
             </li>
