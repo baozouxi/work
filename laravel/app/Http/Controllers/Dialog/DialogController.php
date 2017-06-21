@@ -6,14 +6,17 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DialogRequest;
 use App\Models\Dialog;
+use App\Models\Appointment;
+use DB;
 
 class DialogController extends Controller
-{
+{   
+
+
     public function index()
     {
-    	$dialogs = Dialog::all();
-
-    	return view('Dialog.index', ['dialogs'=>$dialogs]);
+        //用mysql的date_format 取出格式化后的时间 后面省了很多遍历操作
+        $dialogs = Dialog::all()->toArray();
     }
 
     public function create()
