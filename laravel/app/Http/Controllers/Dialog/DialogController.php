@@ -15,8 +15,19 @@ class DialogController extends Controller
 
     public function index()
     {
-        //用mysql的date_format 取出格式化后的时间 后面省了很多遍历操作
+        //分两个数组存放， key为格式化后的日期
         $dialogs = Dialog::all()->toArray();
+
+        $each_item_book = array();
+
+        $total_data = array();
+
+        foreach ($dialogs as $diaItem) {
+            $data_after_format = formatDate($diaItem['date'], 'Y-m-d');
+            $total_data[$data_after_format][$diaItem['admin_id']] = $diaItem;
+        }   
+
+        dd($total_data);
     }
 
     public function create()
@@ -61,6 +72,7 @@ class DialogController extends Controller
     public function statistics()
     {
 
+            
     }
 
 
