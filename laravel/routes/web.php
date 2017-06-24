@@ -60,6 +60,7 @@
 		Route::get('tel-consult/status/{id}', 'TelConsultController@updateStatus')->name('telConsultUpdateStatuss');
 	});
 
+	//
 	Route::group(['namespace'=>'Call'],function(){
 		Route::Resource('call', 'CallController');
 	});
@@ -79,7 +80,10 @@
 		Route::Resource('recall', 'ReCallController');
 	});
 
-	
+	//短信模块
+	Route::group(['namespace'=>'Sms'], function(){
+		Route::Resource('sms', 'SmsController');
+	});
 
 
 	//异步请求页面

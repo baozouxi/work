@@ -106,7 +106,7 @@
                     <li><a url="stat_rank.asp?s=1&amp;to=m" href="javascript:void(0);" hidefocus="" onclick="getChange(this,1);fastH(this,&#39;main&#39;);"><span class="icon">ŏ</span>竞价统计</a></li>
                 </ol>
             </li>
-            <li><a url="sms.asp?s=1" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);"><span class="icon">ė</span>短信记录</a></li>
+            <li><a url="{{ route('sms.index') }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);"><span class="icon">ė</span>短信记录</a></li>
             <li><a url="file.asp?s=1" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);"><span class="icon">ū</span>上传记录</a></li>
             <li><a url="log.asp?s=1" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);"><span class="icon">Š</span>操作记录</a></li>
         </ul>

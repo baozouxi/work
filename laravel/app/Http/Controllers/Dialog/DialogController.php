@@ -12,7 +12,10 @@ use DB;
 class DialogController extends Controller
 {   
 
-
+    /**
+     * 思路： 根据对话数据取出预约数据，  然后把数据拼装成类似于 
+     * @return [type] [description]
+     */
     public function index()
     {
         //分两个数组存放， key为格式化后的日期
@@ -22,12 +25,30 @@ class DialogController extends Controller
 
         $total_data = array();
 
-        foreach ($dialogs as $diaItem) {
-            $data_after_format = formatDate($diaItem['date'], 'Y-m-d');
-            $total_data[$data_after_format][$diaItem['admin_id']] = $diaItem;
+        //根据对话记录的admin_id取得预约数据， 避免多余的数据被取出;
+        $admin_id_arr =  array_unique(array_column($dialogs, 'admin_id'));
+        
+        //预约数据
+        $appoint_data = Appointment::whereIn('admin_id', $admin_id_arr)->get()->toArray();
+
+        // 循环判断  根据 admin_id 和 预约时间
+        foreach ($dialogs as &$diaItem) {
+            foreach ($appoint_data as $appItem) {
+
+                //初始化数组  避免 获取数组时报错
+                if(!isset($diaItem['appoint'])) $diaItem['appoint'] = [];
+                if(!isset($diaItem['patient'])) $diaItem['patient'] = [];
+
+                if (($diaItem['admin_id'] == $appItem['admin_id']) && 
+                     (formatDate($diaItem['date'], 'Y-m-d') == formatDate($appItem['add_time'], 'Y-m-d'))) { 
+                    $diaItem['appoint'][$appItem['way']][] = $appItem['id'];
+                    if($appItem['is_hospital'] == '1') $diaItem['patient'][$appItem['way']][] = $appItem['id'];
+                } 
+            }
         }   
 
-        dd($total_data);
+        return view('Dialog.index', ['dialogs' => $dialogs]);
+
     }
 
     public function create()
