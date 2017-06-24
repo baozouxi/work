@@ -41,7 +41,6 @@ SSS;
     		'phone' => 'string|required|min:11',
     		'content' => 'string|required|min:10'
     		]);
-
     	$tel_arr = explode('|', $req->phone);
     	// 过滤
     	$pattern = '/^(13|17|15|18)\d{1}\d{4}\d{4}/';
@@ -52,7 +51,12 @@ SSS;
     		return false;
     	});
     	$tel_arr = array_unique($tel_arr);
-    	
+    	$insert_arr = [];
+    	foreach ($tel_arr as $key => $tel) {
+    		$insert_arr[$key]['phone'] = $tel;
+    		$insert_arr[$key]['content'] = $req->content;
+    	}
+    	dd($insert_arr);
     }
 
     public function save()
