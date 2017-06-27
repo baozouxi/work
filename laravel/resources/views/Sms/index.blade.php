@@ -52,14 +52,48 @@
                         </tr>
                     </thead>
                     <tbody id="tablebg">
+                     @foreach($data as $item)
                         <tr class="t1">
-                            <td colspan="6">
+<!--                             <td colspan="6">
                                 <center>暂无数据</center>
+                            </td> -->
+                       
+                            <td width="120">
+                                <center>{{ formatDate($item->add_time,'Y-m-d') }}</center>
                             </td>
+                            <td width="120">
+                                <center>{{ $item->phone }}</center>
+                            </td>
+                            <td width="*">{{ $item->content }}</th>
+                            <td width="70">
+                                <center>
+
+                                    @if($item->send_status == '0')
+                                        <span style="cursor:pointer;" id="status2" onclick="fast('http://c.com/tel-consult/status/3','status2');"><em>发送中</em></span>
+                                    @elseif($item->send_status == '1')
+                                        <i>已发送</i>
+                                    @elseif($item->send_status == '2')
+                                        <em>发送失败</em>
+                                    @endif
+
+                                </center>
+                                
+                            </td>
+                            <td width="80">
+                                <center>{{ $item->admin_id }}</center>
+                            </td>
+                            <td width="30">
+                                <center>
+                                    <a href="javascript:void(0);" id="del21" onclick="if(confirm('确定删除吗？\n\n该操作不可恢复')){fast('res.asp?act=del&amp;id=21','del21');}">
+                                            <span class="icon"><em>ź</em></span>
+                                    </a>
+                                </center>
+                            </td>
+                        @endforeach
                         </tr>
                     </tbody>
                 </table>
-                <input type="hidden" name="this_url" id="this_url" value="/sms.asp">
+                <input type="hidden" name="this_url" id="this_url" value="{{ route('sms.index') }}">
             </div>
         </div>
     </div>

@@ -69,9 +69,7 @@
 	Route::group(['namespace'=>'Dialog'], function(){
 
 		Route::get('/dialog/sheet/{date?}/{admin?}', 'DialogController@sheet')->name('dialogSheet');
-
 		Route::Resource('dialog', 'DialogController');
-
 	});
 
 
@@ -82,6 +80,8 @@
 
 	//短信模块
 	Route::group(['namespace'=>'Sms'], function(){
+	
+		Route::get('/sms/async-send/{admin_id}', 'SmsController@asyncSend')->name('smsAsyncSend');
 		Route::Resource('sms', 'SmsController');
 	});
 
