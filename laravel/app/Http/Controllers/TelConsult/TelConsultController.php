@@ -27,7 +27,6 @@ class TelConsultController extends Controller {
 				if ($appItem->phone == $telItem['phone']) {
 					$telItem['status'] = ($appItem->is_hospital == '1') ? '3' : '2';
 				}
-
 			}
 		}
 

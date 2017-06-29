@@ -111,7 +111,7 @@
             <li><a url="log.asp?s=1" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);"><span class="icon">Š</span>操作记录</a></li>
         </ul>
         <ul id="nav_1">
-            <li><a url="dis.asp?s=1" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);"><span class="icon">Ĉ</span>病种管理</a></li>
+            <li><a url="{{ route('disease.index') }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);"><span class="icon">Ĉ</span>病种管理</a></li>
             <li><a url="dep.asp?s=1" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);"><span class="icon">ō</span>医生管理</a></li>
             <li><a url="way.asp?s=1" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);"><span class="icon">Ń</span>途径管理</a></li>
             <li><a url="ads.asp?s=1" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);"><span class="icon">ě</span>媒介管理</a></li>

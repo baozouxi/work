@@ -86,12 +86,23 @@
 	});
 
 
+	//设置部分
+
+	//病种
+	Route::group(['namespace'=>'Disease'], function(){
+		Route::Resource('disease', 'DisController');
+	});
+
+
 	//异步请求页面
 	Route::get('/callback/check/{model}/{action}/{args}', 'CallBackController@check')->name('check');
 
 	Route::get('/callback/checkNow', 'CallBackController@checkNow')->name('checkNow');
 
 	Route::get('/callback/uploadhtml', 'CallBackController@uploadHtml')->name('uploadHtml');
+
+
+
 
 // });
 
