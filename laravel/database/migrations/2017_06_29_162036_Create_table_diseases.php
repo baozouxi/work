@@ -22,6 +22,7 @@ class CreateTableDiseases extends Migration
             $table->integer('parent_id')->default('0');
             $table->timestamp('add_time')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->integer('admin_id');
+            $table->tinyInteger('is_use')->default('1');
         });
     }
 
