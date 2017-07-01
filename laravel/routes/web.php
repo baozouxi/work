@@ -21,13 +21,12 @@
 
 	//预约模块
 	Route::group(['namespace' => 'Book'], function(){
+		
 		Route::get('/book/statistics/{way?}/{date?}', 'StatisticsController@index')->name('bookStatistics');
 		Route::get('/book/chatlog/{id}', 'BookController@getChatlog')->name('chatlog');
 		Route::get('/book/sheet/{date?}/{admin?}', 'BookController@sheet')->name('bookSheet');
-		
 		Route::Resource('book', 'BookController');
 		Route::Resource('booktrack', 'TrackController');
-
 
 	});
 
@@ -92,6 +91,30 @@
 	Route::group(['namespace'=>'Disease'], function(){
 		Route::Resource('disease', 'DisController');
 	});
+
+	//医生
+	Route::group(['namespace'=>'Doctor'], function(){
+		Route::Resource('doctor', 'DoctorController');
+	});
+
+	//途径
+	Route::group(['namespace'=>'Way'], function(){
+		Route::Resource('way','WayController');
+	});
+
+	//媒介
+	Route::group(['namespace'=>'Ad'], function(){
+		Route::Resource('ad', 'AdController');
+
+	});
+
+
+
+	//RBAC
+	Route::group(['namespace' => 'RBAC'], function(){
+		Route::Resource('user', 'UserController');
+	});
+
 
 
 	//异步请求页面

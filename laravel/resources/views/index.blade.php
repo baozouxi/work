@@ -112,13 +112,11 @@
         </ul>
         <ul id="nav_1">
             <li><a url="{{ route('disease.index') }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);"><span class="icon">Ĉ</span>病种管理</a></li>
-            <li><a url="dep.asp?s=1" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);"><span class="icon">ō</span>医生管理</a></li>
-            <li><a url="way.asp?s=1" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);"><span class="icon">Ń</span>途径管理</a></li>
-            <li><a url="ads.asp?s=1" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);"><span class="icon">ě</span>媒介管理</a></li>
-            <li><a url="website.asp?s=1" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);"><span class="icon">Ũ</span>站点管理</a></li>
-            <li><a url="source.asp?s=1" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);"><span class="icon">Ě</span>来源管理</a></li>
+            <li><a url="{{ route('doctor.index') }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);"><span class="icon">ō</span>医生管理</a></li>
+            <li><a url="{{ route('way.index') }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);"><span class="icon">Ń</span>途径管理</a></li>
+            <li><a url="{{ route('ad.index') }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);"><span class="icon">ě</span>媒介管理</a></li>
             <li>
-                <p><a url="user.asp?s=1" href="javascript:void(0);" onclick="getChange(this);fastH(this,&#39;main&#39;);sidebar(4);"><span class="icon">ĸ</span>用户管理</a></p>
+                <p><a url="{{ route('user.index') }}" href="javascript:void(0);" onclick="getChange(this);fastH(this,&#39;main&#39;);sidebar(4);"><span class="icon">ĸ</span>用户管理</a></p>
                 <ol id="bar_4">
                     <li><a url="group.asp?s=1" href="javascript:void(0);" hidefocus="" onclick="getChange(this,1);fastH(this,&#39;main&#39;);"><span class="icon">ĵ</span>用户组管理</a></li>
                     <li><a url="black.asp?s=1" href="javascript:void(0);" hidefocus="" onclick="getChange(this,1);fastH(this,&#39;main&#39;);"><span class="icon">Ĩ</span>黑名单管理</a></li>
