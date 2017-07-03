@@ -118,7 +118,7 @@
             <li>
                 <p><a url="{{ route('user.index') }}" href="javascript:void(0);" onclick="getChange(this);fastH(this,&#39;main&#39;);sidebar(4);"><span class="icon">ĸ</span>用户管理</a></p>
                 <ol id="bar_4">
-                    <li><a url="group.asp?s=1" href="javascript:void(0);" hidefocus="" onclick="getChange(this,1);fastH(this,&#39;main&#39;);"><span class="icon">ĵ</span>用户组管理</a></li>
+                    <li><a url="{{ route('role.index') }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this,1);fastH(this,&#39;main&#39;);"><span class="icon">ĵ</span>用户组管理</a></li>
                     <li><a url="black.asp?s=1" href="javascript:void(0);" hidefocus="" onclick="getChange(this,1);fastH(this,&#39;main&#39;);"><span class="icon">Ĩ</span>黑名单管理</a></li>
                 </ol>
             </li>

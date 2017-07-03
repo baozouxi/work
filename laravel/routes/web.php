@@ -105,7 +105,6 @@
 	//媒介
 	Route::group(['namespace'=>'Ad'], function(){
 		Route::Resource('ad', 'AdController');
-
 	});
 
 
@@ -113,7 +112,10 @@
 	//RBAC
 	Route::group(['namespace' => 'RBAC'], function(){
 		Route::Resource('user', 'UserController');
+		Route::Resource('role', 'RoleController');
 	});
+
+
 
 
 

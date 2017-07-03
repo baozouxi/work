@@ -148,6 +148,9 @@ function fastP(url,n){
 		 			'doctor': '请选择医生',
 		 			'bid': '病历号不能为空',
 		 			'track_time': '回访时间格式错误，日期应该大于等于今天',
+		 			'role_id': '请选择正确的角色组',
+		 			'username': '昵称格式错误，最少5个字符串',
+		 			'qq': 'QQ格式错误，最少5个字符串',
 		 		}
 		 		for(var key in ajaxobj){
 		 			sb.disabled = false;m.innerHTML =icon + errorList[key];focus($(key));//if(result.field.length>0){setTab(0);}
