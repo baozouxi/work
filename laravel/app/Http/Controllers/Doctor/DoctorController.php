@@ -49,7 +49,7 @@ class DoctorController extends Controller
 
     public function edit()
     {
-
+           
     }
 
     public function update()

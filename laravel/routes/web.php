@@ -19,6 +19,8 @@
 
 	Route::get('/', 'IndexController@index')->name('index');
 
+	Route::Resource('nav', 'NavController');
+
 	//预约模块
 	Route::group(['namespace' => 'Book'], function(){
 		
@@ -59,7 +61,6 @@
 		Route::get('tel-consult/status/{id}', 'TelConsultController@updateStatus')->name('telConsultUpdateStatuss');
 	});
 
-	//
 	Route::group(['namespace'=>'Call'],function(){
 		Route::Resource('call', 'CallController');
 	});
@@ -106,8 +107,6 @@
 	Route::group(['namespace'=>'Ad'], function(){
 		Route::Resource('ad', 'AdController');
 	});
-
-
 
 	//RBAC
 	Route::group(['namespace' => 'RBAC'], function(){

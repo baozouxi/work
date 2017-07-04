@@ -20,7 +20,7 @@ class AdController extends Controller
 
     public function store()
     {
-
+        
     }
 
     public function edit()

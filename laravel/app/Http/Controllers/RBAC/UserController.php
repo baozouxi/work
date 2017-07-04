@@ -19,6 +19,7 @@ class UserController extends Controller
     	return view('Rbac.User.index');
     }
 
+
     public function create()
     {
     	return view('Rbac.User.create');
