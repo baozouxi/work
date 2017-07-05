@@ -47,6 +47,7 @@
     <!--左边-->
     <div id="sidebar" class="sidebar" style="background-image: url(http://cdn.ehis.cc/2.3/weather/4.png);">
         <ul id="nav_0" class="now">
+
             <li>
                 <p>
                     <a id="a_turn" url="{{ route('patient.index') }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);sidebar(0);">
@@ -66,6 +67,9 @@
                     <li><a url="{{ route('trackStatistics') }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this,1);fastH(this,&#39;main&#39;);"><span class="icon">Ľ</span>消费统计</a></li>
                 </ol>
             </li>
+        
+
+
             <li>
                 <p>
                     <a id="a_res" url="{{ route('book.index') }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);sidebar(1);">
@@ -115,6 +119,7 @@
             <li><a url="{{ route('doctor.index') }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);"><span class="icon">ō</span>医生管理</a></li>
             <li><a url="{{ route('way.index') }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);"><span class="icon">Ń</span>途径管理</a></li>
             <li><a url="{{ route('ad.index') }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);"><span class="icon">ě</span>媒介管理</a></li>
+            <li><a url="{{ route('nav.index') }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);"><span class="icon">Ɔ</span>导航菜单</a></li>
             <li>
                 <p><a url="{{ route('user.index') }}" href="javascript:void(0);" onclick="getChange(this);fastH(this,&#39;main&#39;);sidebar(4);"><span class="icon">ĸ</span>用户管理</a></p>
                 <ol id="bar_4">

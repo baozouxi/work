@@ -37,7 +37,7 @@
         <div class="login-box" id="login-box">
             <form id="form_sub" name="form_sub" method="post" action="javascript:login();">
                 <label class="inline">用户</label>
-                <input type="text" name="nick" id="nick" class="input" value="" style="width:230px;" autocomplete="off" disableautocomplete="" onblur="this.style.backgroundColor=&#39;#fff&#39;;" onfocus="this.style.backgroundColor=&#39;#FFFEF1&#39;;this.style.backgroundImage=&#39;none&#39;;">
+                <input type="text" name="username" id="username" class="input" value="" style="width:230px;" autocomplete="off" disableautocomplete="" onblur="this.style.backgroundColor=&#39;#fff&#39;;" onfocus="this.style.backgroundColor=&#39;#FFFEF1&#39;;this.style.backgroundImage=&#39;none&#39;;">
                 <label class="inline">密码</label>
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <input type="password" name="password" id="password" class="input" value="" style="width:230px;" autocomplete="off" onblur="this.style.backgroundColor=&#39;#fff&#39;;" onfocus="this.style.backgroundColor=&#39;#FFFEF1&#39;;">
@@ -52,11 +52,6 @@
             </form>
         </div>
     </div>
-    <center>
-        <br>
-        <br>
-        <a href="http://www.ehis.cc/" target="_blank" style="height:20px;display:block;" title="医患通2.1新春版"><img src="{{ asset('img') }}/icon.png" style="margin-bottom:-3px;border: 0;">HIS</a>
-    </center>
     <script>
     if (exist('call_dbbak')) {
         window.setTimeout("dbbak()", 100);

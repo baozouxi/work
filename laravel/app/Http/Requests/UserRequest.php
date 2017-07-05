@@ -31,7 +31,7 @@ class UserRequest extends FormRequest
             'qq' =>  'nullable|numeric',
             'role_id' => 'required|numeric|min:2',
             'is_use' => 'nullable|numeric|in:0,1',
-            'tel' => 'required|numeric|size:11'
+            'tel' => 'required|numeric'
         ];
     }
 }

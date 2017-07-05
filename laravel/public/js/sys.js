@@ -300,7 +300,11 @@ function login(){
 				location.href=result.msg;
 			}
 		},
-		failure:function(xhr,msg){alert(msg)}
+		failure:function(xhr,msg){
+			if(msg==422){
+				alert('用户名，密码错误');
+			}
+		}
 	});
 }
 
