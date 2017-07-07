@@ -112,6 +112,7 @@
 	Route::group(['namespace' => 'RBAC'], function(){
 		Route::Resource('user', 'UserController');
 		Route::Resource('role', 'RoleController');
+		Route::Resource('node', 'NodeController');
 	});
 
 
