@@ -44,3 +44,12 @@ function getGender($gender)
 }
 
 
+/**
+ * 返回字符串
+ * @param  [type] $msg [description]
+ * @return [type]      [description]
+ */
+function code($msg, $code='0')
+{
+	return ['code'=>$code, 'msg'=>$msg, 'time'=>getNow()];
+}

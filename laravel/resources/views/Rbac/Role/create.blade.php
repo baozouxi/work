@@ -26,56 +26,28 @@
                 {{ csrf_field() }}
                 <label class="inline"></label>
                 <table cellspacing="1" cellpadding="0">
-                    <thead>
-                        <tr>
-                            <th width="*">
-                                <center>用户权限</center>
-                            </th>
-                        </tr>
-                    </thead>
+
                     <tbody id="tablebg">
+                        
                         <tr class="t1">
-                            <td><i><b>预约列表</b></i></td>
+                               <td><center><i><em>导航权限</em></i></center></td>
                         </tr>
                         <tr class="t2">
                             <td>
-                                <input name="manage[]" id="res_list" type="checkbox" value="res_list">
-                                <label for="res_list">预约列表</label>
-                                <input name="manage[]" id="res_add" type="checkbox" value="res_add">
-                                <label for="res_add">增加预约</label>
-                                <input name="manage[]" id="res_edit" type="checkbox" value="res_edit">
-                                <label for="res_edit">编辑预约</label>
-                                <input name="manage[]" id="res_del" type="checkbox" value="res_del">
-                                <label for="res_del">删除预约</label>
-                                <input name="manage[]" id="res_view" type="checkbox" value="res_view">
-                                <label for="res_view"><u>预约属性</u></label>
-                                <input name="manage[]" id="res_user" type="checkbox" value="res_user">
-                                <label for="res_user"><i>全部可见</i></label>
-                                <input name="manage[]" id="res_all" type="checkbox" value="res_all">
-                                <label for="res_all"><em>全部可编</em></label>
-                                <input name="manage[]" id="res_excel" type="checkbox" value="res_excel">
-                                <label for="res_excel">导出数据</label>
+                            @foreach($nav as $key => $navItem)
+                                <input name="nav[]" id="nav{{$key}}" type="checkbox" value="{{ $navItem->id }}">
+                                <label for="nav{{$key}}">{{ $navItem['name'] }}</label>
+                            @endforeach
                             </td>
+
                         </tr>
+                        
+
                         <tr class="t1">
-                            <td><i><b>预约回访列表</b></i></td>
+                            <td><center><i><em>页面节点权限</em></i></center></td>
                         </tr>
-                        <tr class="t2">
-                            <td>
-                                <input name="manage[]" id="track_list" type="checkbox" value="track_list">
-                                <label for="track_list">回访列表</label>
-                                <input name="manage[]" id="track_add" type="checkbox" value="track_add">
-                                <label for="track_add">增加回访</label>
-                                <input name="manage[]" id="track_edit" type="checkbox" value="track_edit">
-                                <label for="track_edit">编辑回访</label>
-                                <input name="manage[]" id="track_del" type="checkbox" value="track_del">
-                                <label for="track_del">删除回访</label>
-                                <input name="manage[]" id="track_user" type="checkbox" value="track_user">
-                                <label for="track_user"><i>全部可见</i></label>
-                                <input name="manage[]" id="track_all" type="checkbox" value="track_all">
-                                <label for="track_all"><em>全部可编</em></label>
-                            </td>
-                        </tr>
+                            
+
                         <tr class="t1">
                             <td><i><b>患者列表</b></i></td>
                         </tr>

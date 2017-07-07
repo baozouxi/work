@@ -5,6 +5,7 @@ namespace App\Http\Controllers\RBAC;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Role;
+use App\Models\Nav;
 
 /**
  * 角色控制器
@@ -20,7 +21,8 @@ class RoleController extends Controller
 
     public function create()
     {
-    	return view('Rbac.Role.create');
+        $nav = Nav::all();
+    	return view('Rbac.Role.create', ['nav'=>$nav]);
     }
 
     public function store(Request $req)

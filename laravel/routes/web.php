@@ -116,8 +116,6 @@
 
 
 
-
-
 	//异步请求页面
 	Route::get('/callback/check/{model}/{action}/{args}', 'CallBackController@check')->name('check');
 

@@ -38,11 +38,15 @@
                     </tr>
                 </thead>
                 <tbody id="tablebg">
+
+                
+                @foreach($nav as $navItem)
+                
                     <tr class="t1">
                         <td>
-                            <center>1</center>
+                            <center>{{ $navItem['id'] }}</center>
                         </td>
-                        <td><a href="javascript:void(0);" title="编辑大类" onclick="msgbox(this);" url="http://c.com/disease/1/edit">asdas</a></td>
+                        <td><a href="javascript:void(0);" title="编辑大类" onclick="msgbox(this);" url="http://c.com/disease/1/edit">{{ $navItem['name'] }}</a></td>
                         <td>
                             <center><span id="state1" style="cursor:pointer;" onclick="fast('','state1');">正常</span></center>
                         </td>
@@ -59,11 +63,12 @@
                             <center><a href="javascript:void(0);" title="删除数据" onclick="msgbox(this);" url="dis.asp?act=del&amp;id=7"><span class="icon"><em>ź</em></span></a></center>
                         </td>
                     </tr>
+                    @foreach($navItem['nav_child'] as $nav_child)
                     <tr class="t2">
                         <td>
-                            <center>2</center>
+                            <center>{{ $nav_child['id'] }}</center>
                         </td>
-                        <td>　　├ <a href="javascript:void(0);" title="编辑小类" onclick="msgbox(this);" url="http://c.com/disease/2/edit">sadaszzz</a></td>
+                        <td> ├ <a href="javascript:void(0);" title="编辑小类" onclick="msgbox(this);" url="http://c.com/disease/2/edit">{{ $nav_child['name'] }}</a></td>
                         <td>
                             <center><span id="state2" style="cursor:pointer;" onclick="fast('dis.asp?act=state&amp;id=8','state2');">正常</span></center>
                         </td>
@@ -80,114 +85,13 @@
                             <center><a href="javascript:void(0);" title="删除数据" onclick="msgbox(this);" url="dis.asp?act=del&amp;id=8"><span class="icon"><em>ź</em></span></a></center>
                         </td>
                     </tr>
-                    <tr class="t1">
-                        <td>
-                            <center>3</center>
-                        </td>
-                        <td><a href="javascript:void(0);" title="编辑大类" onclick="msgbox(this);" url="http://c.com/disease/3/edit">撒哒自行车</a></td>
-                        <td>
-                            <center><span id="state3" style="cursor:pointer;" onclick="fast('','state3');">正常</span></center>
-                        </td>
-                        <td>
-                            <center><a href="javascript:void(0);" title="模版设置" onclick="msgbox(this,550);" url="dis.asp?act=tpl&amp;id=7"><span>全局</span></a></center>
-                        </td>
-                        <td>
-                            <center><span id="rank7" style="cursor:pointer;" onclick="fastE('dis.asp','rank',7)">0</span></center>
-                        </td>
-                        <td>
-                            <center><a href="javascript:void(0);" title="合并数据" onclick="msgbox(this);" url="dis.asp?act=move&amp;id=7">合并</a></center>
-                        </td>
-                        <td>
-                            <center><a href="javascript:void(0);" title="删除数据" onclick="msgbox(this);" url="dis.asp?act=del&amp;id=7"><span class="icon"><em>ź</em></span></a></center>
-                        </td>
-                    </tr>
-                    <tr class="t1">
-                        <td>
-                            <center>4</center>
-                        </td>
-                        <td><a href="javascript:void(0);" title="编辑大类" onclick="msgbox(this);" url="http://c.com/disease/4/edit">撒大师的啊</a></td>
-                        <td>
-                            <center><span id="state4" style="cursor:pointer;" onclick="fast('','state4');">正常</span></center>
-                        </td>
-                        <td>
-                            <center><a href="javascript:void(0);" title="模版设置" onclick="msgbox(this,550);" url="dis.asp?act=tpl&amp;id=7"><span>全局</span></a></center>
-                        </td>
-                        <td>
-                            <center><span id="rank7" style="cursor:pointer;" onclick="fastE('dis.asp','rank',7)">0</span></center>
-                        </td>
-                        <td>
-                            <center><a href="javascript:void(0);" title="合并数据" onclick="msgbox(this);" url="dis.asp?act=move&amp;id=7">合并</a></center>
-                        </td>
-                        <td>
-                            <center><a href="javascript:void(0);" title="删除数据" onclick="msgbox(this);" url="dis.asp?act=del&amp;id=7"><span class="icon"><em>ź</em></span></a></center>
-                        </td>
-                    </tr>
-                    <tr class="t1">
-                        <td>
-                            <center>5</center>
-                        </td>
-                        <td><a href="javascript:void(0);" title="编辑大类" onclick="msgbox(this);" url="http://c.com/disease/5/edit">啊实打实</a></td>
-                        <td>
-                            <center><span id="state5" style="cursor:pointer;" onclick="fast('','state5');">正常</span></center>
-                        </td>
-                        <td>
-                            <center><a href="javascript:void(0);" title="模版设置" onclick="msgbox(this,550);" url="dis.asp?act=tpl&amp;id=7"><span>全局</span></a></center>
-                        </td>
-                        <td>
-                            <center><span id="rank7" style="cursor:pointer;" onclick="fastE('dis.asp','rank',7)">0</span></center>
-                        </td>
-                        <td>
-                            <center><a href="javascript:void(0);" title="合并数据" onclick="msgbox(this);" url="dis.asp?act=move&amp;id=7">合并</a></center>
-                        </td>
-                        <td>
-                            <center><a href="javascript:void(0);" title="删除数据" onclick="msgbox(this);" url="dis.asp?act=del&amp;id=7"><span class="icon"><em>ź</em></span></a></center>
-                        </td>
-                    </tr>
-                    <tr class="t1">
-                        <td>
-                            <center>6</center>
-                        </td>
-                        <td><a href="javascript:void(0);" title="编辑大类" onclick="msgbox(this);" url="http://c.com/disease/6/edit">zxa</a></td>
-                        <td>
-                            <center><span id="state6" style="cursor:pointer;" onclick="fast('','state6');">正常</span></center>
-                        </td>
-                        <td>
-                            <center><a href="javascript:void(0);" title="模版设置" onclick="msgbox(this,550);" url="dis.asp?act=tpl&amp;id=7"><span>全局</span></a></center>
-                        </td>
-                        <td>
-                            <center><span id="rank7" style="cursor:pointer;" onclick="fastE('dis.asp','rank',7)">0</span></center>
-                        </td>
-                        <td>
-                            <center><a href="javascript:void(0);" title="合并数据" onclick="msgbox(this);" url="dis.asp?act=move&amp;id=7">合并</a></center>
-                        </td>
-                        <td>
-                            <center><a href="javascript:void(0);" title="删除数据" onclick="msgbox(this);" url="dis.asp?act=del&amp;id=7"><span class="icon"><em>ź</em></span></a></center>
-                        </td>
-                    </tr>
-                    <tr class="t1">
-                        <td>
-                            <center>7</center>
-                        </td>
-                        <td><a href="javascript:void(0);" title="编辑大类" onclick="msgbox(this);" url="http://c.com/disease/7/edit">撒大师</a></td>
-                        <td>
-                            <center><span id="state7" style="cursor:pointer;" onclick="fast('','state7');">正常</span></center>
-                        </td>
-                        <td>
-                            <center><a href="javascript:void(0);" title="模版设置" onclick="msgbox(this,550);" url="dis.asp?act=tpl&amp;id=7"><span>全局</span></a></center>
-                        </td>
-                        <td>
-                            <center><span id="rank7" style="cursor:pointer;" onclick="fastE('dis.asp','rank',7)">0</span></center>
-                        </td>
-                        <td>
-                            <center><a href="javascript:void(0);" title="合并数据" onclick="msgbox(this);" url="dis.asp?act=move&amp;id=7">合并</a></center>
-                        </td>
-                        <td>
-                            <center><a href="javascript:void(0);" title="删除数据" onclick="msgbox(this);" url="dis.asp?act=del&amp;id=7"><span class="icon"><em>ź</em></span></a></center>
-                        </td>
-                    </tr>
+                    @endforeach
+
+                @endforeach
+
                 </tbody>
             </table>
-            <input type="hidden" name="this_url" id="this_url" value="http://c.com/disease">
+            <input type="hidden" name="this_url" id="this_url" value="{{ route('nav.index') }}">
         </div>
     </div>
 </div>
