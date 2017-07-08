@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Role;
 
 /**
  * 用户控制器
@@ -15,14 +16,17 @@ class UserController extends Controller
     
     public function index()
     {
-
-    	return view('Rbac.User.index');
+        $user = User::all();
+        $role = Role::all(['name','id'])->toArray();
+        $role = array_column($role, 'name', 'id');
+    	return view('Rbac.User.index', ['user'=>$user, 'role'=>$role]);
     }
 
 
     public function create()
     {
-    	return view('Rbac.User.create');
+        $role = Role::all();
+    	return view('Rbac.User.create', ['role'=>$role]);
     }
 
     public function store(UserRequest $req)

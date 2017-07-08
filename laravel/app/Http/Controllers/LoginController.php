@@ -28,10 +28,16 @@ class LoginController extends Controller
     	$acc_nodes = unserialize($role['nodes']);	
 
     	$req->session()->put('user_id', $user->id);
+
+        $req->session()->put('role_id', $user->role_id);
     	
     	$req->session()->put('name', $user->name);
 
-    	$req->session()->put('acc', $acc_nodes);
+    	$req->session()->put('access_nodes', $acc_nodes);
+
+
+
+
 
     	return ['code'=>'0', 'msg'=>route('index'), 'time'=>getNow()];
     }	

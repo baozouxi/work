@@ -151,6 +151,7 @@ function fastP(url,n){
 		 			'role_id': '请选择正确的角色组',
 		 			'username': '昵称格式错误，最少5个字符串',
 		 			'qq': 'QQ格式错误，最少5个字符串',
+		 			'nickname' : '请输入正确的中文名称'
 		 		}
 		 		for(var key in ajaxobj){
 		 			sb.disabled = false;m.innerHTML =icon + errorList[key];focus($(key));//if(result.field.length>0){setTab(0);}

@@ -56,23 +56,32 @@
                     </tr>
                 </thead>
                 <tbody id="tablebg">
+                @foreach($user as $userItem)
                     <tr class="t1">
                         <td>
-                            <center>2</center>
+                            <center>{{ $userItem->id }}</center>
                         </td>
-                        <td><i>咨询员</i><span>(咨询)</span></td>
-                        <td><a href="javascript:void(0);" onclick="fastH(this,'main')" url="user.asp?act=add&amp;s=1&amp;id=2">咨询</a> <span style="text-transform:uppercase;">zixun</span></td>
+                        <td><center>
+                            <i>
+                            {{ isset($role[$userItem->role_id]) ? $role[$userItem->role_id] : '暂无角色' }}
+                            </i>
+                        </center>
+                        </td>
+                        <td><a href="javascript:void(0);" onclick="fastH(this,'main')" url="user.asp?act=add&amp;s=1&amp;id=2">{{ $userItem->name }}</a> 
+                        <span style="text-transform:uppercase;">
+                            {{ strtoupper($userItem->username) }}
+                        </span></td>
                         <td>
                             <center><span id="online2" style="cursor:pointer;" onclick="fast('user.asp?act=online&amp;id=2','online2');" title="踢出后台">离线</span></center>
                         </td>
                         <td>
-                            <center>13228595558</center>
+                            <center>{{ $userItem->tel }}</center>
                         </td>
                         <td>
-                            <center>253120625</center>
+                            <center>{{ $userItem->qq }}</center>
                         </td>
                         <td>
-                            <center>13228595558</center>
+                            <center>{{ $userItem->weixin }}</center>
                         </td>
                         <td>
                             <center><span id="state2" style="cursor:pointer;" onclick="fast('user.asp?act=state&amp;id=2','state2');">正常</span></center>
@@ -93,7 +102,8 @@
                             <center><a href="javascript:void(0);" title="删除数据" onclick="msgbox(this);" url="user.asp?act=del&amp;id=2"><span class="icon"><em>ź</em></span></a></center>
                         </td>
                     </tr>
-                    <tr class="t2">
+                @endforeach
+<!--                     <tr class="t2">
                         <td>
                             <center>3</center>
                         </td>
@@ -314,7 +324,7 @@
                         <td>
                             <center><a href="javascript:void(0);" title="删除数据" onclick="msgbox(this);" url="user.asp?act=del&amp;id=8"><span class="icon"><em>ź</em></span></a></center>
                         </td>
-                    </tr>
+                    </tr> -->
                 </tbody>
             </table>
             <input type="hidden" name="this_url" id="this_url" value="{{ route('user.index') }}">

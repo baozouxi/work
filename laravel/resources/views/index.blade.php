@@ -47,8 +47,34 @@
     <!--左边-->
     <div id="sidebar" class="sidebar" style="background-image: url(http://cdn.ehis.cc/2.3/weather/4.png);">
         <ul id="nav_0" class="now">
-
+        
+<!--         @foreach($nav as $navItem)
+        @if(isset($navItem['nav_child']))
             <li>
+                <p>
+                    <a id="a_turn" url="{{ $navItem['url'] }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);sidebar(0);">
+                        <font id="now_turn" style="display: none;">0</font><span class="icon">{{ $navItem['icon'] }}</span>{{ $navItem['name'] }}</a>
+                </p>
+                <ol id="bar_0">
+                @foreach($navItem['nav_child'] as $child)
+                    <li>
+                        <a url="{{ $child['url'] }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this,1);fastH(this,&#39;main&#39;);">
+                            <font id="now_reply" style="display: none;">0</font><span class="icon">{{ $child['icon'] }}</span>{{ $child['name'] }}</a>
+                    </li>
+                @endforeach
+
+                </ol>
+            </li>
+        @else
+            <li>
+                <a id="a_cons" url="{{ $navItem['url'] }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);">
+                    <font id="now_cons" style="display: none;">0</font><span class="icon">{{ $navItem['icon'] }}</span>{{ $navItem['name'] }}</a>
+            </li>
+        @endif
+        
+        @endforeach -->
+        
+                <li>
                 <p>
                     <a id="a_turn" url="{{ route('patient.index') }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);sidebar(0);">
                         <font id="now_turn" style="display: none;">0</font><span class="icon">Ķ</span>患者管理</a>
@@ -67,8 +93,6 @@
                     <li><a url="{{ route('trackStatistics') }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this,1);fastH(this,&#39;main&#39;);"><span class="icon">Ľ</span>消费统计</a></li>
                 </ol>
             </li>
-        
-
 
             <li>
                 <p>

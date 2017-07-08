@@ -10,12 +10,14 @@ use App\Models\Appointment;
 use App\Models\Chatlog;
 use App\Models\Patient;
 use App\Models\Track;
+use App\Models\Nav;
 use DB;
 use Illuminate\Http\Request;
 
 class BookController extends Controller {
 
 	public function index() {
+
 
 		$appointData = Appointment::orderBy('add_time', 'desc')->paginate('20');
 		$count = Appointment::count();

@@ -1,6 +1,6 @@
 <form id="form_sub" name="form_sub" method="post" action="javascript:fastP('{{ route('nav.store') }}');">
     <select class="select" name="parent_id" id="parent_id" style="width:370px;">
-        <option value="0" selected="selected" style="background-color:white;color:blue;">根目录</option>
+        <option value="0" selected="selected" style="background-color:white;color:blue;">顶级菜单</option>
         @foreach($nav_top_arr as $top)
             <option value="{{ $top->id }}">{{ $top->name }}</option>
         @endforeach

@@ -43,57 +43,11 @@
                 <input type="password" name="password" id="password" class="input" value="" style="width:195px;" autocomplete="off" onblur="this.style.backgroundColor='#fff';" onfocus="this.style.backgroundColor='#FFFEF1';">
                 <label class="inline">所属用户组</label>
                 <select class="select" name="role_id" id="role_id" style="width:205px;">
-                    <option value="2">咨询员</option>
-                    <option value="3">竞价员</option>
-                    <option value="4">程序员</option>
-                    <option value="5">导医组</option>
-                    <option value="6">医助</option>
-                    <option value="7">医生</option>
-                    <option value="8">财务</option>
-                    <option value="9">院长</option>
-                    <option value="10">咨询主管</option>
-                    <option value="11">竞价主管</option>
-                    <option value="12">网络主管</option>
-                    <option value="13">经营主管</option>
+                @foreach($role as $roleItem)
+                    <option value="{{ $roleItem->id }}">{{ $roleItem->name }}</option>
+                @endforeach
                 </select>
-<!--                 <label class="inline">用户管理权限</label>
-                <select class="select" name="power" id="power" multiple="multiple" style="width:205px;height:100px;">
-                    <option value="0" selected="selected">不选择</option>
-                    <option value="2">咨询员</option>
-                    <option value="3">竞价员</option>
-                    <option value="4">程序员</option>
-                    <option value="5">导医组</option>
-                    <option value="6">医助</option>
-                    <option value="7">医生</option>
-                    <option value="8">财务</option>
-                    <option value="9">院长</option>
-                    <option value="10">咨询主管</option>
-                    <option value="11">竞价主管</option>
-                    <option value="12">网络主管</option>
-                    <option value="13">经营主管</option>
-                </select>
-                <label class="inline">科室可视权限</label>
-                <select class="select" name="cid" id="cid" multiple="multiple" style="width:205px;height:100px;">
-                    <option value="0" selected="selected">所有科室</option>
-                    <option value="7">肾病</option>
-                    <option value="21">高血压肾病</option>
-                    <option value="39">asa</option>
-                    <option value="40">sadas</option>
-                </select>
-                <label class="inline">医生可视权限<span>医助和医生使用</span></label>
-                <select class="select" name="dep" id="dep" multiple="multiple" style="width:205px;height:100px;">
-                    <option value="0" selected="selected">不选择</option>
-                    <option value="1">刘主任</option>
-                    <option value="2">黄主任</option>
-                    <option value="3">陈主任</option>
-                    <option value="4">林主任</option>
-                    <option value="6">赵中献</option>
-                    <option value="7">黄小松</option>
-                    <option value="8">杨惠标</option>
-                    <option value="9">张家华</option>
-                    <option value="10">王奎</option>
-                    <option value="11">张建儒</option>
-                </select> -->
+
                 <label class="inline"></label>
                 <input type="hidden" name="back_url" id="back_url" value="{{ route('user.index') }}">
                 <label class="inline"></label>

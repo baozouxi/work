@@ -113,6 +113,7 @@
 		Route::Resource('user', 'UserController');
 		Route::Resource('role', 'RoleController');
 		Route::Resource('node', 'NodeController');
+		Route::Resource('node-group', 'NodeGroupController');
 	});
 
 
