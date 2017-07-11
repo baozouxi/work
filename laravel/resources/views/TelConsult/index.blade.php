@@ -15,7 +15,9 @@
             <p class="nlink right"><a href="javascript:void(0);" onclick="fundisp()"><span class="icon">Ş</span>切换</a></p>
         </div>
         <div class="fun">
+        @if(check_node('tel_add'))
             <h3 class="left"><a href="javascript:void(0);" onclick="fastH(this,'main')" url="{{ route('tel-consult.create') }}"><span class="icon">ŷ</span>新增电话</a></h3>
+        @endif
             <div id="fun-s" class="fun-s right block">
                 <form name="form_key" id="form_key" onsubmit="return(fastK(this,'key'));" action="tel.asp?m=">
                     <input class="inp" id="key" name="key">
@@ -88,7 +90,13 @@
                         <td>
                             <center><a href="javascript:void(0);" title="回访内容" onclick="fastC(this,'{{ $key }}');" url="{{ route('tel-consult.show',['id'=>$item['id']]) }}">{{ formatDate($item['add_time']) }}</a></center>
                         </td>
-                        <td><span class="icon">Ĵ</span> <a href="javascript:void(0);" onclick="fastH(this,'main')" url="{{ route('tel-consult.edit',['id'=>$item['id']]) }}"><i>{{ $item['name'] }}</i></a></td>
+                        <td><span class="icon">Ĵ</span> 
+                        @if(check_node('tel_edit'))
+                        <a href="javascript:void(0);" onclick="fastH(this,'main')" url="{{ route('tel-consult.edit',['id'=>$item['id']]) }}"><i>{{ $item['name'] }}</i></a>
+                        @else
+                            <i>{{ $item['name'] }}</i>
+                        @endif
+                        </td>
                         <td>
                             <center><i>{{ formatDate($item['track_time'], 'm-d H:i') }}</i></center>
                         </td>
@@ -132,7 +140,13 @@
                             <center>咨询(<i>医患通</i>)</center>
                         </td>
                         <td>
-                            <center><span>-</span></center>
+                            <center>
+                            @if(check_node('tel_del'))
+                            <a href="javascript:void(0);" id="del4" style="color:red" onclick="if(confirm('确定删除吗？\n\n该操作不可恢复')){fast('track.asp?act=del&amp;id=4','del4');}"><span class="icon"><em>ź</em></span></a>
+                            @else
+                            <span>-</span>
+                            @endif
+                            </center>
                         </td>
                     </tr>
                     <tr id="_info{{$key}}" style="display:none;" class="t1">

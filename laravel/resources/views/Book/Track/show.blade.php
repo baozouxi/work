@@ -15,7 +15,9 @@
                 <p class="nlink right"><a href="javascript:void(0);" onclick="fastH(this,'main')" url="res.asp?s=1&amp;m=res" id="ref_url" title="返回" class="config"><span class="icon">ĭ</span>返回</a></p>
             </div>
             <div class="fun">
+            @if(check_node('book_track_add'))
                 <h3 class="left"><a href="javascript:void(0);" onclick="fastH(this,'main')" url="{{ route('booktrack.create') }}"><span class="icon">ŷ</span>新增回访</a></h3></div>
+            @endif
             <div id="box" class="box">
                 
                 @include('book.track.info')
@@ -53,7 +55,13 @@
                              <tr class="t2">
                             @endif
                                 <td>
-                                    <center><a href="javascript:void(0);" onclick="fastH(this,'main')" url="{{ route('booktrack.edit', ['id'=>$trackItem->id]) }}" title="记录编辑">{{ date('Y-m-d H:i', strtotime($trackItem->add_time))  }}</a></center>
+                                    <center>
+                                    @if(check_node('book_track_edit'))
+                                    <a href="javascript:void(0);" onclick="fastH(this,'main')" url="{{ route('booktrack.edit', ['id'=>$trackItem->id]) }}" title="记录编辑">{{ date('Y-m-d H:i', strtotime($trackItem->add_time))  }}</a>
+                                    @else
+                                        <i>{{ date('Y-m-d H:i', strtotime($trackItem->add_time))  }}</i>
+                                    @endif
+                                    </center>
                                 </td>
                                 <td>{{ $trackItem->content }}&nbsp;</td>
                                 <td>
@@ -63,7 +71,14 @@
                                     <center>咨询</center>
                                 </td>
                                 <td>
-                                    <center><a href="javascript:void(0);" id="del4" style="color:red" onclick="if(confirm('确定删除吗？\n\n该操作不可恢复')){fast('track.asp?act=del&amp;id=4','del4');}"><span class="icon"><em>ź</em></span></a></center>
+                              
+                                    <center>
+                                    @if(check_node('book_track_del'))
+                                    <a href="javascript:void(0);" id="del4" style="color:red" onclick="if(confirm('确定删除吗？\n\n该操作不可恢复')){fast('track.asp?act=del&amp;id=4','del4');}"><span class="icon"><em>ź</em></span></a>
+                                    @else
+                                        <span>-</span>
+                                    @endif
+                                    </center>
                                 </td>
                             </tr>
                         @endforeach

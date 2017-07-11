@@ -21,7 +21,9 @@
                 <p class="nlink right"><a href="javascript:void(0);" title="显示表格" onclick="msgbox(this,600);" url="user.asp?act=res" class="config"><span class="icon">Ƅ</span>设置</a><a href="javascript:void(0);" onclick="fundisp()"><span class="icon">Ş</span>切换</a></p>
             </div>
             <div class="fun">
+            @if(check_node('book_add'))
                 <h3 class="left"><a href="javascript:void(0);" onclick="fastH(this,'main')" url="{{ route('book.create') }}"><span class="icon">ŷ</span>新增预约</a></h3>
+            @endif
                 <div id="fun-s" class="fun-s right block">
                     <form name="form_key" id="form_key" onsubmit="return(fastK(this,'key'));" action="res.asp?m=res">
                         <input class="inp" id="key" name="key">
@@ -118,15 +120,25 @@
                             <td>
                                 <span title="“{{ $item['name']  }}”的详细资料" onclick="msgbox(this,600);" url="{{ route('book.show', ['id'=>$item['id'] ]) }}" style="cursor:pointer;" class="icon">Ĵ
                                 </span> 
-                                <a href="javascript:void(0);" onclick="fastH(this,'main')" url="{{ $item->url }}">
-                                @if($item->status == '1')
-                                    <u>{{ $item['name']  }}</u> 
-                                @elseif($item->status == '2')
-                                    <i>{{ $item['name']  }}</i>
-                                @elseif($item->status == '3') 
-                                    <em>{{ $item['name'] }}</em>
+                                @if(check_node('book_edit'))
+                                    <a href="javascript:void(0);" onclick="fastH(this,'main')" url="{{ $item->url }}">
+                                    @if($item->status == '1')
+                                        <u>{{ $item['name']  }}</u> 
+                                    @elseif($item->status == '2')
+                                        <i>{{ $item['name']  }}</i>
+                                    @elseif($item->status == '3') 
+                                        <em>{{ $item['name'] }}</em>
+                                    @endif
+                                    </a>
+                                @else
+                                    @if($item->status == '1')
+                                        <u>{{ $item['name']  }}</u> 
+                                    @elseif($item->status == '2')
+                                        <i>{{ $item['name']  }}</i>
+                                    @elseif($item->status == '3') 
+                                        <em>{{ $item['name'] }}</em>
+                                    @endif
                                 @endif
-                                </a>
                             </td>
                             
                             <td>   
@@ -180,9 +192,13 @@
                             <td>
                                 <center>
                                     @if($item->is_hospital == '0')
+                                        @if(check_node('book_del'))
                                         <a href="javascript:void(0);" id="del21" onclick="if(confirm('确定删除吗？\n\n该操作不可恢复')){fast('res.asp?act=del&amp;id=21','del21');}">
                                             <span class="icon"><em>ź</em></span>
                                         </a>
+                                        @else
+                                        <span>-</span>
+                                        @endif
                                     @else
                                         <span class="icon"><i>ŝ</i></span>
                                     @endif

@@ -47,15 +47,15 @@
     <!--左边-->
     <div id="sidebar" class="sidebar" style="background-image: url(http://cdn.ehis.cc/2.3/weather/4.png);">
         <ul id="nav_0" class="now">
-        
-<!--         @foreach($nav as $navItem)
+<!--         
+        @foreach($nav as  $navItem)
         @if(isset($navItem['nav_child']))
             <li>
                 <p>
-                    <a id="a_turn" url="{{ $navItem['url'] }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);sidebar(0);">
+                    <a id="a_turn" url="{{ $navItem['url'] }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);sidebar({{ $loop->index() }});">
                         <font id="now_turn" style="display: none;">0</font><span class="icon">{{ $navItem['icon'] }}</span>{{ $navItem['name'] }}</a>
                 </p>
-                <ol id="bar_0">
+                <ol id="bar_{{ $loop->index() }}">
                 @foreach($navItem['nav_child'] as $child)
                     <li>
                         <a url="{{ $child['url'] }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this,1);fastH(this,&#39;main&#39;);">
@@ -74,7 +74,7 @@
         
         @endforeach -->
         
-                <li>
+            <li>
                 <p>
                     <a id="a_turn" url="{{ route('patient.index') }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);sidebar(0);">
                         <font id="now_turn" style="display: none;">0</font><span class="icon">Ķ</span>患者管理</a>

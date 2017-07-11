@@ -33,17 +33,15 @@
                     @foreach($data as $gName => $dItem)
                         <tr class="t1">
                             <td>
-                            <i><b>{{ $gName  }}</b></i>
-                            
-                            <a class="right" href=""><span class="icon"><em>ź</em></span></a>
-                       
+                                <i><b>{{ $gName }}</b></i>
+                                <a class="right" href=""><span class="icon"><em>ź</em></span></a>
                             </td>
                         </tr>
                         <tr class="t2">
                         
                             <td>
                              @foreach($dItem['child'] as $nodeItem)
-                               <a href="" style="margin-left:20px;">{{ $nodeItem['nickname'] }}({{ strtoupper($nodeItem['name']) }})</a> 
+                               <a href="" style="margin-left:20px;">{{ $nodeItem['nickname'] }}</a> 
                                 <a href="javascript:void(0);" title="删除数据" onclick="msgbox(this);" url="dis.asp?act=del&amp;id=7"><span class="icon"><em>ź</em></span></a>
                             @endforeach
                             </td>
@@ -54,8 +52,7 @@
                     </tbody>
                 </table>
 
-
-         
+        <input type="hidden" id="this_url" value="{{ route('node.index') }}">         
             
         </div>
     </div>

@@ -27,13 +27,17 @@ class NodeController extends Controller
                 $data_reduce[$group[$nodeItem['group_id']]]['child'][] = $nodeItem; 
                 continue;
             }
-
             $data_reduce['未分组']['child'][] = $nodeItem; 
+        }
 
+        foreach ($group as $id => $name) {
+            if (!isset($data_reduce[$name])) {
+                $data_reduce[$name]['id'] = $id;
+                $data_reduce[$name]['child'] = [];
+            }
         }
 
         if(isset($data_reduce['未分组']))  $data_reduce['未分组']['id'] = '0';
-      
     	return view('Rbac.Node.index', ['data'=>$data_reduce]);
     }
 

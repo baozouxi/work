@@ -30,7 +30,7 @@
                             <center>排序</center>
                         </th>
                         <th width="60">
-                            <center>合并</center>
+                            <center>操作</center>
                         </th>
                         <th width="40">
                             <center>删</center>
@@ -57,7 +57,7 @@
                             <center><span id="rank7" style="cursor:pointer;" onclick="fastE('dis.asp','rank',7)">0</span></center>
                         </td>
                         <td>
-                            <center><a href="javascript:void(0);" title="合并数据" onclick="msgbox(this);" url="dis.asp?act=move&amp;id=7">合并</a></center>
+                            <center><a href="javascript:void(0);" title="合并数据" onclick="msgbox(this);" url="dis.asp?act=move&amp;id=7">移动</a></center>
                         </td>
                         <td>
                             <center><a href="javascript:void(0);" title="删除数据" onclick="msgbox(this);" url="dis.asp?act=del&amp;id=7"><span class="icon"><em>ź</em></span></a></center>
@@ -79,7 +79,7 @@
                             <center><span id="rank8" style="cursor:pointer;" onclick="fastE('dis.asp','rank',8)">0</span></center>
                         </td>
                         <td>
-                            <center><a href="javascript:void(0);" title="合并数据" onclick="msgbox(this);" url="dis.asp?act=move&amp;id=8">合并</a></center>
+                            <center><a href="javascript:void(0);" title="合并数据" onclick="msgbox(this);" url="dis.asp?act=move&amp;id=8">移动</a></center>
                         </td>
                         <td>
                             <center><a href="javascript:void(0);" title="删除数据" onclick="msgbox(this);" url="dis.asp?act=del&amp;id=8"><span class="icon"><em>ź</em></span></a></center>

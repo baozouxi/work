@@ -17,10 +17,16 @@
         <div id="container" class="container">
             <div class="top">
                 <h3 class="left"><span class="icon">Ķ</span>患者列表</h3>
-                <p class="nlink right"><a href="javascript:void(0);" onclick="fundisp()"><span class="icon">Ş</span>切换</a><a href="javascript:void(0);" title="显示表格" onclick="msgbox(this,600);" url="user.asp?act=turn" class="config"><span class="icon">Ƅ</span>设置</a></p>
+                <p class="nlink right"><a href="javascript:void(0);" onclick="fundisp()"><span class="icon">Ş</span>切换</a><a href="javascript:void(0);" title="显示表格" onclick="msgbox(this,600);" url="user.asp?act=turn" class="config"><span class="icon">Ƅ</span>设置</a>
+                @if(check_node('patient_export'))
+                <a href="javascript:void(0);" title="导出电子表格" onclick="msgbox(this);" url="turn.asp?act=excel" class="excel"><span class="icon">Ľ</span>导出</a>
+                @endif
+                </p>
             </div>
             <div class="fun">
+            @if(check_node('patient_add'))
                 <h3 class="left"><a href="javascript:void(0);" onclick="fastH(this,'main')" url="{{ route('patient.create') }}"><span class="icon">ŷ</span>新增患者</a></h3>
+            @endif
                 <div id="fun-s" class="fun-s right block">
                     <form name="form_key" id="form_key" onsubmit="return(fastK(this,'key'));" action="turn.asp?m=turn">
                         <input class="inp" id="key" name="key">
@@ -96,8 +102,9 @@
                                 <center>{{ formatDate($item->add_time) }}</center>
                             </td>
                            <td>
-                                <span title="“{{ $item->name }}”的详细资料" onclick="msgbox(this,600);" url="{{ route('patient.show', ['id'=>$item->id]) }}" style="cursor:pointer;" class="icon">Ĵ
+                            <span title="“{{ $item->name }}”的详细资料" onclick="msgbox(this,600);" url="{{ route('patient.show', ['id'=>$item->id]) }}" style="cursor:pointer;" class="icon">Ĵ
                             </span>
+                            @if(check_node('patient_edit'))
                                 <a href="javascript:void(0);" onclick="fastH(this,'main')" url="{{ route('patient.edit', ['id'=>$item->id]) }}">
                                 @if($item->book_id == '0')
                                     <u>{{ $item->name }}</u>
@@ -105,6 +112,14 @@
                                     <i>{{ $item->name }}</i>
                                 @endif
                                 </a>
+                            @else
+                                @if($item->book_id == '0')
+                                    <u>{{ $item->name }}</u>
+                                @else
+                                    <i>{{ $item->name }}</i>
+                                @endif
+
+                            @endif
                             </td>
 
 
@@ -115,7 +130,21 @@
                                 <center>{{ $item->age }}</center>
                             </td>
                             <td>
-                                <center><a href="javascript:void(0);" onclick="fastH(this,'main')" url="{{ route('takeWithInfo',['patientId'=>$item->id]) }}">{{ $item->sum or '0' }}</a></center>
+                                <center>
+                                @if(check_node('take_show'))
+                                    @if(check_node('take_edit'))
+                                        <a href="javascript:void(0);" onclick="fastH(this,'main')" url="{{ route('takeWithInfo',['patientId'=>$item->id]) }}">{{ $item->sum or '0' }}</a>
+                                    @else
+                                        <a>{{ $item->sum or '0' }}</a>
+                                    @endif
+                                @else
+                                    @if(check_node('take_edit'))
+                                        <a href="javascript:void(0);" onclick="fastH(this,'main')" url="{{ route('takeWithInfo',['patientId'=>$item->id]) }}">0</a>
+                                    @else
+                                        <i>0</i>
+                                    @endif
+                                @endif
+                                </center>
                             </td>
                             <td>
                                 <center>{{ $item->city }} {{ $item->town }}</center>
@@ -145,7 +174,12 @@
                             <td>
                                 <center>
                                 @if($item->book_id == '0')
-                                <a href="javascript:void(0);" id="del21" onclick="if(confirm('确定删除吗？\n\n该操作不可恢复')){fast('res.asp?act=del&amp;id=21','del21');}"><span class="icon"><em>ź</em></span></a>
+                                    @if(check_node('patient_del'))
+                                    <a href="javascript:void(0);" id="del21" onclick="if(confirm('确定删除吗？\n\n该操作不可恢复')){fast('res.asp?act=del&amp;id=21','del21');}"><span class="icon"><em>ź</em></span>
+                                    </a>
+                                    @else
+                                         <span>-</span>      
+                                    @endif
                                 @else
                                     <span>-</span>
                                 @endif

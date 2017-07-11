@@ -15,7 +15,10 @@
                 <p class="nlink right"><a href="javascript:void(0);" onclick="fastH(this,'main')" url="turn.asp?s=1&amp;m=turn" id="ref_url" title="返回" class="config"><span class="icon">ĭ</span>返回</a></p>
             </div>
             <div class="fun">
-                <h3 class="left"><a href="javascript:void(0);" onclick="fastH(this,'main')" url="{{ route('patienttrack.create', ['id'=>$data->id]) }}"><span class="icon">ŷ</span>新增回访</a></h3></div>
+            @if(check_node('patient_track_add'))
+                <h3 class="left"><a href="javascript:void(0);" onclick="fastH(this,'main')" url="{{ route('patienttrack.create', ['id'=>$data->id]) }}"><span class="icon">ŷ</span>新增回访</a></h3>
+            @endif
+            </div>
             <div id="box" class="box">
                 <table cellspacing="1" cellpadding="0">
                     <thead>
@@ -118,7 +121,14 @@
                             @endif
 
                                 <td>
-                                    <center><a href="javascript:void(0);" onclick="fastH(this,'main')" url="{{ route('patienttrack.edit', ['id'=>$trackItem->id,'pId'=>$data->id]) }}" title="记录编辑">{{ date('Y-m-d H:i', strtotime($trackItem->add_time))  }}</a></center>
+                                    <center>
+                                    @if(check_node('patient_track_edit'))
+                                    <a href="javascript:void(0);" onclick="fastH(this,'main')" url="{{ route('patienttrack.edit', ['id'=>$trackItem->id,'pId'=>$data->id]) }}" title="记录编辑">{{ date('Y-m-d H:i', strtotime($trackItem->add_time))  }}</a>
+                                    @else
+                                    <i>{{ date('Y-m-d H:i', strtotime($trackItem->add_time))  }}</i>
+                                    @endif
+
+                                    </center>
                                 </td>
                                 <td>{{ $trackItem->content }}&nbsp;</td>
                                 <td>
@@ -128,7 +138,13 @@
                                     <center>咨询</center>
                                 </td>
                                 <td>
-                                    <center><a href="javascript:void(0);" id="del4" style="color:red" onclick="if(confirm('确定删除吗？\n\n该操作不可恢复')){fast('track.asp?act=del&amp;id=4','del4');}"><span class="icon"><em>ź</em></span></a></center>
+                                    <center>
+                                    @if(check_node('patient_track_del'))
+                                        <a href="javascript:void(0);" id="del4" style="color:red" onclick="if(confirm('确定删除吗？\n\n该操作不可恢复')){fast('track.asp?act=del&amp;id=4','del4');}"><span class="icon"><em>ź</em></span></a>
+                                    @else
+                                        <span>-</span>
+                                    @endif
+                                    </center>
                                 </td>
                             </tr>
 

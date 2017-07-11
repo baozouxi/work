@@ -35,10 +35,6 @@ class LoginController extends Controller
 
     	$req->session()->put('access_nodes', $acc_nodes);
 
-
-
-
-
     	return ['code'=>'0', 'msg'=>route('index'), 'time'=>getNow()];
     }	
 

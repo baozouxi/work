@@ -15,7 +15,9 @@
             <p class="nlink right"><a href="javascript:void(0);" onclick="fundisp()"><span class="icon">Ş</span>切换</a></p>
         </div>
         <div class="fun">
+        @if(check_node('dialog_add'))
             <h3 class="left"><a href="javascript:void(0);" onclick="fastH(this,'main')" url="{{ route('dialog.create') }}"><span class="icon">ŷ</span>新增对话</a></h3>
+        @endif
             <div id="fun-n" class="right none">
                 <form name="form_date" id="form_date" onsubmit="return(fastK(this,'ds'));" action="dia.asp?m=">
                     <input name="ds" id="ds" class="inp" type="text" value="" onfocus="WdatePicker({onpicked:function(){de.focus();},maxDate:'#F{$dp.$D(\'de\')||\'%y-%M-%d\'}'})"><i class="calendar icon">ğ</i>
@@ -76,7 +78,13 @@
                         <td>
                             <center><a href="javascript:void(0);" title="回访内容" onclick="fastC(this,'11');" url="dia.asp?act=show&amp;id=11">{{formatDate($item['date'], 'Y-m-d')}}</a></center>
                         </td>
-                        <td><span class="icon">Ĵ</span> <a href="javascript:void(0);" onclick="fastH(this,'main')" url="dia.asp?act=add&amp;s=1&amp;id=11&amp;t=dateline&amp;go=desc">{{ $item['admin_id'] }}</a></td>
+                        <td><span class="icon">Ĵ</span> 
+                        @if(check_node('dialog_edit'))
+                        <a href="javascript:void(0);" onclick="fastH(this,'main')" url="{{ route('dialog.edit',['id'=>$item['id']]) }}">{{ $item['admin_id'] }}</a>
+                        @else
+                            <i>{{ $item['admin_id'] }}</i>
+                        @endif
+                        </td>
                         <td>
                             <center>{{ $item['pcswt'] + $item['zhuaqu'] }}</center>
                         </td>
@@ -108,7 +116,13 @@
                             <center>06-23 17:48</center>
                         </td>
                         <td>
-                            <center><a href="javascript:void(0);" id="del11" style="color:red" onclick="if(confirm('确定删除吗？\n\n该操作不可恢复')){fast('dia.asp?act=del&amp;id=11','del11');}"><span class="icon"><em>ź</em></span></a></center>
+                            <center>
+                            @if(check_node('dialog_edit'))
+                            <a href="javascript:void(0);" id="del11" style="color:red" onclick="if(confirm('确定删除吗？\n\n该操作不可恢复')){fast('dia.asp?act=del&amp;id=11','del11');}"><span class="icon"><em>ź</em></span></a>
+                            @else
+                                <span>-</span>
+                            @endif
+                            </center>
                         </td>
                     </tr>
                     <tr id="_info11" style="display:none;" class="t1">

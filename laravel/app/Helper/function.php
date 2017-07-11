@@ -53,3 +53,13 @@ function code($msg, $code='0')
 {
 	return ['code'=>$code, 'msg'=>$msg, 'time'=>getNow()];
 }
+
+/**
+ * 检查节点权限
+ * @return [boolen] [description]
+ */
+function check_node($node)
+{
+	if(\App\Http\Controllers\RBAC\RbacController::check_node($node)) return true;
+	return false;
+}

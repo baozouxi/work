@@ -5,7 +5,7 @@
         <option value="{{ $gItem->id }}">{{ $gItem->name }}</option>
     @endforeach
     </select>
-    <label class="inline">节点名称</label>
+    <label class="inline">节点名称（模块_节点）</label>
     <input type="text" name="name" id="name" class="input" value="" style="width:360px;" autocomplete="off" disableautocomplete onblur="this.style.backgroundColor='#fff';" onfocus="this.style.backgroundColor='#FFFEF1';this.style.backgroundImage='none';" />
     
 
