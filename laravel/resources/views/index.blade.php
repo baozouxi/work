@@ -30,32 +30,33 @@
                         <p>功能</p>
                     </a>
                 </li>
+                @if(check_node('setting'))
                 <li>
                     <a href="javascript:void(0);" hidefocus="" onclick="nav(1)">
                         <p><span class="icon">ņ</span></p>
                         <p>设置</p>
                     </a>
                 </li>
+                @endif
             </ul>
         </div>
         <div class="user right">
             <div class="face"><img src="{{ asset('img') }}/qq1102885555.jpg" title="超级管理员"></div>
             <p class="name">医患通,欢迎你！</p>
-            <p class="info"><a class="edit" href="javascript:void(0);" hidefocus="" url="user.asp?act=pass&amp;s=1" onclick="getChange(0);fastH(this,&#39;main&#39;);"><span class="icon">Ń</span></a><a class="power" href="javascript:void(0);" hidefocus="" url="user.asp?act=power&amp;s=1" onclick="getChange(0);fastH(this,&#39;main&#39;);"><span class="icon">Ķ</span></a><a class="site" href="javascript:void(0);" hidefocus="" url="bind.asp?s=1" onclick="getChange(0);fastH(this,&#39;main&#39;);"><span class="icon">ŧ</span></a><a class="exit" href="javascript:void(0);" hidefocus="" url="index.asp?act=exit" onclick="getChange(0);fastH(this,&#39;main&#39;);"><span class="icon">ş</span></a></p>
+            <p class="info"><a class="edit" href="javascript:void(0);" hidefocus="" url="user.asp?act=pass&amp;s=1" onclick="getChange(0);fastH(this,&#39;main&#39;);"><span class="icon">Ń</span></a><a class="power" href="javascript:void(0);" hidefocus="" url="user.asp?act=power&amp;s=1" onclick="getChange(0);fastH(this,&#39;main&#39;);"><span class="icon">Ķ</span></a><a class="site" href="javascript:void(0);" hidefocus="" url="bind.asp?s=1" onclick="getChange(0);fastH(this,&#39;main&#39;);"><span class="icon">ŧ</span></a><a class="exit" href="{{ route('exit') }}"><span class="icon">ş</span></a></p>
         </div>
     </div>
     <!--左边-->
     <div id="sidebar" class="sidebar" style="background-image: url(http://cdn.ehis.cc/2.3/weather/4.png);">
         <ul id="nav_0" class="now">
-<!--         
-        @foreach($nav as  $navItem)
+        @foreach($nav as $navItem)
         @if(isset($navItem['nav_child']))
             <li>
                 <p>
-                    <a id="a_turn" url="{{ $navItem['url'] }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);sidebar({{ $loop->index() }});">
+                    <a id="a_turn" url="{{ $navItem['url'] }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);sidebar({{ $navItem['id'] }});">
                         <font id="now_turn" style="display: none;">0</font><span class="icon">{{ $navItem['icon'] }}</span>{{ $navItem['name'] }}</a>
                 </p>
-                <ol id="bar_{{ $loop->index() }}">
+                <ol id="bar_{{ $navItem['id'] }}">
                 @foreach($navItem['nav_child'] as $child)
                     <li>
                         <a url="{{ $child['url'] }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this,1);fastH(this,&#39;main&#39;);">
@@ -72,8 +73,41 @@
             </li>
         @endif
         
-        @endforeach -->
-        
+        @endforeach
+          </ul>
+
+        @if(check_node('setting'))
+        <ul id="nav_1">
+            @foreach($setting_nav as $navItem)
+            @if(isset($navItem['nav_child']))
+                <li>
+                    <p>
+                        <a id="a_turn" url="{{ $navItem['url'] }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);sidebar({{ $navItem['id'] }});">
+                            <font id="now_turn" style="display: none;">0</font><span class="icon">{{ $navItem['icon'] }}</span>{{ $navItem['name'] }}</a>
+                    </p>
+                    <ol id="bar_{{ $navItem['id'] }}">
+                    @foreach($navItem['nav_child'] as $child)
+                        <li>
+                            <a url="{{ $child['url'] }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this,1);fastH(this,&#39;main&#39;);">
+                                <font id="now_reply" style="display: none;">0</font><span class="icon">{{ $child['icon'] }}</span>{{ $child['name'] }}</a>
+                        </li>
+                    @endforeach
+
+                    </ol>
+                </li>
+            @else
+                <li>
+                    <a id="a_cons" url="{{ $navItem['url'] }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);">
+                        <font id="now_cons" style="display: none;">0</font><span class="icon">{{ $navItem['icon'] }}</span>{{ $navItem['name'] }}</a>
+                </li>
+            @endif
+            
+            @endforeach
+
+
+        </ul> 
+        @endif
+<!-- 
             <li>
                 <p>
                     <a id="a_turn" url="{{ route('patient.index') }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);sidebar(0);">
@@ -154,7 +188,7 @@
             </li>
             <li><a url="code.asp?s=1" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);"><span class="icon">Ɔ</span>网站调用</a></li>
             <li><a url="setting.asp?s=1" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);"><span class="icon">ņ</span>系统设置</a></li>
-        </ul>
+        </ul> -->
     </div>
     <!--右边-->
     <div id="main" class="main">

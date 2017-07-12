@@ -15,7 +15,7 @@ class CheckLoginMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (!$request->session()->has('is_login') || !$request->session()->has('name')) {
+        if (!$request->session()->has('role_id') || !$request->session()->has('access_nodes')) {
             $request->session()->flush();
             return redirect(route('login')); 
         }

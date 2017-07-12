@@ -5,16 +5,21 @@
             <option value="{{ $top->id }}">{{ $top->name }}</option>
         @endforeach
     </select>
+
+
+
     <label class="inline">导航名称</label>
     <input type="text" name="name" id="name" class="input" value="" style="width:360px;" autocomplete="off" disableautocomplete onblur="this.style.backgroundColor='#fff';" onfocus="this.style.backgroundColor='#FFFEF1';this.style.backgroundImage='none';" />
-    
 
     <label class="inline">导航地址（如：/book/add）</label>
     <input type="text" name="url" id="url" class="input" value="" style="width:360px;" autocomplete="off" disableautocomplete onblur="this.style.backgroundColor='#fff';" onfocus="this.style.backgroundColor='#FFFEF1';this.style.backgroundImage='none';" />
 
     <label class="inline">导航图标</label>
     <input type="text" name="icon" id="icon" class="input" value="" style="width:360px;" autocomplete="off" disableautocomplete onblur="this.style.backgroundColor='#fff';" onfocus="this.style.backgroundColor='#FFFEF1';this.style.backgroundImage='none';" />
-
+    <select class="select" name="setting" id="setting" style="width:370px; margin-top:10px;">
+        <option value="0" selected="selected" style="background-color:white;color:blue;">普通导航</option>
+        <option value="1">高级设置</option>
+    </select>
     {{ csrf_field() }}
     <label class="inline"></label>
     <button type="submit" id="submit" class="submit"><span class="icon">&#379;</span>提交</button>

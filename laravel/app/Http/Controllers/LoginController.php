@@ -39,4 +39,9 @@ class LoginController extends Controller
     }	
 
 
+    public function logout(Request $req)
+    {
+        $req->session()->flush();
+        return redirect('/login');
+    }
 }

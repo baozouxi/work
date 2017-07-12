@@ -13,12 +13,14 @@
 
 // 完成后记得对每个路由进行注释
 
-// Route::group(['middleware' => 'checkLogin'], function(){
-// 
+ Route::group(['middleware' => 'checkLogin'], function(){
+ 
 	// Route::controller('request','BookController');
 
 	Route::get('/', 'IndexController@index')->name('index');
 
+
+	Route::get('/nav/id/{id}/sort/{sort?}', 'NavController@sort')->name('navSort');
 	Route::Resource('nav', 'NavController');
 
 	//预约模块
@@ -114,6 +116,7 @@
 		Route::Resource('role', 'RoleController');
 		Route::Resource('node', 'NodeController');
 		Route::Resource('node-group', 'NodeGroupController');
+		Route::get('/node/move/{id}', 'NodeController@move');
 	});
 
 
@@ -128,11 +131,14 @@
 
 
 
-// });
+ });
 
 
 
 //登陆
+
+Route::get('/login/exit', 'LoginController@logout')->name('exit');
+
 Route::get('/login', function(){
 	return view('login');
 })->name('login');

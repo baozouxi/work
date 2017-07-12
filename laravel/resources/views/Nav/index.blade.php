@@ -46,7 +46,7 @@
                         <td>
                             <center>{{ $navItem['id'] }}</center>
                         </td>
-                        <td><a href="javascript:void(0);" title="编辑大类" onclick="msgbox(this);" url="http://c.com/disease/1/edit">{{ $navItem['name'] }}</a></td>
+                        <td><i>{{ $navItem['name'] }}</i></td>
                         <td>
                             <center><span id="state1" style="cursor:pointer;" onclick="fast('','state1');">正常</span></center>
                         </td>
@@ -54,10 +54,10 @@
                             <center><a href="javascript:void(0);" title="模版设置" onclick="msgbox(this,550);" url="dis.asp?act=tpl&amp;id=7"><span>全局</span></a></center>
                         </td>
                         <td>
-                            <center><span id="rank7" style="cursor:pointer;" onclick="fastE('dis.asp','rank',7)">0</span></center>
+                            <center><span id="rank{{ $navItem['id'] }}" style="cursor:pointer;" onclick="fastE('{{route('navSort', ['id'=>$navItem['id']]) }}','rank',{{ $navItem['id'] }})">{{ $navItem['sort'] }}</span></center>
                         </td>
                         <td>
-                            <center><a href="javascript:void(0);" title="合并数据" onclick="msgbox(this);" url="dis.asp?act=move&amp;id=7">移动</a></center>
+                            <center><a href="javascript:void(0);" title="合并数据" onclick="msgbox(this);" url="{{ route('nav.edit', ['id'=>$navItem['id']]) }}">修改</a></center>
                         </td>
                         <td>
                             <center><a href="javascript:void(0);" title="删除数据" onclick="msgbox(this);" url="dis.asp?act=del&amp;id=7"><span class="icon"><em>ź</em></span></a></center>
@@ -68,7 +68,7 @@
                         <td>
                             <center>{{ $nav_child['id'] }}</center>
                         </td>
-                        <td> ├ <a href="javascript:void(0);" title="编辑小类" onclick="msgbox(this);" url="http://c.com/disease/2/edit">{{ $nav_child['name'] }}</a></td>
+                        <td> ├ <span>{{ $nav_child['name'] }}</span></td>
                         <td>
                             <center><span id="state2" style="cursor:pointer;" onclick="fast('dis.asp?act=state&amp;id=8','state2');">正常</span></center>
                         </td>
@@ -76,13 +76,13 @@
                             <center><a href="javascript:void(0);" title="模版设置" onclick="msgbox(this,550);" url="dis.asp?act=tpl&amp;id=8"><span>全局</span></a></center>
                         </td>
                         <td>
-                            <center><span id="rank8" style="cursor:pointer;" onclick="fastE('dis.asp','rank',8)">0</span></center>
+                            <center><span id="rank{{ $nav_child['id'] }}" style="cursor:pointer;" onclick="fastE('{{route('navSort', ['id'=>$nav_child['id']]) }}','rank',{{ $nav_child['id'] }})">{{ $nav_child['sort'] }}</span></center>
                         </td>
                         <td>
-                            <center><a href="javascript:void(0);" title="合并数据" onclick="msgbox(this);" url="dis.asp?act=move&amp;id=8">移动</a></center>
+                            <center><a href="javascript:void(0);" title="合并数据" onclick="msgbox(this);" url="{{ route('nav.edit', ['id'=>$nav_child['id']]) }}">修改</a></center>
                         </td>
                         <td>
-                            <center><a href="javascript:void(0);" title="删除数据" onclick="msgbox(this);" url="dis.asp?act=del&amp;id=8"><span class="icon"><em>ź</em></span></a></center>
+                            <center><a href="javascript:void(0);" title="删除数据" onclick="msgbox(this);" url=""><span class="icon"><em>ź</em></span></a></center>
                         </td>
                     </tr>
                     @endforeach

@@ -268,8 +268,9 @@ function fastE(url, obj, id) {
 }
 function fastblur(url, obj, id, thisText) {
 	$(obj+ id).innerHTML = loadimg;
+	url = url + '/' +thisText.value;
 	Ajax.json(url,{
-			data:'act=' + obj + '&' + obj + '=' + thisText.value + '&id=' + id + "&req="+ Math.random(),
+			//data:'act=' + obj + '&' + obj + '=' + thisText.value + '&id=' + id + "&req="+ Math.random(),
 			success	:function(result){$(obj + id).innerHTML = result.msg;},
 			failure:function(xhr,msg){alert(msg)}
 		});
@@ -752,8 +753,12 @@ function nav(n){
 //导航菜单左侧
 function sidebar(n){
 	var menu=$("sidebar").getElementsByTagName("ol");
-	for(i=0;i<menu.length;i++)
-	{$('bar_'+i+'').style.display=i==n?"block":"none";}
+	for(i=0;i<100;i++)
+	{
+		if(!$('bar_'+i+'')) continue;
+		$('bar_'+i+'').style.display = (i==n)?"block":"none";
+	}
+
 }
 
 //点中效果
@@ -763,7 +768,12 @@ function getChange(o,m) {
 	var menu=$("sidebar").getElementsByTagName("ol");
 	for(i=0;i<Par.length;i++){Par[i].className="";}
 	o.className="now";
-	if(!m){for(j=0;j<menu.length;j++){$('bar_'+j+'').style.display="none";}}
+	if (!m) { 
+		for(j=0;j<100;j++){
+			if(!$('bar_'+j+'')) continue;
+			$('bar_'+j+'').style.display="none";
+		}
+	}
 }
 
  //搜索切换
