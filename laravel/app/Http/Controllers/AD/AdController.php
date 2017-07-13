@@ -18,7 +18,7 @@ class AdController extends Controller
     	return view('Ad.create');
     }
 
-    public function store()
+    public function store(Request $req)
     {
         
     }

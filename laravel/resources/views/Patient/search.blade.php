@@ -1,28 +1,7 @@
 
-
-    <!--导航-->
-    <div class="guide">
-    <script type="text/javascript">
-        var box = 'main';
-    </script>
-        <ul class="left">
-            <li><span class="icon">Ă</span><a href="javascript:void(0);" onclick="getChange(0);fastH(this,'main')" url="main.asp?s=1">首页</a><span class="ider">&gt;</span></li>
-            <li><a href="javascript:void(0);" onclick="fastH(this);set_title('列表');" url="turn.asp?m=turn">患者列表</a><span class="ider">&gt;</span></li>
-            <li><span id="guide">列表</span></li>
-        </ul>
-        <p class="nlink right"><a href="javascript:void(0);" onclick="fastH(this);set_title('需要跟踪');" url="turn.asp?n=2&amp;m=turn" class="call"><span class="icon">Ę</span>需要跟踪</a><a href="javascript:void(0);" onclick="fastH(this, 'main');set_title('到期回访');" url="{{ route('patientNeedTrack') }}" class="sms"><span class="icon">ĝ</span>到期回访</a><a href="javascript:void(0);" onclick="fastH(this,'main');set_title('今日到诊');" url="/patient/come/today" class="sms"><span class="icon">Ğ</span>今日到诊</a></p>
-    </div>
     <div id="wrap" class="wrap">
         <!--整体内容-->
         <div id="container" class="container">
-            <div class="top">
-                <h3 class="left"><span class="icon">Ķ</span>患者列表</h3>
-                <p class="nlink right"><a href="javascript:void(0);" onclick="fundisp()"><span class="icon">Ş</span>切换</a><a href="javascript:void(0);" title="显示表格" onclick="msgbox(this,600);" url="user.asp?act=turn" class="config"><span class="icon">Ƅ</span>设置</a>
-                @if(check_node('patient_export'))
-                <a href="javascript:void(0);" title="导出电子表格" onclick="msgbox(this);" url="turn.asp?act=excel" class="excel"><span class="icon">Ľ</span>导出</a>
-                @endif
-                </p>
-            </div>
             <div class="fun">
             @if(check_node('patient_add'))
                 <h3 class="left"><a href="javascript:void(0);" onclick="fastH(this,'main')" url="{{ route('patient.create') }}"><span class="icon">ŷ</span>新增患者</a></h3>
@@ -34,15 +13,15 @@
                     </form>
                 </div>
                 <div id="fun-n" class="right none">
-                    <form name="form_date" id="form_date" onsubmit="return(fastK(this,'ds'));" action="/patient/month/">
+                    <form name="form_date" id="form_date" onsubmit="return(fastK(this,'ds'));" action="turn.asp?m=turn">
                         <input name="ds" id="ds" class="inp" type="text" value="" onfocus="WdatePicker({onpicked:function(){de.focus();},maxDate:'#F{$dp.$D(\'de\')||\'%y-%M-%d\'}'})"><i class="calendar icon">ğ</i>
                         <input name="de" id="de" class="inp" value="" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'ds\')}',maxDate:'%y-%M-%d'})">
                         <button type="submit" class="search"><span class="icon">ĺ</span></button>
                     </form>
-                 <!--    <select class="select" onchange="To('turn.asp?s=1&amp;to='+this.options[this.selectedIndex].value+'&amp;m=turn','main');">
+                    <select class="select" onchange="To('turn.asp?s=1&amp;to='+this.options[this.selectedIndex].value+'&amp;m=turn','main');">
                         <option value="0">按月查询</option>
                         <option value="2017-5">2017年5月</option>
-                    </select> -->
+                    </select>
                 </div>
             </div>
             <div id="box" class="box">
@@ -59,15 +38,14 @@
                                 <center><a href="javascript:void(0);" url="turn.asp?t=dateline&amp;go=desc&amp;m=turn" title="按时间排序" onclick="fastH(this)">病历号</a></center>
                             </th>
                             <th width="*"><a href="javascript:void(0);" url="turn.asp?t=name&amp;go=desc&amp;m=turn" title="按姓名排序" onclick="fastH(this)">姓名</a></th>
-
                             <th width="50">
                                 <center><a href="javascript:void(0);" url="turn.asp?t=gender&amp;go=desc&amp;m=turn" title="按性别排序" onclick="fastH(this)">性别</a></center>
                             </th>
-                            <th width="120">
-                                <center><a href="javascript:void(0);" url="turn.asp?t=dateline&amp;go=desc&amp;m=turn" title="按时间排序" onclick="fastH(this)">电话</a></center>
-                            </th>
                             <th width="50">
                                 <center><a href="javascript:void(0);" url="turn.asp?t=age&amp;go=desc&amp;m=turn" title="按年龄排序" onclick="fastH(this)">年龄</a></center>
+                            </th>
+                            <th width="100">
+                                <center><a href="javascript:void(0);" url="turn.asp?t=age&amp;go=desc&amp;m=turn" title="按年龄排序" onclick="fastH(this)">电话</a></center>
                             </th>
                             <th width="80">
                                 <center><a href="javascript:void(0);" url="turn.asp?t=money&amp;go=desc&amp;m=turn" title="按消费排序" onclick="fastH(this)">消费</a></center>
@@ -96,7 +74,7 @@
                         </tr>
                     </thead>
                     <tbody id="tablebg">
-                    @foreach($data as $key => $item)
+                    @foreach($patients as $key => $item)
                     @if(is_int($key/2))
                         <tr class="t1">
                     @else
@@ -117,7 +95,7 @@
                             @if(check_node('patient_edit'))
                                 <a href="javascript:void(0);" onclick="fastH(this,'main')" url="{{ route('patient.edit', ['id'=>$item->id]) }}">
                                 @if($item->book_id == '0')
-                                    <u>{!!$item->name !!}</u>
+                                    <u>{!! $item->name !!}</u>
                                 @else
                                     <i>{!! $item->name !!}</i>
                                 @endif
@@ -137,10 +115,10 @@
                                 <center><u>{{ $item->gender == '1' ? '男' : '女' }}</u></center>
                             </td>
                             <td>
-                                <center>{!! $item->phone !!}</center>
+                                <center>{{ $item->age }}</center>
                             </td>
                             <td>
-                                <center>{{ $item->age }}</center>
+                                <center>{!! $item->phone !!}</center>
                             </td>
                             <td>
                                 <center>

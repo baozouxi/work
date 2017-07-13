@@ -49,7 +49,7 @@
     <!--左边-->
     <div id="sidebar" class="sidebar" style="background-image: url(http://cdn.ehis.cc/2.3/weather/4.png);">
         <ul id="nav_0" class="now">
-        @foreach($nav as $navItem)
+<!--         @foreach($nav as $navItem)
         @if(isset($navItem['nav_child']))
             <li>
                 <p>
@@ -106,8 +106,8 @@
 
 
         </ul> 
-        @endif
-<!-- 
+        @endif -->
+
             <li>
                 <p>
                     <a id="a_turn" url="{{ route('patient.index') }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);sidebar(0);">
@@ -188,7 +188,7 @@
             </li>
             <li><a url="code.asp?s=1" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);"><span class="icon">Ɔ</span>网站调用</a></li>
             <li><a url="setting.asp?s=1" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);"><span class="icon">ņ</span>系统设置</a></li>
-        </ul> -->
+        </ul> 
     </div>
     <!--右边-->
     <div id="main" class="main">

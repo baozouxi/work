@@ -23,7 +23,7 @@ class DoctorController extends Controller
                 }
             }
         }
-
+        
     	return view('Doctor.index',['dis' => $dis]);
     }
 
@@ -44,7 +44,7 @@ class DoctorController extends Controller
         if (Doctor::create($data)) {
             return ['code'=>'-4', 'msg'=>'添加成功', 'time'=>getNow()];
         }
-        return ['code'=>'1' , '添加失败，请重试', 'time'=>getNow()];
+       return ['code'=>'1' , '添加失败，请重试', 'time'=>getNow()];
     }
 
     public function edit()

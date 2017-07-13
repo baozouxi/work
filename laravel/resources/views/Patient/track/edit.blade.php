@@ -108,6 +108,8 @@
                     <button type="button" onclick="msgbox(this);" title="上传资料" url="upload.asp?act=main&amp;to=filepath" class="button"><i class="icon">Ī</i>上传</button>
                     <label class="inline">回访信息：</label>
                     <textarea name="content" id="content" class="textarea" style="width:500px;height:100px;" onblur="this.style.backgroundColor='#fff';" onfocus="this.style.backgroundColor='#FFFEF1';">{{ $trackData->content }}</textarea>
+                    <input type="hidden" name="_method" value="PUT">
+                    {{ csrf_field() }}
                     <input type="hidden" name="id" id="id" value="1">
                     <input type="hidden" name="aid" id="aid" value="8">
                     <input type="hidden" name="up" id="up" value="data">

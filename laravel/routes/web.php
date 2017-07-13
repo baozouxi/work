@@ -36,6 +36,10 @@
 
 	//患者模块
 	Route::group(['namespace'=>'Patient'], function(){
+		Route::get('/patient/come/track', 'PatientController@timeToTrack')->name('patientNeedTrack'); //到期回访
+		Route::get('/patient/come/today', 'PatientController@today')->name('patientToday'); //患者今日到诊
+		Route::get('/patient/month/{start}/{end?}', 'PatientController@searchByMonth')->name('patientSearchByMonth');
+		Route::get('/patient/search/{key}', 'PatientController@search')->name('patientSearch');
 		Route::get('/patient/book/{id}', 'PatientController@patientBookUpdate');
 		Route::get('/patient/track/withinfo/{patientId}', 'TrackController@indexWithInfo')->name('trackWithInfo');
 		Route::get('/patient/track/statistics/{way?}/{date?}', 'TrackController@statistics')->name('trackStatistics');

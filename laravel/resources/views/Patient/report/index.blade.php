@@ -68,7 +68,11 @@
                         </td>
                         <td>
                             <div class="perws">
+                            @if($sum != '0' && ($web/$sum) != '0' )
                                 <div class="perw" style="width:{{ ceil($web/$sum*100) }}%" title="{{ ceil($web/$sum*100) }}%">{{ ceil($web/$sum*100) }}%</div>
+                            @else
+                                 <div class="perw" style="width:10%" title="0%">0%</div>
+                            @endif 
                             </div>
                         </td>
                     </tr>

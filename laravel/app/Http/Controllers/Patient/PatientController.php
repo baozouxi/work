@@ -20,6 +20,16 @@ class PatientController extends Controller
     {
         $data = Patient::orderBy('add_time','desc')->paginate('20');
         $count = Patient::count();
+ 
+        $data = $this->reduceArr($data);
+
+    	return view('Patient.index', ['data'=>$data, 'count'=>$count]);
+    }
+
+
+    //重构数组  
+    public function reduceArr($data)
+    {
         $takes = Take::groupBy('patient_id')->select(DB::raw('sum(check_cost+treatment_cost+drug_cost+hospitalization_cost) as sum'), 'patient_id')->get();
         $ids = array();
         foreach ($data as &$item) {
@@ -45,9 +55,7 @@ class PatientController extends Controller
             }
             $patientItem->tracks = $tmp;
         }
-        
-
-    	return view('Patient.index', ['data'=>$data, 'count'=>$count]);
+        return $data;
     }
 
     public function create(Request $req)
@@ -136,6 +144,8 @@ class PatientController extends Controller
         return view('patient.show',['data'=>$data]);
     }
 
+
+
     public function patientBookUpdate($id)
     {
     	               
@@ -180,6 +190,102 @@ class PatientController extends Controller
     public function statistics()
     {
         return view('Patient.statistics.index');
+    }
+
+
+    //通过关键字查找
+    public function search($key)
+    {
+        $pattern = '/^[\x7f-\xff]+$/';
+        $patients = [];
+        $field = '';
+        if (preg_match($pattern, $key)) {
+            $field = 'name';
+            $patients = Patient::where('name', $key)->get();
+        } else {
+
+            if (strlen($key) <= 4) {
+                $field = 'phone';
+                $patients = Patient::where('phone', 'like', '%'.$key)->get();
+            } else {
+                $field = 'medical_num';
+                $patients = Patient::where('medical_num', $key)->get();
+            }
+
+        }
+
+
+        foreach ($patients as $patient) {
+            if ($field == 'phone') {
+                $patient->$field  =  str_replace($key, '<q>'.$key.'</q>', $patient->$field);
+                continue;
+            }
+
+            $patient->$field = '<q>'.$patient->$field.'</q>';
+        }
+
+        $count = count($patients);
+        $data = $this->reduceArr($patients);
+
+        return view('Patient.index', ['data'=>$data, 'count'=>$count]);
+
+
+    }
+
+
+    //通过日期查找
+    public function searchByMonth(Request $req, $start, $end='')
+    {
+        $patients = [];
+        $start = formatDate($start);
+        if($end != '') $end = formatDate($end);
+        
+        if ($start && $end) {
+            $patients = Patient::whereBetween('add_time', [$start,$end])->get();
+        }
+
+        if ($start && !$end) {
+            $patients = Patient::where('add_time','>',$start)->get();
+        }
+
+        $count = count($patients);
+        $data = $this->reduceArr($patients);
+
+        return view('Patient.index', ['data'=>$data, 'count'=>$count]);
+
+    }
+
+    //今日到诊
+    public function today()
+    {
+        $begin = date('Y-m-d 00:00:00', time());
+        $end = date('Y-m-d 23:59:59', time());
+        $patients = Patient::whereBetween('add_time', [$begin, $end])->get();
+        $count = count($patients);
+        $data = $this->reduceArr($patients);
+        return view('Patient.index', ['data'=>$data, 'count'=>$count]);
+    }
+
+    //到期回访
+    public function timeToTrack()
+    {
+     
+        $start = strtotime(date('Y-m-d 00:00:00', time()));
+        $end = strtotime(date('Y-m-d 23:59:59', time()));
+        $patient_id_arr = [];
+        $tracks = PatientTrack::groupBy('patient_id')->get([DB::raw('max(next_time) as next_time'),'patient_id']);
+
+        foreach ($tracks as $track) {
+            if($start <= strtotime($track->next_time) && strtotime($track->next_time) <= $end) {
+                $patient_id_arr[] = $track->patient_id;
+            } 
+        }
+
+        $patients = Patient::whereIn('id', $patient_id_arr)->get();
+
+        $data = $this->reduceArr($patients);
+        $count = count($patients);
+        return view('Patient.index', ['data'=>$data, 'count'=>$count]);
     }
     
 }

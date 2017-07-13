@@ -6,7 +6,9 @@
             <li><a href="javascript:void(0);" onclick="fastH(this);set_title('列表');" url="sms.asp">短信记录</a><span class="ider">&gt;</span></li>
             <li><span id="guide">列表</span></li>
         </ul>
+        @if(check_node('sms_add'))
         <p class="nlink right"><a href="javascript:void(0);" title="新增短信" onclick="msgbox(this,600);" url="{{ route('sms.create') }}" class="sms"><span class="icon">ė</span>新增短信</a></p>
+        @endif
     </div>
     <div id="wrap" class="wrap">
         <!--整体内容-->
@@ -84,9 +86,13 @@
                             </td>
                             <td width="30">
                                 <center>
+                                @if(check_node('sms_del'))
                                     <a href="javascript:void(0);" id="del21" onclick="if(confirm('确定删除吗？\n\n该操作不可恢复')){fast('res.asp?act=del&amp;id=21','del21');}">
                                             <span class="icon"><em>ź</em></span>
                                     </a>
+                                @else
+                                    <span>-</span>
+                                @endif
                                 </center>
                             </td>
                         @endforeach

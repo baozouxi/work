@@ -188,12 +188,14 @@ function fastC(o,id) {
 //快速查找
 function fastK(e,o){
 	var fb,db;
+	var url = e.getAttribute("action");
 	if (o=="key"){
 		fb="form_key";
 		if($(o).value==""){
 			showline('请输入姓名、预约号或手机尾号进行搜索！');
 			return false;
 		}else{
+			url = url + $(o).value;
 			set_title('搜索<q>'+$(o).value+'</q>');
 		}
 	}else{
@@ -201,15 +203,16 @@ function fastK(e,o){
 		if($(o).value==""){
 			showline('请选择开始和结束日期，可单选开始日期！');
 			return false;
-		}else{
+		}else{	
+			url = url+$(o).value+'/'+$('de').value;
 			set_title('日期范围');
 		}
 	}
-	var obj = "box";his_mask(obj,1);
+	var obj = "main";his_mask(obj,1);
 	//加个随机数
-	var url = e.getAttribute("action") + "&req="+Math.random();
+
 	Ajax.request(url,{
-			data:formToHash(fb),
+			//data:formToHash(fb),
 			success	:function(result){close_mask(obj);set_innerHTML(obj,result)},
 			failure:function(xhr,msg){alert(msg)}
 		});
