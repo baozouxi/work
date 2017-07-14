@@ -43,7 +43,7 @@
         <div class="user right">
             <div class="face"><img src="{{ asset('img') }}/qq1102885555.jpg" title="超级管理员"></div>
             <p class="name">医患通,欢迎你！</p>
-            <p class="info"><a class="edit" href="javascript:void(0);" hidefocus="" url="user.asp?act=pass&amp;s=1" onclick="getChange(0);fastH(this,&#39;main&#39;);"><span class="icon">Ń</span></a><a class="power" href="javascript:void(0);" hidefocus="" url="user.asp?act=power&amp;s=1" onclick="getChange(0);fastH(this,&#39;main&#39;);"><span class="icon">Ķ</span></a><a class="site" href="javascript:void(0);" hidefocus="" url="bind.asp?s=1" onclick="getChange(0);fastH(this,&#39;main&#39;);"><span class="icon">ŧ</span></a><a class="exit" href="{{ route('exit') }}"><span class="icon">ş</span></a></p>
+            <p class="info"><a class="edit" href="javascript:void(0);" hidefocus="" url="{{ route('user.edit',['id'=>session('user_id')]) }}" onclick="getChange(0);fastH(this,&#39;main&#39;);"><span class="icon">Ń</span></a><a class="power" href="javascript:void(0);" hidefocus="" url="user.asp?act=power&amp;s=1" onclick="getChange(0);fastH(this,&#39;main&#39;);"><span class="icon">Ķ</span></a><a class="site" href="javascript:void(0);" hidefocus="" url="bind.asp?s=1" onclick="getChange(0);fastH(this,&#39;main&#39;);"><span class="icon">ŧ</span></a><a class="exit" href="{{ route('exit') }}"><span class="icon">ş</span></a></p>
         </div>
     </div>
     <!--左边-->

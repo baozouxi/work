@@ -122,7 +122,7 @@ function fastP(url,n){
 			//下面情况比较少
 			if(t==-1){m.innerHTML =icon + s;if(result.hasOwnProperty("field")){setTimeout('To("'+result.field+'","main");',500);}else{setTimeout('closeshow();',500);}}
 			if(t==-2){m.innerHTML =icon + s;setvalue('key',result.field)}//生成密钥使用
-			if(t==-3){m.innerHTML =icon + s;if(result.hasOwnProperty("field")){setTimeout('window.location.href="index.asp";',2000)}else{sb.disabled = false;setTimeout('hide("msg");',1500);}}//修改密码使用
+			if(t==-3){m.innerHTML =icon + s;if(result.hasOwnProperty("field")){setTimeout('window.location.href="/login/exit";',2000)}else{sb.disabled = false;setTimeout('hide("msg");',1500);}}//修改密码使用
 			if(t==-4){m.innerHTML =icon + s;closeshow();To($("this_url").value, 'main');}//快速提交 返回
 			if(t==-5){m.innerHTML =icon + s;setTimeout('To($("this_url").value);closeshow();',500);}//MSBOX表格属性
 			},
@@ -151,7 +151,9 @@ function fastP(url,n){
 		 			'role_id': '请选择正确的角色组',
 		 			'username': '昵称格式错误，最少5个字符串',
 		 			'qq': 'QQ格式错误，最少5个字符串',
-		 			'nickname' : '请输入正确的中文名称'
+		 			'nickname' : '请输入正确的中文名称',
+		 			'oldpass' : '请输入正确的原密码',
+		 			'password' : '请输入正确的新密码'
 		 		}
 		 		for(var key in ajaxobj){
 		 			sb.disabled = false;m.innerHTML =icon + errorList[key];focus($(key));//if(result.field.length>0){setTab(0);}

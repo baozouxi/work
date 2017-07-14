@@ -11,6 +11,7 @@ use App\Models\PatientTrack;
 use App\Models\Appointment;
 use App\Models\Take;
 use DB;
+use Excel;
 
 class PatientController extends Controller
 {
@@ -30,6 +31,7 @@ class PatientController extends Controller
     //重构数组  
     public function reduceArr($data)
     {
+
         $takes = Take::groupBy('patient_id')->select(DB::raw('sum(check_cost+treatment_cost+drug_cost+hospitalization_cost) as sum'), 'patient_id')->get();
         $ids = array();
         foreach ($data as &$item) {
@@ -288,4 +290,66 @@ class PatientController extends Controller
         return view('Patient.index', ['data'=>$data, 'count'=>$count]);
     }
     
+    //导出表单
+    public function exportHtml()
+    {
+        $months = Patient::all(DB::raw('distinct date_format(add_time, "%Y-%m") as add_time'));
+        return view('patient.export', ['months'=>$months]);
+    }
+
+
+    //数据导出
+    public function export(Request $req)
+    {
+        $this->validate($req, [
+            'type' => 'required|numeric|min:0',
+            'month' => 'required|date'
+            ]);
+
+        $start = date('Y-m-01 00:00:00', strtotime($req->month));
+        $end = date('Y-m-d 23:59:59', strtotime("last day of $start"));
+        $field = ['编号'=>'id','时间'=>'add_time','姓名'=>'name','性别'=>'gender',
+                    '年龄'=>'age','手机'=>'tel','城市'=>'city','地区'=>'town','病种'=>'dis','医生'=>'dep','回访时间'=>'track_time','操作员'=>'admin_id'];
+        $patients = Patient::whereBetween('add_time', [$start, $end]);
+
+        switch ($req->type) {
+            case '0': //全部
+                $patients = $patients->get();
+                break;
+            case '1':  //自己到诊
+                $patients = $patients->where('booK_id','0')->get();
+                break;
+            case '2': //预约到诊
+                $patients = $patients->where('book_id', '!=', '0')->get();
+                break;
+        }
+
+        $patients = $this->reduceArr($patients);
+
+        $field_name = array_keys($field);
+
+        $sheet_arr = [];
+        foreach ($field as $key) {
+            $temp = [];
+            foreach($patients as $patient){
+                if($key == 'track'){
+                    $sheet_arr[$patient->id][] = $patient['0'];
+                }
+                $sheet_arr[$patient->id][] = $patient->$key;
+            }
+        
+        }
+
+        dd($sheet_arr);
+
+        Excel::create('商品表',function($excel)use($field_name){
+
+        $excel->sheet('sheet',function($sheet)use($field_name){
+           // 另外还可以用：$sheet -> with()或者$sheet -> fromArray()
+            $sheet ->rows(array(
+                $field_name,
+            ));
+        });
+        })->export('xls');
+    }
 }

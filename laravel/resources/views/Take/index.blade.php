@@ -5,7 +5,7 @@
         <li><a href="javascript:void(0);" onclick="fastH(this);set_title('列表');" url="take.asp">消费记录</a><span class="ider">&gt;</span></li>
         <li><span id="guide">列表</span></li>
     </ul>
-    <p class="nlink right"><a href="javascript:void(0);" onclick="fastH(this);set_title('今日消费');" url="take.asp?n=1" class="sms"><span class="icon">ğ</span>今日消费</a></p>
+    <p class="nlink right"><a href="javascript:void(0);" onclick="fastH(this, 'main');set_title('今日消费');" url="{{ route('takeToday') }}" class="sms"><span class="icon">ğ</span>今日消费</a></p>
 </div>
 <div id="wrap" class="wrap">
     <!--整体内容-->

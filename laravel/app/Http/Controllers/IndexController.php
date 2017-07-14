@@ -4,17 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Nav;
+use App\Models\Patient;
 use App\Models\RoleWithNav;
+use Excel;
 
 class IndexController extends Controller
 {
-    
+    /**
+    * 根据导航权限数组 取出对应导航数组
+    */
 	public function index(Request $req)
 	{		
 
-        /**
-        * 根据导航权限数组 取出对应导航数组
-        */
         $role_id = $req->session()->get('role_id');
         $acc_nav = RoleWithNav::where('role_id', $role_id)->first(['nodes']);
         $acc_nav = unserialize($acc_nav->nodes);
@@ -39,6 +40,29 @@ class IndexController extends Controller
 
    	    return view('index', ['nav'=>$nav_reduce, 'setting_nav' => $nav_setting_arr]);
    	}
+
+
+    public function excel()
+    {   
+
+
+        // $patients = Patient::all()->toArray();
+        // Excel::create('商品表',function($excel){
+        // $excel->sheet('sheet',function($sheet){
+        //    // 另外还可以用：$sheet -> with()或者$sheet -> fromArray()
+        //     $sheet ->rows(array(
+        //         array('商品名','价格','库存','备注'),
+        //         array('小米5','1999','23','023'),
+        //         array('360N5','1399','99','32'),
+        //         array('红米Note','999','112'),
+        //         array('360N4','999','120')
+        //     ));
+        // });
+        // })->export('xls');
+
+    }
+
+
 
  }
 

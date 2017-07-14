@@ -19,6 +19,24 @@ class TrackController extends Controller
     public function index()
     {
         $tracks = PatientTrack::orderBy('add_time','desc')->get();
+
+        $tracks = $this->reduceArr($tracks);
+        return view('patient.track.index',['tracks' => $tracks]);
+    }
+
+    //今日回访
+    public function today()
+    {
+        $start = date('Y-m-d 00:00:00', time());
+        $end = date('Y-m-d 23:59:59', time());
+        $tracks = PatientTrack::whereBetween('add_time', [$start, $end])->get();
+        $tracks = $this->reduceArr($tracks);
+        return view('patient.track.index', ['tracks'=>$tracks]);
+    }
+
+
+    private function reduceArr($tracks)
+    {
         $ids = array();
 
         foreach ($tracks as $item) {
@@ -34,8 +52,10 @@ class TrackController extends Controller
         }
         // 销毁变量
         unset($patients);
-        return view('patient.track.index',['tracks' => $tracks]);
+        return $tracks;
     }
+
+
 
     public function show($patientId)
     {
@@ -111,8 +131,6 @@ class TrackController extends Controller
     //消费统计
     public function statistics(Request $req)
     {
-        
-
         $date = time();
         $way = 'admin_id';
         $week = ['0'=>'星期天', '1'=>'星期一','2'=>'星期二','3'=>'星期三','4'=>'星期四','5'=>'星期五','6'=>'星期六'];

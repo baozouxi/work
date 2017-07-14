@@ -19,7 +19,7 @@
                 <h3 class="left"><span class="icon">Ķ</span>患者列表</h3>
                 <p class="nlink right"><a href="javascript:void(0);" onclick="fundisp()"><span class="icon">Ş</span>切换</a><a href="javascript:void(0);" title="显示表格" onclick="msgbox(this,600);" url="user.asp?act=turn" class="config"><span class="icon">Ƅ</span>设置</a>
                 @if(check_node('patient_export'))
-                <a href="javascript:void(0);" title="导出电子表格" onclick="msgbox(this);" url="turn.asp?act=excel" class="excel"><span class="icon">Ľ</span>导出</a>
+                <a href="javascript:void(0);" title="导出电子表格" onclick="msgbox(this);" url="{{ route('patientExportHtml') }}" class="excel"><span class="icon">Ľ</span>导出</a>
                 @endif
                 </p>
             </div>

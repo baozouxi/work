@@ -19,6 +19,19 @@ class TakeController extends Controller
         return view('take.index', ['takes' => $takes]);
     }
 
+    public function today()
+    {
+        $start = date('Y-m-d 00:00:00', time());
+        $end = date('Y-m-d 23:59:59', time());
+
+        $takes = Take::leftJoin('patients', 'takes.patient_id', '=', 'patients.id')
+                        ->whereBetween('takes.add_time', [$start, $end])
+                        ->orderBy('add_time','desc')
+                        ->get(['patients.name','takes.*', 'patients.id as patientId']);
+        return view('take.index', ['takes' => $takes]);
+    }
+
+
     public function infoWithPatient(Patient $patientId)
     {
     	$takes = Take::where('patient_id', $patientId->id)->get();
@@ -73,12 +86,9 @@ class TakeController extends Controller
         if(!$take = Take::find((int)$id)) return ['code'=>'1','msg'=>'该消费不存在，请刷新后重试', 'time'=>getNow()];
         $data = $req->all();
         if(!$take->update($data)) return ['code'=>'1', 'msg'=>'消费修改失败，请重试', 'time'=>$getNow()];
-        return ['code'=>'0', 'msg'=>route('takeWithInfo',['patientId'=>$take->patient_id]), 'time'=>getNow()];
-        
+        return ['code'=>'0', 'msg'=>route('takeWithInfo',['patientId'=>$take->patient_id]), 'time'=>getNow()];   
     }
 
-    public function delete()
-    {
-        
-    }
+
+
 }

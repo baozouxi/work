@@ -36,11 +36,14 @@
 
 	//患者模块
 	Route::group(['namespace'=>'Patient'], function(){
+		Route::post('/patient/export', 'PatientController@export')->name('patientExport');
+		Route::get('/patient/export/html', 'PatientController@exportHtml')->name('patientExportHtml');
 		Route::get('/patient/come/track', 'PatientController@timeToTrack')->name('patientNeedTrack'); //到期回访
 		Route::get('/patient/come/today', 'PatientController@today')->name('patientToday'); //患者今日到诊
 		Route::get('/patient/month/{start}/{end?}', 'PatientController@searchByMonth')->name('patientSearchByMonth');
 		Route::get('/patient/search/{key}', 'PatientController@search')->name('patientSearch');
 		Route::get('/patient/book/{id}', 'PatientController@patientBookUpdate');
+		Route::get('/patient/track/today', 'TrackController@today')->name('patientTrackToday');
 		Route::get('/patient/track/withinfo/{patientId}', 'TrackController@indexWithInfo')->name('trackWithInfo');
 		Route::get('/patient/track/statistics/{way?}/{date?}', 'TrackController@statistics')->name('trackStatistics');
 		Route::get('/Patient/report/{date?}/{doctor?}', 'PatientController@patientReport')->name('patientReport');
@@ -52,6 +55,7 @@
 	//消费记录
 	Route::group(['namespace'=>'Take'], function(){
 		Route::Resource('take', 'TakeController');
+		Route::get('/take/come/today', 'TakeController@today')->name('takeToday');
 		Route::get('/take/info/{patientId}', 'TakeController@infoWithPatient')->name('takeWithInfo');
 	});
 
