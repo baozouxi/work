@@ -12,15 +12,59 @@ use App\Models\Patient;
 use App\Models\Track;
 use App\Models\Nav;
 use DB;
+use Excel;
 use Illuminate\Http\Request;
 
 class BookController extends Controller {
 
-	public function index() {
-
-
+	public function index() 
+	{
 		$appointData = Appointment::orderBy('add_time', 'desc')->paginate('20');
 		$count = Appointment::count();
+		
+		$appointData = $this->reduceArr($appointData);
+		return view('Book.index', ['data' => $appointData, 'count' => $count]);
+	}
+
+
+	public function today()
+	{
+		$start = date('Y-m-d 00:00:00', time());
+		$end = date('Y-m-d 23:59:59', time());
+
+		$apps = Appointment::whereBetween('postdate', [$start,$end])->get();
+
+		$count = Appointment::whereBetween('postdate', [$start,$end])->count();
+		$apps = $this->reduceArr($apps);
+
+		return view('Book.index', ['data'=>$apps, 'count'=>$count]);
+	}
+
+
+	public function tomorrow()
+	{
+		$start = date('Y-m-d 00:00:00', strtotime('tomorrow'));
+		$end = date('Y-m-d 23:59:59', strtotime('tomorrow'));
+
+		$apps = Appointment::whereBetween('postdate', [$start,$end])->get();
+
+		$count = Appointment::whereBetween('postdate', [$start,$end])->count();
+		$apps = $this->reduceArr($apps);
+
+		return view('Book.index', ['data'=>$apps, 'count'=>$count]);
+	}
+
+	public function residue()
+	{
+		$start = date('Y-m-d 00:00:00', time());
+		$apps = Appointment::where('postdate', '>=', $start)->where('is_hospital', '0')->get();
+		$apps = $this->reduceArr($apps);
+		$count = Appointment::where('postdate', '>=', $start)->where('is_hospital', '0')->count();
+		return view('book.index', ['data'=>$apps, 'count'=>$count]);
+	}
+
+	private function reduceArr($appointData)
+	{
 		//ID数组
 		$ids = array();
 		foreach ($appointData as &$item) {
@@ -31,10 +75,10 @@ class BookController extends Controller {
 
 			//$item->url = route('patient.create', ['bookId' => $item->id]);
 			// 此处加判断以更改编辑患者入口
-			/*if($item->is_hospital !== '0'){
-	                $patient = Patient::where('book_id',$item->id)->first();
-	                $item->url = route('patient.edit', ['id'=>$patient->id]);
-*/
+			// if($item->is_hospital !== '0'){
+	  //               $patient = Patient::where('book_id',$item->id)->first();
+	  //               $item->url = route('patient.edit', ['id'=>$patient->id]);
+	  //        }
 
 			if (strtotime($item->postdate) < strtotime('today')) {
 				$item->status = '3';
@@ -71,8 +115,9 @@ class BookController extends Controller {
 			}
 		}
 
-		return view('Book.index', ['data' => $appointData, 'count' => $count]);
+		return $appointData;
 	}
+
 
 	public function create(Request $req) {
 
@@ -261,6 +306,63 @@ class BookController extends Controller {
 		$id = (int) $id;
 		$data = Chatlog::find($id);
 		return view('book.chatlog', ['data' => $data]);
+	}
+
+	public function exportHtml()
+	{
+		$months =	Appointment::all(DB::raw('distinct DATE_FORMAT(postdate, "%Y-%m") as postdate'));
+		return view('book.export', ['months'=>$months]);
+	}
+
+	public function export(Request $req)
+	{
+		$this->validate($req, [
+			'type' => 'numeric|required|min:0',
+			'month' => 'date|required',
+			]);
+	
+		$start = date('Y-m-01 00:00:00', strtotime($req->month));
+		$end = date('Y-m-d 23:59:59', strtotime("last day of $start "));
+		$Appos = Appointment::whereBetween('postdate', [$start, $end]);
+
+		$fields = ['编号'=>'id','添加时间'=>'add_time','姓名'=>'name','性别'=>'gender',
+                    '年龄'=>'age','电话'=>'phone','城市'=>'city','地区'=>'town',
+                    '病种'=>'disease','预约时间'=>'postdate','途径'=>'way',
+                    '操作员'=>'admin_id'];
+		switch ($req->type) {
+			case '0':
+				$Appos = $Appos->get();
+				break;
+			case '1':
+				$Appos = $Appos->where('is_hospital', '0')->get();
+				break;
+			case '2':
+				$Appos = $Appos->where('is_hospital', '1')->get();
+				break;
+			
+		}
+
+		$Appos = $this->reduceArr($Appos);
+
+		$sheet_arr = [];
+
+		foreach ($fields as $field) {
+			foreach ($Appos as $app) {
+				$sheet_arr[$app->id][] = $app->$field;
+			}
+		}
+
+		array_unshift($sheet_arr, array_keys($fields));
+
+
+        Excel::create("{$req->month}月预约报表",function($excel)use($sheet_arr){
+
+        $excel->sheet('sheet',function($sheet)use($sheet_arr){
+           // 另外还可以用：$sheet -> with()或者$sheet -> fromArray()
+            $sheet ->rows($sheet_arr);
+        });
+        })->export('xls');
+
 	}
 
 }

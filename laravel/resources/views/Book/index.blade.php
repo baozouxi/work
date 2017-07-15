@@ -11,14 +11,23 @@
             <li><a href="javascript:void(0);" onclick="fastH(this);set_title('列表');" url="res.asp?m=res">预约列表</a><span class="ider">&gt;</span></li>
             <li><span id="guide">列表</span></li>
         </ul>
-        <p class="nlink right"><a href="javascript:void(0);" onclick="fastH(this);set_title('取消跟踪');" url="res.asp?n=4&amp;m=res" class="call"><span class="icon">Ŝ</span>取消跟踪</a><a href="javascript:void(0);" onclick="fastH(this);set_title('需要跟踪');" url="res.asp?n=2&amp;m=res" class="call"><span class="icon">Ę</span>需要跟踪</a><a href="javascript:void(0);" onclick="fastH(this);set_title('到期回访');" url="res.asp?n=1&amp;m=res" class="sms"><span class="icon">ĝ</span>到期回访</a><a href="javascript:void(0);" onclick="fastH(this);set_title('预约库存');" url="res.asp?n=13&amp;m=res" class="sms"><span class="icon">ğ</span>预约库存</a><a href="javascript:void(0);" onclick="fastH(this);set_title('预约明日');" url="res.asp?n=8&amp;m=res" class="sms"><span class="icon">Š</span>预约明日</a><a href="javascript:void(0);" onclick="fastH(this);set_title('预约今日');" url="res.asp?n=6&amp;m=res" class="sms"><span class="icon">Ğ</span>预约今日</a></p>
+        <p class="nlink right">
+    <!--     <a href="javascript:void(0);" onclick="fastH(this);set_title('取消跟踪');" url="res.asp?n=4&amp;m=res" class="call"><span class="icon">Ŝ</span>取消跟踪</a>
+        <a href="javascript:void(0);" onclick="fastH(this);set_title('需要跟踪');" url="res.asp?n=2&amp;m=res" class="call"><span class="icon">Ę</span>需要跟踪</a>
+        <a href="javascript:void(0);" onclick="fastH(this);set_title('到期回访');" url="res.asp?n=1&amp;m=res" class="sms"><span class="icon">ĝ</span>到期回访</a> -->
+        <a href="javascript:void(0);" onclick="fastH(this, 'main');set_title('预约库存');" url="{{ route('bookResidue') }}" class="sms"><span class="icon">ğ</span>预约库存</a>
+        <a href="javascript:void(0);" onclick="fastH(this, 'main');set_title('预约明日');" url="{{ route('bookTomorrow') }}" class="sms"><span class="icon">Š</span>预约明日</a>
+        <a href="javascript:void(0);" onclick="fastH(this, 'main');set_title('预约今日');" url="{{ route('bookToday') }}" class="sms"><span class="icon">Ğ</span>预约今日</a>
+        </p>
     </div>
     <div id="wrap" class="wrap">
         <!--整体内容-->
         <div id="container" class="container">
             <div class="top">
                 <h3 class="left"><span class="icon">Ĵ</span>预约列表</h3>
-                <p class="nlink right"><a href="javascript:void(0);" title="显示表格" onclick="msgbox(this,600);" url="user.asp?act=res" class="config"><span class="icon">Ƅ</span>设置</a><a href="javascript:void(0);" onclick="fundisp()"><span class="icon">Ş</span>切换</a></p>
+                <p class="nlink right"><a href="javascript:void(0);" title="显示表格" onclick="msgbox(this,600);" url="user.asp?act=res" class="config"><span class="icon">Ƅ</span>设置</a><a href="javascript:void(0);" onclick="fundisp()"><span class="icon">Ş</span>切换</a>
+                <a href="javascript:void(0);" title="导出电子表格" onclick="msgbox(this);" url="{{ route('bookExportHtml') }}" class="excel"><span class="icon">Ľ</span>导出</a>
+                </p>
             </div>
             <div class="fun">
             @if(check_node('book_add'))

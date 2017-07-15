@@ -25,13 +25,16 @@
 
 	//预约模块
 	Route::group(['namespace' => 'Book'], function(){
-		
+		Route::get('/book/list/today', 'BookController@today')->name('bookToday');
+		Route::get('/book/list/tomorrow', 'BookController@tomorrow')->name('bookTomorrow');
+		Route::get('/book/list/residue', 'BookController@residue')->name('bookResidue');
+		Route::get('/book/export/html', 'BookController@exportHtml')->name('bookExportHtml');
+		Route::post('/book/export/html', 'BookController@export')->name('bookExport');
 		Route::get('/book/statistics/{way?}/{date?}', 'StatisticsController@index')->name('bookStatistics');
 		Route::get('/book/chatlog/{id}', 'BookController@getChatlog')->name('chatlog');
 		Route::get('/book/sheet/{date?}/{admin?}', 'BookController@sheet')->name('bookSheet');
 		Route::Resource('book', 'BookController');
 		Route::Resource('booktrack', 'TrackController');
-
 	});
 
 	//患者模块
@@ -46,7 +49,7 @@
 		Route::get('/patient/track/today', 'TrackController@today')->name('patientTrackToday');
 		Route::get('/patient/track/withinfo/{patientId}', 'TrackController@indexWithInfo')->name('trackWithInfo');
 		Route::get('/patient/track/statistics/{way?}/{date?}', 'TrackController@statistics')->name('trackStatistics');
-		Route::get('/Patient/report/{date?}/{doctor?}', 'PatientController@patientReport')->name('patientReport');
+		Route::get('/Patient/report', 'PatientController@patientReport')->name('patientReport');
 		Route::get('/Patient/statistics/{way?}/{date?}', 'PatientController@statistics')->name('patientStatistics');
 		Route::Resource('patienttrack', 'TrackController');
 		Route::Resource('patient', 'PatientController');
@@ -128,7 +131,6 @@
 	});
 
 
-
 	//异步请求页面
 	Route::get('/callback/check/{model}/{action}/{args}', 'CallBackController@check')->name('check');
 
@@ -137,10 +139,7 @@
 	Route::get('/callback/uploadhtml', 'CallBackController@uploadHtml')->name('uploadHtml');
 
 
-
-
  });
-
 
 
 //登陆

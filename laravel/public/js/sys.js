@@ -100,6 +100,18 @@ function fast(url, obj) {
 		});
 }
 
+
+//快速删除 符合laravel
+function fastDel(url, obj,csrf_token) {
+	$(obj).innerHTML = loadimg;
+	Ajax.json(url,{
+			method:"post",
+			data:{_method:'DELETE', _token:csrf_token},
+			success	:function(result){if(result.code==1&&obj.substr(0,3)=="del"){Del($("this_url").value);}else{$(obj).innerHTML = result.msg;}},
+			failure:function(xhr,msg){alert(msg)}
+		});
+}
+
 //AJAX快速提交 post
 function fastP(url,n){
 	var m = $('msg_box'),sb=$('submit_box'),dt = 'form_box';

@@ -7,7 +7,7 @@
     </script>
         <ul class="left">
             <li><span class="icon">Ă</span><a href="javascript:void(0);" onclick="getChange(0);fastH(this,'main')" url="main.asp?s=1">首页</a><span class="ider">&gt;</span></li>
-            <li><a href="javascript:void(0);" onclick="fastH(this);set_title('列表');" url="turn.asp?m=turn">患者列表</a><span class="ider">&gt;</span></li>
+            <li><a href="javascript:void(0);" onclick="fastH(this);set_title('列表');" url="">患者列表</a><span class="ider">&gt;</span></li>
             <li><span id="guide">列表</span></li>
         </ul>
         <p class="nlink right"><a href="javascript:void(0);" onclick="fastH(this);set_title('需要跟踪');" url="turn.asp?n=2&amp;m=turn" class="call"><span class="icon">Ę</span>需要跟踪</a><a href="javascript:void(0);" onclick="fastH(this, 'main');set_title('到期回访');" url="{{ route('patientNeedTrack') }}" class="sms"><span class="icon">ĝ</span>到期回访</a><a href="javascript:void(0);" onclick="fastH(this,'main');set_title('今日到诊');" url="/patient/come/today" class="sms"><span class="icon">Ğ</span>今日到诊</a></p>
@@ -188,7 +188,7 @@
                                 <center>
                                 @if($item->book_id == '0')
                                     @if(check_node('patient_del'))
-                                    <a href="javascript:void(0);" id="del21" onclick="if(confirm('确定删除吗？\n\n该操作不可恢复')){fast('res.asp?act=del&amp;id=21','del21');}"><span class="icon"><em>ź</em></span>
+                                    <a href="javascript:void(0);" id="del{{$item->id}}" onclick="if(confirm('确定删除吗？\n\n该操作不可恢复')){fastDel('{{ route('patient.destroy',['id'=>$item->id]) }}','del{{$item->id}}','{{ csrf_token() }}');}"><span class="icon"><em>ź</em></span>
                                     </a>
                                     @else
                                          <span>-</span>      

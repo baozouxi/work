@@ -63,3 +63,9 @@ function check_node($node)
 	if(\App\Http\Controllers\RBAC\RbacController::check_node($node)) return true;
 	return false;
 }
+
+
+function navHtml()
+{
+
+}

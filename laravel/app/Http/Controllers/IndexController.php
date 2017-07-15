@@ -16,6 +16,8 @@ class IndexController extends Controller
 	public function index(Request $req)
 	{		
 
+     
+
         $role_id = $req->session()->get('role_id');
         $acc_nav = RoleWithNav::where('role_id', $role_id)->first(['nodes']);
         $acc_nav = unserialize($acc_nav->nodes);
@@ -42,25 +44,6 @@ class IndexController extends Controller
    	}
 
 
-    public function excel()
-    {   
-
-
-        // $patients = Patient::all()->toArray();
-        // Excel::create('商品表',function($excel){
-        // $excel->sheet('sheet',function($sheet){
-        //    // 另外还可以用：$sheet -> with()或者$sheet -> fromArray()
-        //     $sheet ->rows(array(
-        //         array('商品名','价格','库存','备注'),
-        //         array('小米5','1999','23','023'),
-        //         array('360N5','1399','99','32'),
-        //         array('红米Note','999','112'),
-        //         array('360N4','999','120')
-        //     ));
-        // });
-        // })->export('xls');
-
-    }
 
 
 

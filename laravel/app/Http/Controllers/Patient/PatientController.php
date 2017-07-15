@@ -10,6 +10,9 @@ use App\Models\Patient;
 use App\Models\PatientTrack;
 use App\Models\Appointment;
 use App\Models\Take;
+use App\Models\Disease;
+use App\Models\Doctor;
+use App\Models\Ad;
 use DB;
 use Excel;
 
@@ -17,13 +20,11 @@ class PatientController extends Controller
 {
     
 	// 列表显示
-    public function index()
+    public function index(Request $req)
     {
         $data = Patient::orderBy('add_time','desc')->paginate('20');
-        $count = Patient::count();
- 
+        $count = Patient::count(); 
         $data = $this->reduceArr($data);
-
     	return view('Patient.index', ['data'=>$data, 'count'=>$count]);
     }
 
@@ -65,8 +66,21 @@ class PatientController extends Controller
         if(isset($req->bookId)) $book = Appointment::find((int)$req->bookId) ?: '';
         //病历号 并存入session用以防止重复提交
         $medical_num = mt_rand(100,999).time();
+        $error = '';
         $req->session()->put('medical_num', $medical_num);
+        $dis = Disease::all();
+        $doctors = Doctor::all();
+        $ads  = Ad::all();
+        
+        $error = $dis->isEmpty() ?  '错误：请至少添加一个病种选项并且启用它' : '';
+        $error = $doctors->isEmpty() ?  '错误：请至少添加一个医生选项并且启用它' : '';
+
+        if($error)  return view('patient.error',['error'=>$error]);
+
         if(isset($book) && $book !== '' ) return view('patient.createWithBook', ['medical_num'=>$medical_num,'book'=>$book]);
+
+        if($ads->isEmpty()) return view('patient.error',['error'=>'错误：请至少添加一个来源媒体选项并且启用它']);
+
     	return view('Patient.create', ['medical_num'=>$medical_num]);
     }
 
@@ -135,6 +149,13 @@ class PatientController extends Controller
        
     }
 
+
+    //考虑是否开放该功能
+    public function destroy( $id)
+    {
+        return code('<em>禁止</em>','0');
+    }
+
     public function show($id)
     {
         $id = (int)$id;
@@ -157,9 +178,9 @@ class PatientController extends Controller
     //患者报表
     public function patientReport(Request $req)
     {
-        $date = $req->date ?: time();
+    
         $data = array();
-        $monthStart = date('Y-m-01', $date);
+        $monthStart = date('Y-m-01', time());
         $monthEnd =  date('Y-m-d', strtotime('last day of '.$monthStart));
         $patients = Patient::whereBetween('add_time', [$monthStart, $monthEnd]);
         if($req->doctor) $patients->where('doctor',(int)$req->doctor);
@@ -309,7 +330,7 @@ class PatientController extends Controller
         $start = date('Y-m-01 00:00:00', strtotime($req->month));
         $end = date('Y-m-d 23:59:59', strtotime("last day of $start"));
         $field = ['编号'=>'id','时间'=>'add_time','姓名'=>'name','性别'=>'gender',
-                    '年龄'=>'age','手机'=>'tel','城市'=>'city','地区'=>'town','病种'=>'dis','医生'=>'dep','回访时间'=>'track_time','操作员'=>'admin_id'];
+                    '年龄'=>'age','电话'=>'phone','城市'=>'city','地区'=>'town','病种'=>'dis','医生'=>'dep','回访时间'=>'track_time','操作员'=>'admin_id'];
         $patients = Patient::whereBetween('add_time', [$start, $end]);
 
         switch ($req->type) {
@@ -324,31 +345,32 @@ class PatientController extends Controller
                 break;
         }
 
+
+
         $patients = $this->reduceArr($patients);
 
         $field_name = array_keys($field);
 
         $sheet_arr = [];
         foreach ($field as $key) {
-            $temp = [];
             foreach($patients as $patient){
-                if($key == 'track'){
-                    $sheet_arr[$patient->id][] = $patient['0'];
+                if ($key == 'track_time' && !empty($patient['tracks'])) {
+                    $sheet_arr[$patient->id][] = $patient['tracks']['0']['next_time'];
+                    continue;
                 }
                 $sheet_arr[$patient->id][] = $patient->$key;
             }
         
         }
 
-        dd($sheet_arr);
+        array_unshift($sheet_arr, $field_name);
+        //dd($sheet_arr);
 
-        Excel::create('商品表',function($excel)use($field_name){
+        Excel::create("{$req->month}月患者报表",function($excel)use($sheet_arr){
 
-        $excel->sheet('sheet',function($sheet)use($field_name){
+        $excel->sheet('sheet',function($sheet)use($sheet_arr){
            // 另外还可以用：$sheet -> with()或者$sheet -> fromArray()
-            $sheet ->rows(array(
-                $field_name,
-            ));
+            $sheet ->rows($sheet_arr);
         });
         })->export('xls');
     }
