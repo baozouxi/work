@@ -6,9 +6,9 @@
         var box = 'main';
     </script>
         <ul class="left">
-            <li><span class="icon">Ă</span><a href="javascript:void(0);" onclick="getChange(0);fastH(this,'main')" url="main.asp?s=1">首页</a><span class="ider">&gt;</span></li>
-            <li><a href="javascript:void(0);" onclick="fastH(this);set_title('列表');" url="">患者列表</a><span class="ider">&gt;</span></li>
-            <li><span id="guide">列表</span></li>
+            <li><span class="icon">Ă</span><a href="javascript:void(0);" onclick="getChange(0);fastH(this,'main')" url="{{ route('index',['s'=>'1']) }}">首页</a><span class="ider">&gt;</span></li>
+           {!! guideHtml('患者列表', route('patient.index')) !!}
+           {!! guideHtml('列表') !!}
         </ul>
         <p class="nlink right"><a href="javascript:void(0);" onclick="fastH(this);set_title('需要跟踪');" url="turn.asp?n=2&amp;m=turn" class="call"><span class="icon">Ę</span>需要跟踪</a><a href="javascript:void(0);" onclick="fastH(this, 'main');set_title('到期回访');" url="{{ route('patientNeedTrack') }}" class="sms"><span class="icon">ĝ</span>到期回访</a><a href="javascript:void(0);" onclick="fastH(this,'main');set_title('今日到诊');" url="/patient/come/today" class="sms"><span class="icon">Ğ</span>今日到诊</a></p>
     </div>
@@ -169,7 +169,7 @@
                                 <center>肾病综合征</center>
                             </td>
                             <td>
-                                <center>赵中献</center>
+                                <center>{{ $item->dep }}</center>
                             </td>
                             <td>
                                 <center><a href="javascript:void(0);" onclick="fastH(this,'main')" url="{{ route('trackWithInfo',['id'=>$item->id]) }}">

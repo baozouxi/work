@@ -2,8 +2,8 @@
     <!--导航-->
     <div class="guide">
         <ul class="left">
-            <li><span class="icon">Ă</span><a href="javascript:void(0);" onclick="getChange(0);fastH(this,'main')" url="main.asp?s=1">首页</a><span class="ider">&gt;</span></li>
-            <li><a href="javascript:void(0);" onclick="fastH(this);set_title('列表');" url="track.asp">回访记录</a><span class="ider">&gt;</span></li>
+            <li><span class="icon">Ă</span><a href="javascript:void(0);" onclick="getChange(0);fastH(this,'main')" url="{{ route('index',['s'=>'1']) }}">首页</a><span class="ider">&gt;</span></li>
+            {!! guideHtml('预约回访', route('booktrack.index')) !!}
             <li><span id="guide">列表</span></li>
         </ul>
         <p class="nlink right"><a href="javascript:void(0);" onclick="fastH(this);set_title('取消跟踪');" url="track.asp?n=2" class="call"><span class="icon">Ū</span>取消跟踪</a><a href="javascript:void(0);" onclick="fastH(this);set_title('今日回访');" url="track.asp?n=1" class="sms"><span class="icon">ğ</span>今日回访</a></p>

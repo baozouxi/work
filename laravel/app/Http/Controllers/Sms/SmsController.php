@@ -16,8 +16,9 @@ class SmsController extends Controller {
 		return view('Sms.index', ['data'=>$sms_data]);
 	}
 
-	public function create() 
+	public function create(Request $req) 
 	{
+		dd($req->path());
 		$csrf = csrf_field();
 		$submit_url = route('sms.store');
 		return <<<SSS

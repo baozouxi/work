@@ -2,9 +2,9 @@
     <!--导航-->
     <div class="guide">
         <ul class="left">
-            <li><span class="icon">Ă</span><a href="javascript:void(0);" onclick="getChange(0);fastH(this,'main')" url="main.asp?s=1">首页</a><span class="ider">&gt;</span></li>
-            <li><a href="javascript:void(0);" onclick="fastH(this,'main')" url="turn.asp?s=1&amp;m=turn">患者列表</a><span class="ider">&gt;</span></li>
-            <li>新增患者</li>
+            <li><span class="icon">Ă</span><a href="javascript:void(0);" onclick="getChange(0);fastH(this,'main')" url="{{ route('index',['s'=>'1']) }}">首页</a><span class="ider">&gt;</span></li>
+            {!! guideHtml('患者列表', route('patient.index')) !!}
+            {!! guideHtml('新增患者') !!}
         </ul>
     </div>
     <div id="wrap" class="wrap">
@@ -46,41 +46,22 @@
                     <button type="button" onclick="paste('bid');" class="button">粘贴</button>
                     <label class="inline">病种分类：</label>
                     <select class="select" name="dis" id="dis" style="width:205px;">
-                        <option value="8">肾病综合征</option>
-                        <option value="9">肌酐</option>
-                        <option value="11">慢性肾炎</option>
-                        <option value="13">急性肾炎</option>
-                        <option value="14">IgA肾病</option>
-                        <option value="15">紫癜性肾炎</option>
-                        <option value="16">狼疮性肾炎</option>
-                        <option value="17">肾囊肿</option>
-                        <option value="18">多囊肾</option>
-                        <option value="19">肾检</option>
-                        <option value="20">糖尿病肾病</option>
-                        <option value="21">高血压肾病</option>
-                        <option value="22">肾盂肾炎</option>
-                        <option value="23">肾结石/肾积水</option>
-                        <option value="24">肾萎缩</option>
-                        <option value="25">尿蛋白/潜血</option>
-                        <option value="26">肾功能不全</option>
-                        <option value="27">肾衰竭</option>
-                        <option value="28">尿毒症-已透析</option>
-                        <option value="38">膜性肾炎</option>
+                    @foreach($diseases as $dis)
+                        <option value="{{ $dis->id }}">{{ $dis->name }}</option>
+                    @endforeach
                     </select>
                     <label class="inline">分配医生：</label>
                     <select class="select" name="dep" id="dep" style="width:205px;">
-                        <option value="6">赵中献</option>
-                        <option value="7">黄小松</option>
-                        <option value="8">杨惠标</option>
-                        <option value="10">王奎</option>
-                        <option value="11">张建儒</option>
+                    @foreach($doctors as $doctor)
+                        <option value="{{ $doctor->id }}">{{ $doctor->name }}</option>
+                    @endforeach
                     </select>
                     <input type="hidden" name="res" id="res" value="0">
                     <label class="inline">宣传媒体：</label>
                     <select class="select" name="ads" id="ads" style="width:205px;">
-                        <option value="2">电视广告</option>
-                        <option value="3">杂志报纸</option>
-                        <option value="4">患者介绍</option>
+                    @foreach($ads as $ad)
+                        <option value="{{ $ad->id }}">{{ $ad->name }}</option>
+                    @endforeach
                     </select>
                     <label class="inline">来源地区：</label>
                     <select class="select" name="province" id="province" style="width:100px;">

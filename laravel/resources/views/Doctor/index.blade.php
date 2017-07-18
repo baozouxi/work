@@ -1,7 +1,7 @@
 <!--导航-->
 <div class="guide">
     <ul class="left">
-        <li><span class="icon">Ă</span><a href="javascript:void(0);" onclick="getChange(0);fastH(this,'main')" url="main.asp?s=1">首页</a><span class="ider">&gt;</span></li>
+        <li><span class="icon">Ă</span><a href="javascript:void(0);" onclick="getChange(0);fastH(this,'main')" url="{{ route('index',['s'=>'1']) }}">首页</a><span class="ider">&gt;</span></li>
         <li>医生管理</li>
     </ul>
     <p class="nlink right"><a href="javascript:void(0);" onclick="msgbox(this,550);" url="dep.asp?act=tpl" class="sms"><span class="icon">ė</span>短信模版</a></p>

@@ -65,7 +65,17 @@ function check_node($node)
 }
 
 
-function navHtml()
+/**
+ * header部导航页面繁琐  封装成方法  返回对应html
+ */
+function guideHtml($name, $url='')
 {
+ 
+	if($url != ''){
+		$url = '<a href="javascript:void(0);" onclick="fastH(this,\'main\');set_title(\'列表\');" url="'.$url.'">'.$name.'</a>
+				<span class="ider">&gt;</span>';
+		return '<li>'.$url.'</li>';
+	} 
 
+	return '<li><span id="guide">'.$name.'</span></li>';
 }

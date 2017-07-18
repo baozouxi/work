@@ -2,7 +2,7 @@
     <!--导航-->
     <div class="guide">
         <ul class="left">
-            <li><span class="icon">Ă</span><a href="javascript:void(0);" onclick="getChange(0);fastH(this,'main')" url="main.asp?s=1">首页</a><span class="ider">&gt;</span></li>
+            <li><span class="icon">Ă</span><a href="javascript:void(0);" onclick="getChange(0);fastH(this,'main')" url="{{ route('index',['s'=>'1']) }}">首页</a><span class="ider">&gt;</span></li>
             <li><a href="javascript:void(0);" onclick="fastH(this,'main')" url="res.asp?s=1&amp;m=res">预约列表</a><span class="ider">&gt;</span></li>
             <li><a href="javascript:void(0);" onclick="fastH(this,'main')" url="track.asp?s=1&amp;m=res&amp;aid=5">回访记录</a> &gt; 新增回访</li>
         </ul>

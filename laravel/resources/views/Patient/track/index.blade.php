@@ -2,9 +2,9 @@
     <!--导航-->
     <div class="guide">
         <ul class="left">
-            <li><span class="icon">Ă</span><a href="javascript:void(0);" onclick="getChange(0);fastH(this,'main')" url="main.asp?s=1">首页</a><span class="ider">&gt;</span></li>
-            <li><a href="javascript:void(0);" onclick="fastH(this);set_title('列表');" url="reply.asp">回访记录</a><span class="ider">&gt;</span></li>
-            <li><span id="guide">列表</span></li>
+            <li><span class="icon">Ă</span><a href="javascript:void(0);" onclick="getChange(0);fastH(this,'main')" url="{{ route('index',['s'=>'1']) }}">首页</a><span class="ider">&gt;</span></li>
+                {!! guideHtml('患者回访', route('patienttrack.index')) !!}
+                {!! guideHtml('列表') !!}
         </ul>
         <p class="nlink right"><a href="javascript:void(0);" onclick="fastH(this);set_title('取消跟踪');" url="reply.asp?n=2" class="call"><span class="icon">Ū</span>取消跟踪</a><a href="javascript:void(0);" onclick="fastH(this,'main');set_title('今日回访');" url="{{ route('patientTrackToday') }}" class="sms"><span class="icon">ğ</span>今日回访</a></p>
     </div>

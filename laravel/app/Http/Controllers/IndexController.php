@@ -17,7 +17,7 @@ class IndexController extends Controller
 	{		
 
      
-
+        
         $role_id = $req->session()->get('role_id');
         $acc_nav = RoleWithNav::where('role_id', $role_id)->first(['nodes']);
         $acc_nav = unserialize($acc_nav->nodes);
@@ -39,6 +39,8 @@ class IndexController extends Controller
                 unset($nav_reduce[$id]);
             }
         }
+
+        if($req->s == '1') return view('indexWithoutHeader', ['nav'=>$nav_reduce, 'setting_nav' => $nav_setting_arr]);
 
    	    return view('index', ['nav'=>$nav_reduce, 'setting_nav' => $nav_setting_arr]);
    	}

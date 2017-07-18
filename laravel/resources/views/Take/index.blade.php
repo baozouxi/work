@@ -1,8 +1,8 @@
 <!--导航-->
 <div class="guide">
     <ul class="left">
-        <li><span class="icon">Ă</span><a href="javascript:void(0);" onclick="getChange(0);fastH(this,'main')" url="main.asp?s=1">首页</a><span class="ider">&gt;</span></li>
-        <li><a href="javascript:void(0);" onclick="fastH(this);set_title('列表');" url="take.asp">消费记录</a><span class="ider">&gt;</span></li>
+        <li><span class="icon">Ă</span><a href="javascript:void(0);" onclick="getChange(0);fastH(this,'main')" url="{{ route('index',['s'=>'1']) }}">首页</a><span class="ider">&gt;</span></li>
+        {!! guideHtml('消费记录', route('take.index')) !!}
         <li><span id="guide">列表</span></li>
     </ul>
     <p class="nlink right"><a href="javascript:void(0);" onclick="fastH(this, 'main');set_title('今日消费');" url="{{ route('takeToday') }}" class="sms"><span class="icon">ğ</span>今日消费</a></p>

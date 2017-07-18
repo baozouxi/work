@@ -7,9 +7,9 @@
         </script>
 
         <ul class="left">
-            <li><span class="icon">Ă</span><a href="javascript:void(0);" onclick="getChange(0);fastH(this,'main')" url="main.asp?s=1">首页</a><span class="ider">&gt;</span></li>
-            <li><a href="javascript:void(0);" onclick="fastH(this);set_title('列表');" url="res.asp?m=res">预约列表</a><span class="ider">&gt;</span></li>
-            <li><span id="guide">列表</span></li>
+            <li><span class="icon">Ă</span><a href="javascript:void(0);" onclick="getChange(0);fastH(this,'main')" url="{{ route('index',['s'=>'1']) }}">首页</a><span class="ider">&gt;</span></li>
+            {!! guideHtml('预约列表', route('book.index')) !!}
+            {!! guideHtml('列表') !!}
         </ul>
         <p class="nlink right">
     <!--     <a href="javascript:void(0);" onclick="fastH(this);set_title('取消跟踪');" url="res.asp?n=4&amp;m=res" class="call"><span class="icon">Ŝ</span>取消跟踪</a>

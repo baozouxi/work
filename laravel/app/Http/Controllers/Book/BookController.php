@@ -9,8 +9,10 @@ use App\Http\Requests\BookUpdateRequest;
 use App\Models\Appointment;
 use App\Models\Chatlog;
 use App\Models\Patient;
+use App\Models\Way;
 use App\Models\Track;
 use App\Models\Nav;
+use App\Models\disease;
 use DB;
 use Excel;
 use Illuminate\Http\Request;
@@ -54,6 +56,7 @@ class BookController extends Controller {
 		return view('Book.index', ['data'=>$apps, 'count'=>$count]);
 	}
 
+	//预约库存
 	public function residue()
 	{
 		$start = date('Y-m-d 00:00:00', time());
@@ -119,12 +122,22 @@ class BookController extends Controller {
 	}
 
 
-	public function create(Request $req) {
+	public function create(Request $req) 
+	{
+		$diseases = disease::where('is_use', '1')->get();
+		$ways = Way::where('is_use', '1')->get();
+		$error = '';
 
-		return view('Book.create');
+		if($ways->isEmpty()) $error = '错误：请保留只是一个预约途径选项并选择启用';
+		if($diseases->isEmpty()) $error = '错误：请保留只是一个病种选项并选择启用';
+
+		if($error) return view('Book.error', ['error'=>$error]); 
+
+		return view('Book.create', ['ways'=>$ways, 'diseases'=>$diseases]);
 	}
 
-	public function show($id) {
+	public function show($id) 
+	{
 		$id = (int) $id;
 		if (!$data = Appointment::find($id)) {
 			return ['code' => '1', 'msg' => '该预约不存在，请刷新后重试', 'time' => date('Y-m-d H:i:s')];
@@ -133,7 +146,8 @@ class BookController extends Controller {
 		return view('book.show', ['data' => $data]);
 	}
 
-	public function edit($id) {
+	public function edit($id) 
+	{
 		$id = (int) $id;
 		if (!$data = Appointment::find($id)) {
 			throw new ModelNotFoundException('预约号' . $id . '不存在');
@@ -143,7 +157,8 @@ class BookController extends Controller {
 		return view('book.edit', ['data' => $data, 'logData' => $log]);
 	}
 
-	public function update(BookUpdateRequest $req, $id) {
+	public function update(BookUpdateRequest $req, $id) 
+	{
 		$id = (int) $id;
 		$data = $req->all();
 
@@ -194,7 +209,8 @@ class BookController extends Controller {
 
 	}
 
-	public function store(AppointRequest $req) {
+	public function store(AppointRequest $req) 
+	{
 		// 数据验证
 		$data = $req->all();
 		//聊天记录

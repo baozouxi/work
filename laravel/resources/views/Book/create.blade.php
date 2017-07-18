@@ -1,8 +1,8 @@
 <!--导航-->
 <div class="guide">
     <ul class="left">
-        <li><span class="icon">Ă</span><a href="javascript:void(0);" onclick="getChange(0);fastH(this,'main')" url="main.asp?s=1">首页</a><span class="ider">&gt;</span></li>
-        <li><a href="javascript:void(0);" onclick="fastH(this,'main')" url="res.asp?s=1&amp;m=res">预约列表</a><span class="ider">&gt;</span></li>
+        <li><span class="icon">Ă</span><a href="javascript:void(0);" onclick="getChange(0);fastH(this,'main')" url="{{ route('index',['s'=>'1']) }}">首页</a><span class="ider">&gt;</span></li>
+        {!! guideHtml('预约列表', route('book.index')) !!}
         <li>新增预约</li>
     </ul>
 </div>
@@ -55,15 +55,17 @@
                         <input name="bid" id="bid" value="" type="hidden">
                         <label class="inline">病种分类：</label>
                         <select class="select" name="disease" id="dis" style="width:205px;">
-                            <option value="2">大骨病</option>
+                        @foreach($diseases as $disease)
+                            <option value="{{ $disease->id }}">{{ $disease->name }}</option>
+                        @endforeach
                         </select>
                         <!-- <input name="res" id="res" value="1" type="hidden">
                         <input name="dep" id="dep" value="1" type="hidden"> -->
                         <label class="inline">来源途径：</label>
                         <select class="select" name="way" id="way" style="width:205px;">
-                            <option value="2">PC商务通</option>
-                            <option value="3">手机商务通</option>
-                            <option value="4">网站电话</option>
+                        @foreach($ways as $way)
+                            <option value="{{ $way->id }}">{{ $way->name }}</option>
+                        @endforeach
                         </select>
                         <label class="inline"><em>*</em>预约时间：<span>如不确定，在随诊前面打勾</span></label>
                         <input name="postdate" id="postdate" class="Wdate" value="" style="width:193px;" autocomplete="off" disableautocomplete="" onblur="this.style.backgroundColor='#fff';" onfocus="this.style.backgroundColor='#FFFEF1';" type="text">

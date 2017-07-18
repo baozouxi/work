@@ -2,7 +2,7 @@
     <!--导航-->
     <div class="guide">
         <ul class="left">
-            <li><span class="icon">Ă</span><a href="javascript:void(0);" onclick="getChange(0);fastH(this,'main')" url="main.asp?s=1">首页</a><span class="ider">&gt;</span></li>
+            <li><span class="icon">Ă</span><a href="javascript:void(0);" onclick="getChange(0);fastH(this,'main')" url="{{ route('index',['s'=>'1']) }}">首页</a><span class="ider">&gt;</span></li>
             <li><a href="javascript:void(0);" onclick="fastH(this,'main')" url="turn.asp?s=1&amp;m=turn">患者列表</a><span class="ider">&gt;</span></li>
             <li><a href="javascript:void(0);" onclick="fastH(this,'main')" url="reply.asp?s=1&amp;m=turn&amp;aid=8&amp;id=1">回访记录</a><span class="ider">&gt;</span></li>
             <li>编辑回访</li>

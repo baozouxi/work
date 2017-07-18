@@ -18,7 +18,7 @@ class CreateTableAds extends Migration
             $table->increments('id');
             $table->string('name');
             $table->integer('admin_id');
-            $table->tinyInteger('is_use');
+            $table->tinyInteger('is_use')->default('1');
             $table->timestamp('add_time')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }

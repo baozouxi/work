@@ -13,6 +13,7 @@ use App\Models\Take;
 use App\Models\Disease;
 use App\Models\Doctor;
 use App\Models\Ad;
+use App\Models\Way;
 use DB;
 use Excel;
 
@@ -32,6 +33,14 @@ class PatientController extends Controller
     //重构数组  
     public function reduceArr($data)
     {
+        $doctors = Doctor::all()->toArray();
+        $doctors = array_column($doctors, 'name', 'id');
+        
+        $ways = Way::all()->toArray();
+        $ways = array_column($ways, 'name', 'id');
+
+        $ads = Ad::all()->toArray();
+        $ads = array_column($ads, 'name', 'id');
 
         $takes = Take::groupBy('patient_id')->select(DB::raw('sum(check_cost+treatment_cost+drug_cost+hospitalization_cost) as sum'), 'patient_id')->get();
         $ids = array();
@@ -44,8 +53,10 @@ class PatientController extends Controller
             $item->province = $area['province'];
             $item->city = $area['city'];
             $item->town = $area['town'];
+            $item->dep = isset($doctors[$item->dep]) ? $doctors[$item->dep] : '----';
         }
-
+        unset($doctors);
+        dd($data);
         
         $tracks = PatientTrack::whereIn('patient_id',$ids)->orderBy('next_time','desc')->get(['patient_id','next_time'])->toArray();
         
@@ -71,15 +82,15 @@ class PatientController extends Controller
         $dis = Disease::all();
         $doctors = Doctor::all();
         $ads  = Ad::all();
-        
-        $error = $dis->isEmpty() ?  '错误：请至少添加一个病种选项并且启用它' : '';
-        $error = $doctors->isEmpty() ?  '错误：请至少添加一个医生选项并且启用它' : '';
+
+        if($dis->isEmpty())  $error = '错误：请至少添加一个病种选项并且启用它';
+        if($doctors->isEmpty())  $error = '错误：请至少添加一个医生选项并且启用它';
 
         if($error)  return view('patient.error',['error'=>$error]);
 
         if(isset($book) && $book !== '' ) return view('patient.createWithBook', ['medical_num'=>$medical_num,'book'=>$book]);
 
-        if($ads->isEmpty()) return view('patient.error',['error'=>'错误：请至少添加一个来源媒体选项并且启用它']);
+        if($ads->isEmpty()) return view('patient.error',['error'=>'错误：请至少添加一个来源媒介选项并且启用它']);
 
     	return view('Patient.create', ['medical_num'=>$medical_num]);
     }

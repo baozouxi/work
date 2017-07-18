@@ -1,7 +1,7 @@
 <!--导航-->
 <div class="guide">
     <ul class="left">
-        <li><span class="icon">Ă</span><a href="javascript:void(0);" onclick="getChange(0);fastH(this,'main')" url="main.asp?s=1">首页</a><span class="ider">&gt;</span></li>
+        <li><span class="icon">Ă</span><a href="javascript:void(0);" onclick="getChange(0);fastH(this,'main')" url="{{ route('index',['s'=>'1']) }}">首页</a><span class="ider">&gt;</span></li>
         <li><a href="javascript:void(0);" onclick="fastH(this,'main')" url="tel.asp?s=1">电话列表</a><span class="ider">&gt;</span></li>
         <li>新增电话</li>
     </ul>

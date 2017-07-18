@@ -2,8 +2,8 @@
     <!--导航-->
     <div class="guide">
         <ul class="left">
-            <li><span class="icon">Ă</span><a href="javascript:void(0);" onclick="getChange(0);fastH(this,'main')" url="main.asp?s=1">首页</a><span class="ider">&gt;</span></li>
-            <li><a href="javascript:void(0);" onclick="fastH(this,'main')" url="res.asp?s=1&amp;m=res">预约列表</a><span class="ider">&gt;</span></li>
+            <li><span class="icon">Ă</span><a href="javascript:void(0);" onclick="getChange(0);fastH(this,'main')" url="{{ route('index',['s'=>'1']) }}">首页</a><span class="ider">&gt;</span></li>
+            {!! guideHtml('预约列表', route('book.index')) !!}
             <li><span id="guide">回访记录</span></li>
         </ul>
     </div>
@@ -19,7 +19,7 @@
                 <h3 class="left"><a href="javascript:void(0);" onclick="fastH(this,'main')" url="{{ route('booktrack.create') }}"><span class="icon">ŷ</span>新增回访</a></h3></div>
             @endif
             <div id="box" class="box">
-                
+
                 @include('book.track.info')
 
                 <table cellspacing="1" cellpadding="0">
