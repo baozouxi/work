@@ -16,8 +16,6 @@ class IndexController extends Controller
 	public function index(Request $req)
 	{		
 
-     
-        
         $role_id = $req->session()->get('role_id');
         $acc_nav = RoleWithNav::where('role_id', $role_id)->first(['nodes']);
         $acc_nav = unserialize($acc_nav->nodes);

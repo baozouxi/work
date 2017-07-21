@@ -12,7 +12,8 @@ use App\Models\Patient;
 use App\Models\Way;
 use App\Models\Track;
 use App\Models\Nav;
-use App\Models\disease;
+use App\Models\Disease;
+use App\Models\Doctor;
 use DB;
 use Excel;
 use Illuminate\Http\Request;
@@ -70,6 +71,16 @@ class BookController extends Controller {
 	{
 		//ID数组
 		$ids = array();
+
+		$ways = Way::all()->toArray();
+		$ways = array_column($ways, 'name', 'id');
+
+		$diseases = Disease::all()->toArray();
+		$diseases = array_column($diseases, 'name', 'id');
+
+		$doctors = Doctor::all()->toArray();
+		$doctors = array_column($doctors, 'name', 'id');
+
 		foreach ($appointData as &$item) {
 			$item->status = '1';
 
@@ -96,6 +107,9 @@ class BookController extends Controller {
 			$item->province = $area['province'];
 			$item->city = $area['city'];
 			$item->town = $area['town'];
+			$item->disease = isset($diseases[$item->disease])? $diseases[$item->disease] : '----' ;
+			$item->way  = isset($ways[$item->way]) ? $ways[$item->way] : '----' ;
+
 		}
 		$Track = Track::whereIn('book_id', $ids)->orderBy('next_time', 'desc')->get();
 
@@ -248,13 +262,12 @@ class BookController extends Controller {
 	//预约报表
 	public function sheet(Request $req) {
 		$date = time();
-		if ($req->date) {
-			$date = strtotime($req->date);
-		}
-
+		if(strtotime($req->date)) $date = strtotime($req->date);
 		$monthStart = date('Y-m-01', $date);
 		$monthEnd = date('Y-m-d', strtotime("last day of $monthStart"));
-		$data = Appointment::whereBetween('postdate', [$monthStart, $monthEnd])->get(['is_hospital', 'postdate', 'id'])->toArray();
+		$data = Appointment::whereBetween('postdate', [$monthStart, $monthEnd]);
+		if($req->admin) $data = $data->where('admin_id', $req->admin);
+		$data = $data->get(['is_hospital', 'postdate', 'id'])->toArray();
 		$total = array();
 		$is_hospital = array_filter($data, function ($v, $key) {
 			if ($v['is_hospital'] == '1') {
@@ -283,13 +296,13 @@ class BookController extends Controller {
 			$on_that_day_arr[formatDate($onItem->add_time, 'Y-m-d')][] = $onItem;
 		}
 		unset($on_that_day);
-
+		
 		//总到诊率
 		$total['arrived'] = $total['app_sum'] == '0' ? '0' : ceil($total['patient_sum'] / $total['app_sum'] * 100);
 		//总当日率
 		$total['arrive_on_that_day'] = $total['app_sum'] == '0' ? '0' : ceil($total['on_that_day'] / $total['app_sum'] * 100);
 
-		//统计结果 便于前台展示  通过遍历将所有数据进行整合 存于另一个数组 以格式化后的日期作为数组索引
+		//统计结果 便于前台展示  通过遍历将所有数据进行整合存于另一个数组 以格式化后的日期作为数组索引
 		$data_after_filter = array();
 		foreach ($data_arr as $date => $onItem) {
 			foreach ($onItem as $dateItem) {
@@ -378,6 +391,47 @@ class BookController extends Controller {
             $sheet ->rows($sheet_arr);
         });
         })->export('xls');
+
+	}
+	
+
+
+	public function search($key)
+	{
+
+		$pattern = '/^[\x7f-\xff]+$/';
+        $patients = [];
+        $field = '';
+        if (preg_match($pattern, $key)) {
+            $field = 'name';
+            $patients = Patient::where('name', $key)->get();
+        } else {
+
+            if (strlen($key) <= 4) {
+                $field = 'phone';
+                $patients = Patient::where('phone', 'like', '%'.$key)->get();
+            } else {
+                $field = 'medical_num';
+                $patients = Patient::where('medical_num', $key)->get();
+            }
+
+        }
+
+
+        foreach ($patients as $patient) {
+            if ($field == 'phone') {
+                $patient->$field  =  str_replace($key, '<q>'.$key.'</q>', $patient->$field);
+                continue;
+            }
+
+            $patient->$field = '<q>'.$patient->$field.'</q>';
+        }
+
+        $count = count($patients);
+        $data = $this->reduceArr($patients);
+
+        return view('Patient.index', ['data'=>$data, 'count'=>$count]);
+
 
 	}
 

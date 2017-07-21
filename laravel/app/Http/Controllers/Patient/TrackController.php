@@ -9,6 +9,11 @@ use App\Http\Controllers\CallBackController;
 use App\Models\Patient;
 use App\Models\PatientTrack;
 use App\Models\Take;
+use App\Models\Doctor;
+use App\Models\Disease;
+use App\Models\User;
+use App\Models\Ad;
+use App\Models\Way;
 use App\Models\Appointment;
 
 /**
@@ -129,7 +134,7 @@ class TrackController extends Controller
 
 
     //消费统计
-    public function statistics(Request $req)
+    public function statistics(Request $req, $date='')
     {
         $date = time();
         $way = 'admin_id';
@@ -151,6 +156,25 @@ class TrackController extends Controller
         //就诊总人数
         $total['treatment_sum'] = count(array_column($takes, 'id', 'patient_id'));
 
+        //医生
+        $doctors = Doctor::all()->toArray();
+        $doctors = array_column($doctors, 'name', 'id');
+
+        //病种
+        $diseases = Disease::all()->toArray();
+        $diseases = array_column($diseases, 'name', 'id');
+
+        //录入
+        $users = User::all()->toArray();
+        $users = array_column($users, 'name', 'id');
+
+        //途径
+        $ways = Way::all()->toArray();
+        $ways = array_column($ways, 'name', 'id');
+
+        //媒体
+        $ads = Ad::all()->toArray();
+        $ads = array_column($ads, 'name', 'id');
 
         // 组合数据
         foreach ($takes as $take) {
@@ -163,10 +187,31 @@ class TrackController extends Controller
                 }
     
             }
-        }      
+        }   
+
+
         //临时数组
         $data_temp = array();
+
+
         foreach ($patients as $patient) {
+            list($patient['province'], $patient['city'], $patient['town']) =
+                array_values(CallBackController::area($patient['province']-1, $patient['city']-1, $patient['town']-1));
+
+            $patient['dep'] = isset($doctors[$patient['dep']]) ? $doctors[$patient['dep']] : '未知' ; 
+
+            $patient['dis'] = isset($diseases[$patient['dis']]) ? $diseases[$patient['dis']]  :  '未知' ;
+
+            $patient['admin_id'] =  isset($users[$patient['admin_id']]) ? $users[$patient['admin_id']]  :  '未知' ;
+
+            if ($patient['book_id'] == '0') {
+                $patient['ads']  = isset($ads[$patient['ads']]) ? $ads[$patient['ads']] : '----';
+            }else{
+                $patient['ads'] = isset($ways[$patient['ads']]) ? $ways[$patient['ads']] : '----';
+            }
+
+        
+
             if(isset($patient['takes']) && (count($patient['takes']) > 1) ){
                 $total['re_treatment_sum'] += 1;
                 // 复诊总消费
@@ -195,8 +240,14 @@ class TrackController extends Controller
                 case 'gender':
                     $data_temp[$gender[$patient['gender']]][] = $patient;  
                     break;
+                case 'area':
+                    $data_temp[$patient['city'].','.$patient['town']][] = $patient;  
+                    break;
                 case 'age':
                     $data_temp[$patient['age'].'岁'][] = $patient;  
+                    break;
+                case 'way':
+                    $data_temp[$patient['ads']][] = $patient;  
                     break;
                 case 'doc':
                     $data_temp[$patient['dep']][] = $patient;  

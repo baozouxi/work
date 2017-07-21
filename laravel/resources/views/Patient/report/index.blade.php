@@ -15,12 +15,13 @@
         </div>
         <div class="fun none" id="fun" style="display: none;">
             <div id="fun-n" class="right block"></div>
-            <select class="select" onchange="To('stat_rep_turn.asp?s=1&amp;to='+this.options[this.selectedIndex].value+'','main');">
+            <select class="select" id="report_date" onchange="To('/patient/report/'+this.options[this.selectedIndex].value+'','main');">
                 <option value="0">按月查询</option>
-                <option value="2017-6">2017年6月</option>
+                <option value="2017-7">2017年7月</option>
                 <option value="2017-5">2017年5月</option>
             </select>
-            <select class="select" onchange="To('stat_rep_turn.asp?s=1&amp;n='+this.options[this.selectedIndex].value+'&amp;to=m','main');">
+
+<!--  暂时不启用           <select class="select" onchange="To('/patient/report/'+$('report_date').options[$('report_date').selectedIndex].value+'/'+this.options[this.selectedIndex].value,'main');">
                 <option value="0" selected="selected">所有医生</option>
                 <option value="1">刘主任</option>
                 <option value="2">黄主任</option>
@@ -32,7 +33,7 @@
                 <option value="9">张家华</option>
                 <option value="10">王奎</option>
                 <option value="11">张建儒</option>
-            </select>
+            </select> -->
         </div>
         <div id="box" class="box">
             <table cellspacing="1" cellpadding="0">

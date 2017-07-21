@@ -34,7 +34,7 @@
                 <h3 class="left"><a href="javascript:void(0);" onclick="fastH(this,'main')" url="{{ route('book.create') }}"><span class="icon">ŷ</span>新增预约</a></h3>
             @endif
                 <div id="fun-s" class="fun-s right block">
-                    <form name="form_key" id="form_key" onsubmit="return(fastK(this,'key'));" action="res.asp?m=res">
+                    <form name="form_key" id="form_key" onsubmit="return(fastK(this,'key'));" action="/book/search/">
                         <input class="inp" id="key" name="key">
                         <button type="submit" class="search"><span class="icon">ĺ</span></button>
                     </form>
@@ -81,9 +81,9 @@
                             <th width="100">
                                 <center><a href="javascript:void(0);" url="res.asp?t=dis&amp;go=desc&amp;m=res" title="按病种排序" onclick="fastH(this)">病种</a></center>
                             </th>
-                            <th width="110">
+                            <!-- <th width="110">
                                 <center><a href="javascript:void(0);" url="res.asp?t=dep&amp;go=desc&amp;m=res" title="按医生排序" onclick="fastH(this)">医生</a></center>
-                            </th>
+                            </th> -->
                             <th width="100">
                                 <center><a href="javascript:void(0);" url="res.asp?t=way&amp;go=desc&amp;m=res" title="按途径排序" onclick="fastH(this)">途径</a></center>
                             </th>
@@ -172,13 +172,13 @@
                                 <center>{{ $item['city']  }} {{ $item['town']  }} </center>
                             </td>
                             <td>
-                                <center>大骨病</center>
+                                <center>{{ $item['disease'] }}</center>
                             </td>
+                           <!--  <td>
+                                <center>医生</center>
+                            </td> -->
                             <td>
-                                <center>周雪峰</center>
-                            </td>
-                            <td>
-                                <center>PC商务通</center>
+                                <center>{{ $item->way }}</center>
                             </td>
                             <td>
                                 <center>{{ date('m-d H:i', strtotime($item->postdate)) }}</center>
@@ -195,7 +195,7 @@
                                 </center>
                             </td>
                             <td>
-                                <center>啊啊啊</center>
+                                <center>{{ $admin[$item->admin_id]['name'] }}</center>
                             </td>
                             
                             <td>

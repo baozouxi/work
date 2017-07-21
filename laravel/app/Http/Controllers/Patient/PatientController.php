@@ -14,6 +14,7 @@ use App\Models\Disease;
 use App\Models\Doctor;
 use App\Models\Ad;
 use App\Models\Way;
+use App\Models\User;
 use DB;
 use Excel;
 
@@ -42,6 +43,9 @@ class PatientController extends Controller
         $ads = Ad::all()->toArray();
         $ads = array_column($ads, 'name', 'id');
 
+        $diseases = Disease::all()->toArray();
+        $diseases = array_column($diseases, 'name', 'id');
+
         $takes = Take::groupBy('patient_id')->select(DB::raw('sum(check_cost+treatment_cost+drug_cost+hospitalization_cost) as sum'), 'patient_id')->get();
         $ids = array();
         foreach ($data as &$item) {
@@ -53,13 +57,18 @@ class PatientController extends Controller
             $item->province = $area['province'];
             $item->city = $area['city'];
             $item->town = $area['town'];
+            $item->dis =  isset($diseases[$item->dis]) ?  $diseases[$item->dis] : '----';
             $item->dep = isset($doctors[$item->dep]) ? $doctors[$item->dep] : '----';
+            if ($item->book_id > 0) {
+                $item->ads = isset($ads[$item->book_id]) ? $ads[$item->book_id] : '----' ;
+            }else{
+                $item->ads = isset($ways[$item->book_id]) ? $ways[$item->book_id] : '----' ;
+            }
         }
         unset($doctors);
-        dd($data);
-        
+      
         $tracks = PatientTrack::whereIn('patient_id',$ids)->orderBy('next_time','desc')->get(['patient_id','next_time'])->toArray();
-        
+
         foreach ($data as &$patientItem) {
             $tmp = array();
             foreach ($tracks as $trackItem) {
@@ -187,11 +196,13 @@ class PatientController extends Controller
     }
 
     //患者报表
-    public function patientReport(Request $req)
+    public function patientReport(Request $req, $date='', $doctor='0')
     {
-    
         $data = array();
-        $monthStart = date('Y-m-01', time());
+        $date = time();
+        $doctors = Doctor::all();
+        if(strtotime($req->date)) $date = strtotime($req->date);
+        $monthStart = date('Y-m-01', $date);
         $monthEnd =  date('Y-m-d', strtotime('last day of '.$monthStart));
         $patients = Patient::whereBetween('add_time', [$monthStart, $monthEnd]);
         if($req->doctor) $patients->where('doctor',(int)$req->doctor);
@@ -217,13 +228,34 @@ class PatientController extends Controller
             if(!isset($data[$date_index]['another'])) $data[$date_index]['another'] = null;
         }
 
-        return view('Patient.report.index', ['data'=>$data,'web'=>$web,'another'=>$another, 'sum'=>$sum, 'item_sum'=>$sum_item_arr]);
+        return view('Patient.report.index', ['data'=>$data,'web'=>$web,'another'=>$another, 'sum'=>$sum, 'item_sum'=>$sum_item_arr, 'doctors'=>$doctors ]);
     }
 
     //患者统计
-    public function statistics()
+    public function statistics(Request $req)
     {
-        return view('Patient.statistics.index');
+        $key = 'admin_id';
+        if($req->has('key')) $key = $req->key;
+
+
+        $count = Patient::count();
+        $patients = Patient::all()->toArray();
+        
+        list ($diseases, $doctors, $users) = array_values(getAuxiliary());
+
+        foreach ($patients as &$patient) {
+            $patient['admin_id'] = isset($users[$patient['admin_id']]) ? $users[$patient['admin_id']] : '----' ;
+            $patient['dis'] =  isset($diseases[$patient['dis']])  ? $diseases[$patient['dis']] : '----' ;
+            $patient['dep'] = isset($doctors[$patient['dep']]) ? $doctors[$patient['dep']] : '----' ;
+            list($patient['province'],$patient['city'],$patient['town']) = 
+                array_values(CallBackController::area($patient['province']-1,$patient['city']-1,$patient['town']-1));
+        } 
+
+        $patients = reduceArr($patients, $key);
+        $patients = array_map('count', $patients);
+        if($req->has('key')) return view('Patient.statistics.listWithoutNav',['all_count'=>$count,'data'=>$patients]);
+
+        return view('Patient.statistics.index', ['all_count'=>$count,'data'=>$patients]);
     }
 
 

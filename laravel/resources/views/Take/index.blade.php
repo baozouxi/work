@@ -90,7 +90,7 @@
                             <center>赵中献</center>
                         </td>
                         <td>
-                            <center>一株</center>
+                            <center>{{ $admin[$item->admin_id]['name'] }}</center>
                         </td>
                     </tr>
                 @endforeach

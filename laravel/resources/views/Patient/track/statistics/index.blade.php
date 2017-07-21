@@ -21,7 +21,7 @@
                     <button type="submit" class="search"><span class="icon">ĺ</span></button>
                 </form>
             </div>
-            <select class="select" onchange="To('stat_take.asp?s=1&amp;to='+this.options[this.selectedIndex].value+'','main');">
+            <select class="select" id="sta_date" onchange="To('stat_take.asp?s=1&amp;to='+this.options[this.selectedIndex].value+'','main');">
                 <option value="0">按月查询</option>
                 <option value="2017-6">2017年6月</option>
                 <option value="2017-5">2017年5月</option>
@@ -39,9 +39,9 @@
                     <li onclick="fastT('{{ route('trackStatistics',['way'=>'doc']) }}','6')">按医生</li>
                     <li onclick="fastT('{{ route('trackStatistics',['way'=>'area']) }}','7')">按地区</li>
                     <li onclick="fastT('{{ route('trackStatistics',['way'=>'way']) }}','8')">按途径</li>
-                    <li onclick="fastT('{{ route('trackStatistics',['way'=>'ads']) }}','9')">按媒介</li>
-                    <li onclick="fastT('{{ route('trackStatistics',['way'=>'age']) }}','10')">按年龄</li>
-                    <li onclick="fastT('{{ route('trackStatistics',['way'=>'gender']) }}','11')">按性别</li>
+                    <!-- <li onclick="fastT('{{ route('trackStatistics',['way'=>'ads']) }}','9')">按媒介</li> -->
+                    <li onclick="fastT('{{ route('trackStatistics',['way'=>'age']) }}','9')">按年龄</li>
+                    <li onclick="fastT('{{ route('trackStatistics',['way'=>'gender']) }}','10')">按性别</li>
                 </ul>
             </div>
             <div id="tablist">

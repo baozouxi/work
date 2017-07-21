@@ -38,7 +38,13 @@ class StatisticsController extends Controller
         $week = '星期天,星期一,星期二,星期三,星期四,星期五,星期六';
         $week_arr = explode(',', $week);
 
+        $doctors = Doctor::all()->toArray();
+        $doctors = array_column($doctors, 'name', 'id');
+
+        dd($data);
+
     	foreach ($data as $item) {
+
 
             //此处取消了swtich的break  目的是为了在处理数组之前先生成键值
             switch ($way) {

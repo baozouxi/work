@@ -101,6 +101,7 @@ function fast(url, obj) {
 }
 
 
+
 //快速删除 符合laravel
 function fastDel(url, obj,csrf_token) {
 	$(obj).innerHTML = loadimg;
@@ -511,69 +512,69 @@ function now_tip2(){
 
 
 
-// //统计
-// function fastT(n,u,t,b,c,d,e){
-// 	var a,url,menu=$("tab").getElementsByTagName("li");
-// 	for(i=0;i<menu.length;i++){
-// 		menu[i].className=i==n?"now":"";
-// 		//功能
-// 		switch(t){
-// 			case 1	: a="hour"	;break;
-// 			case 2	: a="day"	;break;
-// 			case 3	: a="week"	;break;
-// 			case 4	: a="month"	;break;
-// 			case 5	: a="dis"	;break;
-// 			case 6	: a="dep"	;break;
-// 			case 7	: a="local"	;break;
-// 			case 8	: a="way"	;break;
-// 			case 9	: a="ads"	;break;
-// 			case 10	: a="age"	;break;
-// 			case 11	: a="gen"	;break;
-// 			case 12	: a="auc"	;break;
-// 			default	: a="uid";
-// 			}
-// 		//地址
-// 		switch(u){
-// 			case 1	: url="stat_res.asp";break;
-// 			case 2	: url="stat_dia.asp";break;
-// 			case 3	: url="stat_rank.asp";break;
-// 			case 4	: url="stat_turn.asp";break;
-// 			case 5	: url="stat_take.asp";break;
-// 			default	: url="stat_res.asp";
-// 			}
-// 		}
-// 	//设置默认值
-// 	if (!b){b='';}else{b='&to='+b;}
-// 	if (!c){c='';}else{c='&ds='+c;}
-// 	if (!d){d='';}else{d='&de='+d;}
-// 	if (!e){e='';}else{e='&cid='+e;}
-	
-// 	//AJAX
-// 	his_mask('box',1);
-// 	Ajax.request(url,{
-// 			data:'act=stat_'+a+b+c+d+e+ "&req="+ Math.random(),
-// 			success	:function(result){close_mask('box');$("tablist").innerHTML = result;},
-// 			failure:function(xhr,msg){alert(msg)}
-// 		});
-// }
-
 //统计
-function fastT(url,n){
-
-	var menu=$("tab").getElementsByTagName("li");
+function fastT(n,u,t,b,c,d,e){
+	var a,url,menu=$("tab").getElementsByTagName("li");
 	for(i=0;i<menu.length;i++){
-
 		menu[i].className=i==n?"now":"";
+		//功能
+		switch(t){
+			case 1	: a="time"	;break;
+			case 2	: a="day"	;break;
+			case 3	: a="week"	;break;
+			case 4	: a="month"	;break;
+			case 5	: a="dis";break;
+			case 6	: a="dep"	;break;
+			case 7	: a="area"	;break;
+			case 8	: a="way"	;break;
+			case 9	: a="age"	;break;
+			case 10	: a="gender";break;
+			default	: a="admin_id";
+			}
+		//地址
+		switch(u){
+			case 1	: url="stat_res.asp";break;
+			case 2	: url="/patient/statistics/list";break;
+			// case 3	: url="stat_rank.asp";break;
+			// case 4	: url="stat_turn.asp";break;
+			// case 5	: url="stat_take.asp";break;
+			// default	: url="stat_res.asp";
+			}
+		}
+	//设置默认值
+	if (!b){b='';}else{b='&to='+b;}
+	if (!c){c='';}else{c='&ds='+c;}
+	if (!d){d='';}else{d='&de='+d;}
 
-	}
 	//AJAX
 	his_mask('box',1);
 	Ajax.request(url,{
-			//data:'act=stat_'+a+b+c+d+e+ "&req="+ Math.random(),
+			data:'key='+a+b+c+d+e+ "&req="+ Math.random(),
 			success	:function(result){close_mask('box');$("tablist").innerHTML = result;},
 			failure:function(xhr,msg){alert(msg)}
 		});
 }
+
+//统计
+// function fastT(url,n,date='sta_date'){
+
+// 	date = $(date).options[$(date).selectedIndex].value;
+
+// 	var menu=$("tab").getElementsByTagName("li");
+// 	for(i=0;i<menu.length;i++){
+
+// 		menu[i].className=i==n?"now":"";
+
+// 	}
+// 	url = url + '?date='+date;
+// 	//AJAX
+// 	his_mask('box',1);
+// 	Ajax.request(url,{
+// 			//data:'act=stat_'+a+b+c+d+e+ "&req="+ Math.random(),
+// 			success	:function(result){close_mask('box');$("tablist").innerHTML = result;},
+// 			failure:function(xhr,msg){alert(msg)}
+// 		});
+// }
 
 
 

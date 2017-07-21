@@ -30,18 +30,18 @@
         <div id="box" class="box">
             <div id="tab">
                 <ul>
-                    <li onclick="fastT(0,4,0,&quot;m&quot;,0,0,0)" class="now">按录入</li>
-                    <li onclick="fastT(1,4,1,&quot;m&quot;,0,0,0)">按时段</li>
-                    <li onclick="fastT(2,4,2,&quot;m&quot;,0,0,0)">按日期</li>
-                    <li onclick="fastT(3,4,3,&quot;m&quot;,0,0,0)">按星期</li>
-                    <li onclick="fastT(4,4,4,&quot;m&quot;,0,0,0)">按月份</li>
-                    <li onclick="fastT(5,4,5,&quot;m&quot;,0,0,0)">按病种</li>
-                    <li onclick="fastT(6,4,6,&quot;m&quot;,0,0,0)">按医生</li>
-                    <li onclick="fastT(7,4,7,&quot;m&quot;,0,0,0)">按地区</li>
-                    <li onclick="fastT(8,4,8,&quot;m&quot;,0,0,0)">按途径</li>
-                    <li onclick="fastT(9,4,9,&quot;m&quot;,0,0,0)">按媒介</li>
-                    <li onclick="fastT(10,4,10,&quot;m&quot;,0,0,0)">按年龄</li>
-                    <li onclick="fastT(11,4,11,&quot;m&quot;,0,0,0)">按性别</li>
+                    <li onclick="fastT(0,2,0,&quot;m&quot;,0,0,0)" class="now">按录入</li>
+                    <li onclick="fastT(1,2,1,&quot;m&quot;,0,0,0)">按时段</li>
+                    <li onclick="fastT(2,2,2,&quot;m&quot;,0,0,0)">按日期</li>
+                    <li onclick="fastT(3,2,3,&quot;m&quot;,0,0,0)">按星期</li>
+                    <li onclick="fastT(4,2,4,&quot;m&quot;,0,0,0)">按月份</li>
+                    <li onclick="fastT(5,2,5,&quot;m&quot;,0,0,0)">按病种</li>
+                    <li onclick="fastT(6,2,6,&quot;m&quot;,0,0,0)">按医生</li>
+                    <li onclick="fastT(7,2,7,&quot;m&quot;,0,0,0)">按地区</li>
+                    <li onclick="fastT(8,2,8,&quot;m&quot;,0,0,0)">按途径</li>
+                    <li onclick="fastT(9,2,9,&quot;m&quot;,0,0,0)">按媒介</li>
+                    <li onclick="fastT(10,2,10,&quot;m&quot;,0,0,0)">按年龄</li>
+                    <li onclick="fastT(11,2,11,&quot;m&quot;,0,0,0)">按性别</li>
                 </ul>
             </div>
             <div id="tablist">
@@ -63,42 +63,27 @@
                                 <center><b><i>合 计</i></b></center>
                             </td>
                             <td>
-                                <center><b><i>3</i></b></center>
+                                <center><b><i>{{ $all_count }}</i></b></center>
                             </td>
                             <td>&nbsp;</td>
                         </tr>
+
+                        @foreach($data as $key => $item)
                         <tr class="t2">
                             <td>
-                                <center><a href="javascript:void(0);" onclick="fastC(this,'uid1');" url="stat_turn.asp?act=stat_s_uid&amp;aid=1&amp;to=m"><i>医患通</i> </a><a href="javascript:void(0);" onclick="msgbox(this,850);" url="turn.asp?m=stat&amp;o=uid&amp;aid=1&amp;to=m" title="医患通详细列表">[详]</a></center>
+                                <center><i>{{ $key }}</i></center>
                             </td>
                             <td>
-                                <center>2</center>
-                            </td>
-                            <td>
-                                <div class="perws">
-                                    <div class="perw" style="width:66.7%" title="67%">67%</div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr id="_infouid1" style="display:none;" class="t1">
-                            <td colspan="3" id="infouid1"></td>
-                        </tr>
-                        <tr class="t1">
-                            <td>
-                                <center><a href="javascript:void(0);" onclick="fastC(this,'uid4');" url="stat_turn.asp?act=stat_s_uid&amp;aid=4&amp;to=m"><i>一株</i> </a><a href="javascript:void(0);" onclick="msgbox(this,850);" url="turn.asp?m=stat&amp;o=uid&amp;aid=4&amp;to=m" title="一株详细列表">[详]</a></center>
-                            </td>
-                            <td>
-                                <center>1</center>
+                                <center>{{ $item }}</center>
                             </td>
                             <td>
                                 <div class="perws">
-                                    <div class="perw" style="width:33.3%" title="33%">33%</div>
+                                    <div class="perw" style="width:{{ $all_count? ceil($item/$all_count*100) : '10'  }}%" title="{{ $all_count? ceil($item/$all_count*100) : '0'  }}%">{{ $all_count? ceil($item/$all_count*100) : '0'  }}%</div>
                                 </div>
                             </td>
                         </tr>
-                        <tr id="_infouid4" style="display:none;" class="t1">
-                            <td colspan="3" id="infouid4"></td>
-                        </tr>
+                        @endforeach
+
                     </tbody>
                 </table>
             </div>

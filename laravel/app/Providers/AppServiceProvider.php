@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Models\User;
+use App\Models\Role;
+use View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +16,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+
+        $admin = User::all()->toArray();
+        $admin = array_column($admin, null, 'id');
+
+        $roles = Role::all()->toArray();
+        $roles = array_column($roles, 'name', 'id');
+
+        View::share('admin', $admin);
+        View::share('roles', $roles);
     }
 
     /**

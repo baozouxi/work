@@ -64,6 +64,60 @@ function check_node($node)
 	return false;
 }
 
+//获取统计数据需要的数据，例如 医生表，病种表 并返回格式化后的数组
+function getAuxiliary()
+{
+	$diseases = \App\Models\Disease::all()->toArray();
+	$doctors = \App\Models\Doctor::all()->toArray();
+	$users = \App\Models\User::all()->toArray();
+	$diseases = array_column($diseases, 'name', 'id');
+	$doctors = array_column($doctors, 'name', 'id');
+	$users = array_column($users, 'name', 'id');
+
+	return array('diseases'=>$diseases, 'doctors'=>$doctors, 'users'=>$users);
+}
+
+
+
+//根据传入键名重组数组 
+function reduceArr($data, $key)
+{
+	$data = (array)$data;
+	$temp_arr = [];
+	$week = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
+	foreach ($data as $item) {
+		switch ($key) {
+			case 'time':
+				$time_format = formatDate($item['add_time'], 'H');
+				$field = $time_format.'点';
+				break;
+			case 'day':
+				$time_format = formatDate($item['add_time'], 'j');
+				$field = $time_format.'号';
+				break;
+			case 'week':
+				$time_format = formatDate($item['add_time'], 'w');
+				$field = $week[$time_format];
+				break;
+
+			case 'month':
+				$time_format = formatDate($item['add_time'], 'n');
+				$field =  $time_format.'月';
+				break;
+			case 'area':
+				$field = $item['city'].'-'.$item['town'];
+				break;
+
+			default:
+				$field = $item[$key];
+				break;
+		}
+
+		$temp_arr[$field][] = $item;
+	}	
+	return $temp_arr;
+}
+
 
 /**
  * header部导航页面繁琐  封装成方法  返回对应html

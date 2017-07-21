@@ -1,5 +1,4 @@
 
-
     <!--导航-->
     <div class="guide">
     <script type="text/javascript">
@@ -163,10 +162,10 @@
                                 <center>{{ $item->city }} {{ $item->town }}</center>
                             </td>
                             <td>
-                                <center>PC商务通</center>
+                                <center>{{ $item->ads }}</center>
                             </td>
                             <td>
-                                <center>肾病综合征</center>
+                                <center>{{ $item->dis }}</center>
                             </td>
                             <td>
                                 <center>{{ $item->dep }}</center>
@@ -182,7 +181,7 @@
                                 </center>
                             </td>
                             <td>
-                                <center>咨询(<i>导医</i>)</center>
+                                <center>{{ $admin[$item->admin_id]['name'] }}(<i>{{ $roles[$admin[$item->admin_id]['role_id']] }}</i>)</center>
                             </td>
                             <td>
                                 <center>

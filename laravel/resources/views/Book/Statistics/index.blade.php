@@ -21,7 +21,7 @@
                     <button type="submit" class="search"><span class="icon">ĺ</span></button>
                 </form>
             </div>
-            <select class="select" onchange="To('stat_res.asp?s=1&amp;to='+this.options[this.selectedIndex].value+'','main');">
+            <select class="select" id="sta_date" onchange="To('stat_res.asp?s=1&amp;to='+this.options[this.selectedIndex].value+'','main');">
                 <option value="0">按月查询</option>
                 <option value="2017-6">2017年6月</option>
                 <option value="2017-5">2017年5月</option>

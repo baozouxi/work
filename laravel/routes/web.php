@@ -25,6 +25,7 @@
 
 	//预约模块
 	Route::group(['namespace' => 'Book'], function(){
+		Route::get('/book/search/{key}', 'BookController@search')->name('bookSearch');
 		Route::get('/book/list/today', 'BookController@today')->name('bookToday');
 		Route::get('/book/list/tomorrow', 'BookController@tomorrow')->name('bookTomorrow');
 		Route::get('/book/list/residue', 'BookController@residue')->name('bookResidue');
@@ -49,8 +50,8 @@
 		Route::get('/patient/track/today', 'TrackController@today')->name('patientTrackToday');
 		Route::get('/patient/track/withinfo/{patientId}', 'TrackController@indexWithInfo')->name('trackWithInfo');
 		Route::get('/patient/track/statistics/{way?}/{date?}', 'TrackController@statistics')->name('trackStatistics');
-		Route::get('/Patient/report', 'PatientController@patientReport')->name('patientReport');
-		Route::get('/Patient/statistics/{way?}/{date?}', 'PatientController@statistics')->name('patientStatistics');
+		Route::get('/patient/report/{date?}/{admin?}', 'PatientController@patientReport')->name('patientReport');
+		Route::get('/patient/statistics/list', 'PatientController@statistics')->name('patientStatistics');
 		Route::Resource('patienttrack', 'TrackController');
 		Route::Resource('patient', 'PatientController');
 	});

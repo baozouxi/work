@@ -14,7 +14,7 @@
         </div>
         <div class="fun none" id="fun">
             <div id="fun-n" class="right block"></div>
-            <select class="select" onchange="To('stat_rep_res.asp?s=1&amp;to='+this.options[this.selectedIndex].value+'','main');">
+            <select class="select" id='sheet_date' onchange="To('/patient/report/'+this.options[this.selectedIndex].value+'','main');">
                 <option value="0">按月查询</option>
                 <option value="2017-6">2017年6月</option>
                 <option value="2017-5">2017年5月</option>
