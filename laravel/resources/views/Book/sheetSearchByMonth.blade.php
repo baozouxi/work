@@ -12,19 +12,28 @@
             <h3 class="left"><span class="icon">Ő</span>预约报表</h3>
             <p class="nlink right"><a href="javascript:void(0);" onclick="display('fun')"><span class="icon">Ş</span>快捷查找</a></p>
         </div>
-        <div class="fun none" id="fun">
+        <div class="fun block" id="fun">
             <div id="fun-n" class="right block"></div>
             <select class="select" id='sheet_date' onchange="To('/book/report/searchByMonth?month='+this.options[this.selectedIndex].value+'','main');">
                 <option value="0">按月查询</option>
                 @foreach($months as $month)
-                <option value="{{ $month->postdate }}">{{ $month->postdate }}月</option>
+                @if($month->postdate == $current_month)
+                    <option value="{{ $month->postdate }}" selected="selected">{{ $month->postdate }}月</option>
+                @else
+                    <option value="{{ $month->postdate }}" >{{ $month->postdate }}月</option>
+                @endif
                 @endforeach
             </select>
-            <select class="select" onchange="To('/book/report/searchByMonth?admin_id='+this.options[this.selectedIndex].value+'&amp;to=m','main');">
+            <select class="select" onchange="To('/book/report/searchByMonth?month={{ $current_month }}&amp;admin_id='+this.options[this.selectedIndex].value,'main');">
                 <option value="0" selected="selected">所有用户</option>
-                @foreach($users as $id => $user)
-                <option value="{{ $id }}">{{ $user }}</option>
+                @foreach($users as $id => $name)
+                    @if($id == $admin_id)
+                        <option value="{{ $id }}" selected="selected">{{$name}}</option>
+                    @else
+                        <option value="{{ $id }}">{{$name}}</option>
+                    @endif
                 @endforeach
+                
             </select>
         </div>
         <div id="box" class="box">

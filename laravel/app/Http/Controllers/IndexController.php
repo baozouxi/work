@@ -14,8 +14,7 @@ class IndexController extends Controller
     * 根据导航权限数组 取出对应导航数组
     */
 	public function index(Request $req)
-	{		
-
+	{		  
         $role_id = $req->session()->get('role_id');
         $acc_nav = RoleWithNav::where('role_id', $role_id)->first(['nodes']);
         $acc_nav = unserialize($acc_nav->nodes);

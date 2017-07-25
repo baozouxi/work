@@ -101,7 +101,7 @@ class PatientController extends Controller
 
         if($ads->isEmpty()) return view('patient.error',['error'=>'错误：请至少添加一个来源媒介选项并且启用它']);
 
-    	return view('Patient.create', ['medical_num'=>$medical_num]);
+    	return view('Patient.create', ['medical_num'=>$medical_num, 'diseases'=>$dis,'doctors'=>$doctors,'ads'=>$ads]);
     }
 
     public function store(PatientStoreRequest $req)
@@ -195,11 +195,14 @@ class PatientController extends Controller
     	return view('Patient.bookUpdate');
     }
 
+
     //患者报表
     public function patientReport(Request $req, $date='', $doctor='0')
     {
         $data = array();
         $date = time();
+        
+        $months = Patient::all(DB::raw("distinct DATE_FORMAT(add_time, '%Y-%m') as add_time"));
         $doctors = Doctor::all();
         if(strtotime($req->date)) $date = strtotime($req->date);
         $monthStart = date('Y-m-01', $date);
@@ -228,7 +231,8 @@ class PatientController extends Controller
             if(!isset($data[$date_index]['another'])) $data[$date_index]['another'] = null;
         }
 
-        return view('Patient.report.index', ['data'=>$data,'web'=>$web,'another'=>$another, 'sum'=>$sum, 'item_sum'=>$sum_item_arr, 'doctors'=>$doctors ]);
+
+        return view('Patient.report.index', ['data'=>$data,'web'=>$web,'another'=>$another, 'sum'=>$sum, 'item_sum'=>$sum_item_arr, 'doctors'=>$doctors, 'months'=>$months ]);
     }
 
     //患者统计
@@ -236,27 +240,69 @@ class PatientController extends Controller
     {
         $key = 'admin_id';
         if($req->has('key')) $key = $req->key;
-
-
+        $months = Patient::all(DB::raw("distinct DATE_FORMAT(add_time, '%Y-%m') as add_time"));
         $count = Patient::count();
         $patients = Patient::all()->toArray();
-        
-        list ($diseases, $doctors, $users) = array_values(getAuxiliary());
+        $patients = $this->staReduceArr($patients, $key);
+        if($req->has('key')) return view('Patient.statistics.listWithoutNav',['all_count'=>$count,'data'=>$patients]);
+
+        return view('Patient.statistics.index', ['all_count'=>$count,'data'=>$patients, 'months'=>$months]);
+    }
+
+
+    //统计重组数组
+    public function staReduceArr($patients,$key='admin_id')
+    {
+        list ($diseases, $doctors, $users,$ways,$ads) = array_values(getAuxiliary());
 
         foreach ($patients as &$patient) {
+            $patient['gender'] =  $patient['gender']=='1'  ? '男' : '女';
             $patient['admin_id'] = isset($users[$patient['admin_id']]) ? $users[$patient['admin_id']] : '----' ;
             $patient['dis'] =  isset($diseases[$patient['dis']])  ? $diseases[$patient['dis']] : '----' ;
             $patient['dep'] = isset($doctors[$patient['dep']]) ? $doctors[$patient['dep']] : '----' ;
+            if ($patient['book_id'] == '0') {
+                $patient['ads'] = isset($ads[$patient['ads']])? $ads[$patient['ads']] :'----';
+            }else{
+                $patient['ads'] = isset($ways[$patient['ads']])? $ways[$patient['ads']] :'----';
+            }
             list($patient['province'],$patient['city'],$patient['town']) = 
                 array_values(CallBackController::area($patient['province']-1,$patient['city']-1,$patient['town']-1));
-        } 
+        }
 
         $patients = reduceArr($patients, $key);
         $patients = array_map('count', $patients);
-        if($req->has('key')) return view('Patient.statistics.listWithoutNav',['all_count'=>$count,'data'=>$patients]);
-
-        return view('Patient.statistics.index', ['all_count'=>$count,'data'=>$patients]);
+        return $patients;
     }
+
+    public function statisByMonth(Request $req)
+    {  
+        $month = date('Y-m', time());
+        $months = Patient::all(DB::raw("distinct DATE_FORMAT(add_time, '%Y-%m') as add_time"));
+        $key =  'admin_id';
+        if(strtotime($req->month)) $month = $req->month;
+        if($req->key) $key = $req->key;
+        $monthStart = date('Y-m-01', strtotime($month));
+        $monthEnd = date('Y-m-d', strtotime("last day of $monthStart"));
+        $count = Patient::whereBetween('add_time', [$monthStart, $monthEnd])->count();
+        $patients = Patient::whereBetween('add_time', [$monthStart, $monthEnd])->get()->toArray();
+        $patients = $this->staReduceArr($patients, $key);
+
+        
+        if($req->has('key')) return view('Patient.statistics.listWithoutNav',['all_count'=>$count, 
+                                                            'data'=>$patients, 
+                                                            'current_month'=>$month,
+                                                            'months' => $months
+                                                            ]);
+
+        return view('Patient.statistics.listSearchByMonth',['all_count'=>$count, 
+                                                            'data'=>$patients, 
+                                                            'current_month'=>$month,
+                                                            'months' => $months
+                                                            ]);
+    }
+
+
+
 
 
     //通过关键字查找

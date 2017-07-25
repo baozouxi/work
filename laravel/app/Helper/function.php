@@ -64,17 +64,53 @@ function check_node($node)
 	return false;
 }
 
+/**
+ * 除法 并验证数据合法性
+ * @param  numeric $dividend 被除数
+ * @param  numeric $divisor  除数
+ * @param  numeric $precision    精度
+ * @return numeric          结果
+ */
+function divide($dividend, $divisor,$precision='2')
+{
+	if($divisor == 0 || !is_numeric($divisor) ) return 0;
+	$result = $dividend/$divisor;
+	$result = round($result, $precision);
+	return $result;
+}
+
+
+//验证数据合法性 并返回计算后的百分比
+function percent($dividend, $divisor, $mode='normal', $precision='')
+{	
+	$result = divide($dividend, $divisor,'10')*100;
+	switch ($mode) {
+		case 'ceil':
+			$result = ceil($result);
+			break;
+		case 'floor':
+			$result = floor($result);
+		 	break;
+	}
+
+	return $result.'%';
+}
+
 //获取统计数据需要的数据，例如 医生表，病种表 并返回格式化后的数组
 function getAuxiliary()
 {
 	$diseases = \App\Models\Disease::all()->toArray();
 	$doctors = \App\Models\Doctor::all()->toArray();
 	$users = \App\Models\User::all()->toArray();
+	$ways =  \App\Models\Way::all()->toArray();
+	$ads =  \App\Models\Ad::all()->toArray();
 	$diseases = array_column($diseases, 'name', 'id');
 	$doctors = array_column($doctors, 'name', 'id');
 	$users = array_column($users, 'name', 'id');
+	$ways = array_column($ways, 'name', 'id');
+	$ads = array_column($ads, 'name', 'id');
 
-	return array('diseases'=>$diseases, 'doctors'=>$doctors, 'users'=>$users);
+	return array('diseases'=>$diseases, 'doctors'=>$doctors, 'users'=>$users, 'ways'=>$ways,'ads'=>$ads);
 }
 
 
@@ -107,7 +143,9 @@ function reduceArr($data, $key)
 			case 'area':
 				$field = $item['city'].'-'.$item['town'];
 				break;
-
+			case 'age':
+				$field = $item[$key].'岁';
+				break;
 			default:
 				$field = $item[$key];
 				break;

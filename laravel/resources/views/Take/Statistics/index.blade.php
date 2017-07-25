@@ -1,9 +1,8 @@
 <!--导航-->
 <div class="guide">
     <ul class="left">
-        <li><span class="icon">Ă</span><a href="javascript:void(0);" onclick="getChange(0);fastH(this,'main')" url="{{ route('index',['s'=>'1']) }}">首页</a><span class="ider">&gt;</span></li>
-        {!! guideHtml('消费记录', route('trackStatistics')) !!}
-        {!! guideHtml('列表') !!}
+        <li><span class="icon">Ă</span><a href="javascript:void(0);" onclick="getChange(0);fastH(this,'main')" url="main.asp?s=1">首页</a><span class="ider">&gt;</span></li>
+        <li><a href="javascript:void(0);" onclick="fastH(this);set_title('全部');" url="stat_take.asp?to=m">消费统计</a></li>
     </ul>
 </div>
 <div id="wrap" class="wrap">
@@ -21,27 +20,28 @@
                     <button type="submit" class="search"><span class="icon">ĺ</span></button>
                 </form>
             </div>
-            <select class="select" id="sta_date" onchange="To('stat_take.asp?s=1&amp;to='+this.options[this.selectedIndex].value+'','main');">
+            <select class="select" onchange="To('/take/statistics/searchByMonth?month='+this.options[this.selectedIndex].value+'','main');">
                 <option value="0">按月查询</option>
-                <option value="2017-6">2017年6月</option>
-                <option value="2017-5">2017年5月</option>
+                @foreach($months as $month)
+                <option value="{{ $month->add_time }}">{{ $month->add_time }}月</option>
+                @endforeach
             </select>
         </div>
         <div id="box" class="box">
             <div id="tab">
                 <ul>
-                    <li onclick="fastT(0,2,0,&quot;m&quot;,0,0,0)" class="now">按录入</li>
-                    <li onclick="fastT(1,2,0,&quot;m&quot;,0,0,0)">按时段</li>
-                    <li onclick="fastT(2,2,0,&quot;m&quot;,0,0,0)">按日期</li>
-                    <li onclick="fastT(3,2,0,&quot;m&quot;,0,0,0)">按星期</li>
-                    <li onclick="fastT(4,2,0,&quot;m&quot;,0,0,0)">按月份</li>
-                    <li onclick="fastT(5,2,0,&quot;m&quot;,0,0,0)">按病种</li>
-                    <li onclick="fastT(6,2,0,&quot;m&quot;,0,0,0)">按医生</li>
-                    <li onclick="fastT(7,2,0,&quot;m&quot;,0,0,0)">按地区</li>
-                    <li onclick="fastT(8,2,0,&quot;m&quot;,0,0,0)">按途径</li>
-                    <!-- <li onclick="fastT('{{ route('trackStatistics',['way'=>'ads']) }}','9')">按媒介</li> -->
-                    <li onclick="fastT(9,2,0,&quot;m&quot;,0,0,0)">按年龄</li>
-                    <li onclick="fastT(10,2,0,&quot;m&quot;,0,0,0)">按性别</li>
+                    <li onclick="fastT(0,5,0,&quot;m&quot;,0,0,0)" class="now">按录入</li>
+                    <li onclick="fastT(1,5,1,&quot;m&quot;,0,0,0)">按时段</li>
+                    <li onclick="fastT(2,5,2,&quot;m&quot;,0,0,0)">按日期</li>
+                    <li onclick="fastT(3,5,3,&quot;m&quot;,0,0,0)">按星期</li>
+                    <li onclick="fastT(4,5,4,&quot;m&quot;,0,0,0)">按月份</li>
+                    <li onclick="fastT(5,5,5,&quot;m&quot;,0,0,0)">按病种</li>
+                    <li onclick="fastT(6,5,6,&quot;m&quot;,0,0,0)">按医生</li>
+                    <li onclick="fastT(7,5,7,&quot;m&quot;,0,0,0)">按地区</li>
+                    <li onclick="fastT(8,5,11,&quot;m&quot;,0,0,0)">按途径</li>
+                    <!-- <li onclick="fastT(9,2,9,&quot;m&quot;,0,0,0)">按媒介</li> -->
+                    <li onclick="fastT(9,5,9,&quot;m&quot;,0,0,0)">按年龄</li>
+                    <li onclick="fastT(10,5,10,&quot;m&quot;,0,0,0)">按性别</li>
                 </ul>
             </div>
             <div id="tablist">
@@ -90,7 +90,12 @@
                             <th width="60">
                                 <center>复诊人均</center>
                             </th>
-
+                           <!--  <th width="30">
+                                <center>人次</center>
+                            </th>
+                            <th width="60">
+                                <center>人次人均</center>
+                            </th> -->
                             <th width="75">
                                 <center>总消费</center>
                             </th>
@@ -100,7 +105,9 @@
                             <th width="60">
                                 <center>就诊人均</center>
                             </th>
-
+                            <!-- <th width="60">
+                                <center>人次人均</center>
+                            </th> -->
                             <th width="*"></th>
                         </tr>
                     </thead>
@@ -110,76 +117,82 @@
                                 <center><b><i>合 计</i></b></center>
                             </td>
                             <td>
-                                <center><b><i>{{ $total['patient_sum'] }}</i></b></center>
+                                <center><b><i>{{ $total['all_patient_count'] }}</i></b></center> <!-- 到诊 -->
                             </td>
                             <td>
-                                <center><b><i>0</i></b></center>
+                                <center><b><i>0</i></b></center><!-- 检查 -->
                             </td>
                             <td>
-                                <center><b><i>0</i></b></center>
+                                <center><b><i>0</i></b></center><!-- 消费 -->
                             </td>
                             <td>
-                                <center><b><i>0</i></b></center>
+                                <center><b><i>0</i></b></center><!-- 人均 -->
                             </td>
                             <td>
-                                <center><b><i>{{ $total['treatment_sum'] }}</i></b></center>
+                                <center><b><i>{{ $total['all_patient_cost_count'] }}</i></b></center><!-- 就诊 -->
                             </td>
                             <td>
-                                <center><b><i>
-            {{ $total['patient_sum'] == '0' ? '0' :  ceil($total['treatment_sum'] / $total['patient_sum']*100) }}%
-                            </i></b></center>
+                                <center>
+                                    <b>
+                              <i>{{ percent($total['all_patient_cost_count'], $total['all_patient_count'], 'ceil') }}</i>
+                                    </b>
+                                </center><!-- 就诊率 -->
                             </td>
                             <td>
-                                <center><b><i>{{ $total['treatment_cost_sum'] }}</i></b></center>
+                                <center><b><i>{{ $total['take_sum'] }}</i></b></center><!-- 消费 -->
                             </td>
                             <td>
-                                <center><b><i>
-            {{ $total['treatment_sum'] == '0' ? '0' :  ceil($total['treatment_cost_sum'] / $total['treatment_sum']) }}
-                            </i></b></center>
+                                <center><b><i>{{ divide($total['take_sum'], $total['all_patient_cost_count']) }}</i></b></center><!-- 就诊人均 -->
                             </td>
                             <td>
-                                <center><b><i>
-            {{ $total['patient_sum'] == '0' ? '0' :   ceil($total['treatment_cost_sum'] / $total['patient_sum']) }}
-                                </i></b></center>
+                                <center><b><i>{{ divide($total['take_sum'], $total['all_patient_count']) }}</i></b></center><!-- 到诊人均 -->
                             </td>
                             <td>
-                                <center><b><i>{{ $total['re_treatment_sum'] }}</i></b></center>
+                                <center><b><i>{{ $total['all_reHospital_count'] }}</i></b></center><!-- 复诊 -->
                             </td>
                             <td>
-                                <center><b><i>
-         {{  $total['treatment_sum'] == '0' ? '0' :  ceil($total['re_treatment_sum'] / $total['treatment_sum']*100) }}%
-                                </i></b></center>
+                                <center>
+                                    <b><i>{{ percent($total['all_reHospital_count'], $total['all_patient_count'],'ceil') }}</i></b>
+                                </center>
+                                <!-- 复诊率 -->
                             </td>
                             <td>
-                                <center><b><i>{{ $total['re_treatment_takes_sum'] }}</i></b></center>
+                                <center><b><i>{{$total['reHospital_take_sum']}}</i></b></center><!-- 复诊消费 -->
                             </td>
                             <td>
-                                <center><b><i>
-    {{ $total['re_treatment_sum'] == '0' ? '0' : ceil($total['re_treatment_takes_sum'] / $total['re_treatment_sum']) }}
-                                </i></b></center>
+                                <center><b><i>{{ divide($total['reHospital_take_sum'],$total['all_reHospital_count'])}}</i></b></center><!-- 复诊人均 -->
+                            </td>
+                          <!--   <td>
+                                <center><b><i>0</i></b></center> 人次 
                             </td>
                             <td>
-                                <center><b><i>{{ $total['take_sum'] }}</i></b></center>
+                                <center><b><i>0</i></b></center> 人次人均
+                            </td> -->
+                            <td>
+                                <center><b><i>{{ $total['take_sum'] }}</i></b></center><!-- 总消费 -->
                             </td>
                             <td>
-                                <center><b><i>
-                {{ $total['patient_sum'] == '0' ? '0' : ceil($total['take_sum'] / $total['patient_sum']) }}
-                                </i></b></center>
+                                <center><b><i>{{ divide($total['take_sum'], $total['all_patient_count']) }}</i></b></center><!-- 到诊人均 -->
                             </td>
                             <td>
-                                <center><b><i>
-         {{ $total['treatment_sum'] == '0' ? '0' :  ceil($total['take_sum'] / $total['treatment_sum']) }}
-                                </i></b></center>
+                                <center><b><i>{{ divide($total['take_sum'], $total['all_reHospital_count']) }}</i></b></center><!-- 就诊人均 -->
                             </td>
+                            <!-- <td>
+                                <center><b><i>17.33</i></b></center>
+                            </td> -->
                             <td></td>
                         </tr>
-                        @foreach($data as $field=> $item)
-                        <tr class="t2">
+                        @foreach($data as $field => $item)
+                        @if(is_int($loop->index/2))
+                            <tr class="t2">
+                        @else
+                            <tr class="t1">
+                        @endif
                             <td>
                                 <center><i>{{ $field }}</i> <a href="javascript:void(0);" onclick="msgbox(this,800);" url="turn.asp?m=stat&amp;o=uid&amp;aid=1&amp;to=m" title="医患通详细列表">[详]</a></center>
                             </td>
                             <td>
-                                <center>{{ $item['patient_sum'] }}</center>
+                                <center>{{ $item['patient_count'] }}</center> 
                             </td>
                             <td>
                                 <center><i>0</i></center>
@@ -191,56 +204,58 @@
                                 <center>0</center>
                             </td>
                             <td>
-                                <center><i>{{ $item['treatment_sum'] }}</i></center>
+                                <center><i>{{ $item['patient_cost_count'] }}</i></center>
                             </td>
                             <td>
-                                <center>
-                                {{ $item['patient_sum'] == '0' ? '0' : ceil($item['treatment_sum']/$item['patient_sum']*100) }}%
-                                </center>
+                                <center>{{ percent($item['patient_cost_count'], $item['patient_count'],'ceil') }}</center>
                             </td>
                             <td>
-                                <center>{{ $item['treatment_takes_sum'] - $item['re_treatment_takes_sum'] }}</center>
+                                <center>{{ $item['take_sum'] }}</center>
                             </td>
                             <td>
-                                <center>
-                         {{$item['treatment_sum'] == '0' ? '0' : ceil(($item['treatment_takes_sum'] - $item['re_treatment_takes_sum'])/$item['treatment_sum']) }}
-                                </center>
+                                <center>{{ divide($item['take_sum'], $item['patient_cost_count']) }}</center>
                             </td>
                             <td>
-                                <center>
-                        {{$item['patient_sum'] == '0' ? '0' : ceil(($item['treatment_takes_sum'] - $item['re_treatment_takes_sum'])/$item['patient_sum']) }}
-                                </center>
+                                <center>{{ divide($item['take_sum'], $item['patient_count']) }}</center>
                             </td>
                             <td>
-                                <center><i>{{ $item['re_treatment_sum'] }}</i></center>
-                            </td>
-
-                            <td>
-                                <center>{{$item['treatment_sum'] == '0' ? '0' : ceil($item['re_treatment_sum']/$item['treatment_sum']*100) }}%</center>
+                                <center><i>{{ $item['reHospital_count'] }}</i></center>
                             </td>
                             <td>
-                                <center><i>{{ $item['re_treatment_takes_sum'] }}</i></center>
+                                <center>{{ percent($item['reHospital_count'], $item['patient_count'], 'ceil') }}</center>
                             </td>
                             <td>
-                                <center>{{$item['re_treatment_sum'] == '0' ? '0' :  ceil($item['re_treatment_takes_sum']/$item['re_treatment_sum']) }}</center>
+                                <center>{{ $item['reHospital_take_sum'] }}</center>
                             </td>
                             <td>
-                                <center><i>{{ $item['treatment_takes_sum'] }}</i></center>
+                                <center>{{ divide($item['reHospital_take_sum'], $item['reHospital_count']) }}</center>
                             </td>
                             <td>
-                                <center>{{ $item['patient_sum'] == '0' ? '0' : ceil($item['treatment_takes_sum']/$item['patient_sum']) }}</center>
+                                <center><i>{{ $item['take_sum'] }}</i></center>
                             </td>
                             <td>
-                                <center>{{ $item['treatment_sum'] == '0' ? '0' :  ceil($item['treatment_takes_sum']/$item['treatment_sum']) }}</center>
+                                <center>{{ divide($item['take_sum'], $item['patient_count']) }}</center>
                             </td>
-
+                            <td>
+                                <center><i>{{ divide($item['take_sum'], $item['patient_cost_count']) }}</i></center>
+                            </td>
+                          <!--   <td>
+                                <center>0</center>
+                            </td> -->
+                            <!-- <td>
+                                <center>0</center>
+                            </td> -->
+                            <!-- <td>
+                                <center>0</center>
+                            </td> -->
                             <td></td>
                         </tr>
-                    @endforeach
+                        @endforeach
+
                     </tbody>
                 </table>
             </div>
-            <input type="hidden" name="this_url" id="this_url" value="/stat_take.asp?to=m">
+            <input type="hidden" name="this_url" id="this_url" value="{{ route('takeStatistics') }}">
         </div>
     </div>
 </div>

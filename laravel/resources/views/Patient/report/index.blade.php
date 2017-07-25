@@ -17,8 +17,9 @@
             <div id="fun-n" class="right block"></div>
             <select class="select" id="report_date" onchange="To('/patient/report/'+this.options[this.selectedIndex].value+'','main');">
                 <option value="0">按月查询</option>
-                <option value="2017-7">2017年7月</option>
-                <option value="2017-5">2017年5月</option>
+                @foreach($months as $month)
+                <option value="{{ $month->add_time }}">{{ $month->add_time }}月</option>
+                @endforeach
             </select>
 
 <!--  暂时不启用           <select class="select" onchange="To('/patient/report/'+$('report_date').options[$('report_date').selectedIndex].value+'/'+this.options[this.selectedIndex].value,'main');">

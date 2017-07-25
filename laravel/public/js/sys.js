@@ -529,27 +529,29 @@ function fastT(n,u,t,b,c,d,e){
 			case 8	: a="way"	;break;
 			case 9	: a="age"	;break;
 			case 10	: a="gender";break;
+			case 11	: a="ads";break;
 			default	: a="admin_id";
 			}
 		//地址
 		switch(u){
-			case 1	: url="stat_res.asp";break;
+			case 1	: url="/patient/statistics/searchByMonth";break;
 			case 2	: url="/patient/statistics/list";break;
 			// case 3	: url="stat_rank.asp";break;
-			// case 4	: url="stat_turn.asp";break;
-			// case 5	: url="stat_take.asp";break;
+			case 4	: url="/take/statistics/searchByMonth";break;
+			case 5	: url="/take/statistics/list";break;
 			// default	: url="stat_res.asp";
 			}
 		}
 	//设置默认值
-	if (!b){b='';}else{b='&to='+b;}
+	if (!b){b='';}else{b='&month='+b;}
 	if (!c){c='';}else{c='&ds='+c;}
 	if (!d){d='';}else{d='&de='+d;}
 
 	//AJAX
 	his_mask('box',1);
 	Ajax.request(url,{
-			data:'key='+a+b+c+d+e+ "&req="+ Math.random(),
+			//data:'key='+a+b+c+d+e+ "&req="+ Math.random(),
+			data:'key='+a+b+ "&req="+ Math.random(),
 			success	:function(result){close_mask('box');$("tablist").innerHTML = result;},
 			failure:function(xhr,msg){alert(msg)}
 		});

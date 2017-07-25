@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Book;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\CallBackController;
 use App\Models\Appointment;
 use App\Models\Patient;
 use App\Models\Consult;
+use App\Models\Doctor;
 
 /**
  * 预约统计模块 
@@ -19,112 +21,45 @@ use App\Models\Consult;
 class StatisticsController extends Controller
 {
     
-    public function index(Request $req, $way='admin_id', $date=null)
+    public function index()
     {
-    	$date = date('Y-m-d', time());
-        if($req->date !== null) $date = $req->date;
-        if($req->way !== null) $way = $req->way;
-    	$monthStart = date('Y-m-01', strtotime($date));
-    	$monthEnd = date('Y-m-d', strtotime("last day of $monthStart"));
-    	$data = Appointment::whereBetween('postdate', [$monthStart, $monthEnd])->get()->toArray();
-    	$consult_count = Consult::whereBetween('add_time', [$monthStart, $monthEnd])->where('status', '!=', '0')->count();
-    	//判断传过来的way是否合法
+        $data =  Appointment::all()->toArray();
+        $count = array_count_values(array_column($data, 'is_hospital'));
+        $total['arrive'] = isset($count['1']) ? $count['1'] : '0';
+        $total['un_arrive'] = isset($count['0']) ? $count['0'] : '0';
+        $total['all_count'] = count($data);
+        $key = 'admin_id';
 
-    	//数据统计
-    	$total['app_sum'] = count($data);
-    	$total['patient_sum'] = 0;
-    	$total['consult_sum'] = $consult_count;
-    	$data_arr = array();
-        $week = '星期天,星期一,星期二,星期三,星期四,星期五,星期六';
-        $week_arr = explode(',', $week);
+        list($diseases, $doctors, $users, $ways) = array_values(getAuxiliary());
+        foreach ($data  as &$item) {
+            $item['dis'] = isset($diseases[$item['dis']]) ? $diseases[$item['dis']] : '未知';
+            $item['admin_id'] = isset($users[$item['admin_id']]) ? $users[$item['admin_id']] : '未知'; 
+            $item['way'] = isset($ways[$item['way']])? $ways[$item['way']] : '未知';
+            $item['gender'] = $item['gender'] == '1' ? '男' : '女'; 
+            list($item['province'], $item['city'], $item['town']) = 
+                array_values(CallBackController::area($item['province']-1,$item['city']-1,$item['town']-1));
+        }
+        $data = reduceArr($data, $key);
+        $data_arr = [];
+        foreach ($data as $field => $item) {
+            if(!isset($data_arr[$field]['arrive'])) $data_arr[$field]['arrive'] = 0;
+            if(!isset($data_arr[$field]['un_arrive'])) $data_arr[$field]['un_arrive'] = 0;
+            if(!isset($data_arr[$field]['all_count'])) $data_arr[$field]['all_count'] = 0;
+            foreach ($item as $v) {
+                $data_arr[$field]['all_count'] += 1;
+                if ($v['is_hospital'] == '1') {
+                    $data_arr[$field]['arrive'] += 1;
 
-        $doctors = Doctor::all()->toArray();
-        $doctors = array_column($doctors, 'name', 'id');
-
-        dd($data);
-
-    	foreach ($data as $item) {
-
-
-            //此处取消了swtich的break  目的是为了在处理数组之前先生成键值
-            switch ($way) {
-
-                case 'time':
-                    $way_filter = formatDate($item['postdate'], 'G').'点';
-                    break;
-                case 'day':
-                    $way_filter = formatDate($item['postdate'], 'j').'号';
-                    break;
-                case 'save':
-                    $way_filter = $item['admin_id'];
-                    break;
-                case 'week':
-                    $way_filter = $week_arr[formatDate($item['postdate'], 'w')];
-                    break;
-                case 'month':
-                    $way_filter = formatDate($item['postdate'], 'n').'月';
-                    break;
-                case 'area':
-                    $way_filter = $item['town'];
-                    break;
-             }
-
-            if(isset($way_filter)){
-                $way_after_filter = $way_filter;  
-            } else {
-                $way_after_filter = $item[$way];
+                } else {
+                    $data_arr[$field]['un_arrive'] += 1;
+                }
             }
+        }
+        unset($data);
 
-            if (!isset($data_arr[$way_after_filter]['app_sum'])) {
-                $data_arr[$way_after_filter]['app_sum'] = 0;  
-            }
-
-            $data_arr[$way_after_filter]['app_sum'] += 1; 
-            
-
-            if (!isset($data_arr[$way_after_filter]['patient_sum'])) $data_arr[$way_after_filter]['patient_sum'] = 0;
-            
-            if ($item['is_hospital'] == '1') {
-                $data_arr[$way_after_filter]['patient_sum'] += 1;
-                $total['patient_sum'] += 1;
-            }
-               
-           
-    		
-    	}
-
-
-   		//传递引用 
-    	foreach ($data_arr as &$item) {
-    		$item['un_arrive'] = $item['app_sum'] - $item['patient_sum'];
-    		$item['arrive'] = $total['patient_sum'] == '0' ? '0' : ceil($item['patient_sum']/$item['app_sum']*100);
-    		$item['app_per'] = 	$item['app_sum']  == '0' ? '0' : ceil($item['app_sum']/$total['app_sum']*100);
-    		$item['arrive_per'] = 	$item['app_sum']  == '0' ? '0' : ceil($item['patient_sum']/$total['app_sum']*100);
-	  	}
-
-	  	$total['arrive_per'] = $total['app_sum'] == '0' ? '0' : ceil($total['patient_sum']/$total['app_sum']*100);
-    	$total['un_arrive'] = $total['app_sum'] - $total['patient_sum']; 
-	  	unset($data);
-        if($req->way != null)  return view('Book.Statistics.list', ['data' => $data_arr, 'total'=>$total, 'way'=>$way]); 
- 	    return view('Book.Statistics.index', ['data' => $data_arr, 'total'=>$total]); 
-        
+        return view('Book.statistics.index', ['total'=>$total, 'data_arr'=>$data_arr]);
     }
 
-
-    /**
-     * 根据传入键值重新组织数组
-     * @param  [string] $key  [键值]
-     * @param  [array] $data [待整理数组]
-     * @return [array]       [整理后数组]
-     */
-    private function formatData($key, $data)
-    {	
-    	$tem_arr = [];
-    	foreach ($data as $item) {
-    		$tem_arr[$item[$key]][] = $item;	
-    	}
-    	return $tem_arr;
-    }	
 
 
 }

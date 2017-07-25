@@ -25,6 +25,7 @@ class DisController extends Controller
                 unset($data[$key]); 
             } 
         }
+        
 
         foreach ($data as $key => $rawItem) {
             $data_arr[$rawItem['parent_id']]['child'][$key]['name'] = $rawItem['name'];

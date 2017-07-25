@@ -33,7 +33,8 @@
 		Route::post('/book/export/html', 'BookController@export')->name('bookExport');
 		Route::get('/book/statistics/{way?}/{date?}', 'StatisticsController@index')->name('bookStatistics');
 		Route::get('/book/chatlog/{id}', 'BookController@getChatlog')->name('chatlog');
-		Route::get('/book/sheet/{date?}/{admin?}', 'BookController@sheet')->name('bookSheet');
+		Route::get('/book/report/list', 'ReportController@index')->name('bookSheet');
+		Route::get('/book/report/searchByMonth', 'ReportController@searchByMonth')->name('bookSheetSearchByMonth');
 		Route::Resource('book', 'BookController');
 		Route::Resource('booktrack', 'TrackController');
 	});
@@ -49,9 +50,9 @@
 		Route::get('/patient/book/{id}', 'PatientController@patientBookUpdate');
 		Route::get('/patient/track/today', 'TrackController@today')->name('patientTrackToday');
 		Route::get('/patient/track/withinfo/{patientId}', 'TrackController@indexWithInfo')->name('trackWithInfo');
-		Route::get('/patient/track/statistics/{way?}/{date?}', 'TrackController@statistics')->name('trackStatistics');
 		Route::get('/patient/report/{date?}/{admin?}', 'PatientController@patientReport')->name('patientReport');
 		Route::get('/patient/statistics/list', 'PatientController@statistics')->name('patientStatistics');
+		Route::get('/patient/statistics/searchByMonth', 'PatientController@statisByMonth')->name('patientStaSearchByMonth');
 		Route::Resource('patienttrack', 'TrackController');
 		Route::Resource('patient', 'PatientController');
 	});
@@ -61,6 +62,8 @@
 		Route::Resource('take', 'TakeController');
 		Route::get('/take/come/today', 'TakeController@today')->name('takeToday');
 		Route::get('/take/info/{patientId}', 'TakeController@infoWithPatient')->name('takeWithInfo');
+		Route::get('/take/statistics/list', 'TakeController@statistics')->name('takeStatistics');
+		Route::get('/take/statistics/searchByMonth', 'TakeController@staSearchByMonth')->name('takeStatisticsSearchByMonth');
 	});
 
 	//咨询模块
