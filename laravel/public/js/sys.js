@@ -536,7 +536,7 @@ function fastT(n,u,t,b,c,d,e){
 		switch(u){
 			case 1	: url="/patient/statistics/searchByMonth";break;
 			case 2	: url="/patient/statistics/list";break;
-			// case 3	: url="stat_rank.asp";break;
+			case 3	: url="/book/statistics/searchByMonth";break;
 			case 4	: url="/take/statistics/searchByMonth";break;
 			case 5	: url="/take/statistics/list";break;
 			// default	: url="stat_res.asp";

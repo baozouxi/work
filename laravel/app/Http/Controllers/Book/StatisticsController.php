@@ -9,7 +9,7 @@ use App\Models\Appointment;
 use App\Models\Patient;
 use App\Models\Consult;
 use App\Models\Doctor;
-
+use DB;
 /**
  * 预约统计模块 
  * 单独将本模块列在一个控制器 主要是因为如果把功能写在一个方法里面  耦合高 逻辑复杂 代码结构不够清晰
@@ -24,11 +24,20 @@ class StatisticsController extends Controller
     public function index()
     {
         $data =  Appointment::all()->toArray();
+        $months = Appointment::all(DB::raw("distinct DATE_FORMAT(postdate, '%Y-%m') as postdate"));
+        $key = 'admin_id';
+        list($total, $data_arr) = $this->reduceArr($data, $key);
+
+        return view('Book.statistics.index', ['total'=>$total, 'data_arr'=>$data_arr, 'months'=>$months]);
+    }
+
+
+    public function reduceArr($data, $key)
+    {
         $count = array_count_values(array_column($data, 'is_hospital'));
         $total['arrive'] = isset($count['1']) ? $count['1'] : '0';
         $total['un_arrive'] = isset($count['0']) ? $count['0'] : '0';
         $total['all_count'] = count($data);
-        $key = 'admin_id';
 
         list($diseases, $doctors, $users, $ways) = array_values(getAuxiliary());
         foreach ($data  as &$item) {
@@ -56,10 +65,36 @@ class StatisticsController extends Controller
             }
         }
         unset($data);
-
-        return view('Book.statistics.index', ['total'=>$total, 'data_arr'=>$data_arr]);
+        return [$total, $data_arr];
     }
 
+
+    public function searchByMonth(Request $req)
+    {
+
+        $data = new Appointment();
+        $arr = [];
+        $key = 'admin_id';
+   
+        if(strtotime($req->month) && $req->month != 'm') {
+            $monthStart = date('Y-m-01', strtotime($req->month));
+            $monthEnd = date('Y-m-d', strtotime("last day of $monthStart"));
+            $data = $data->whereBetween('postdate', [$monthStart, $monthEnd]);
+        }
+
+        if($req->has('key')) $key = $req->key;
+        $data = $data->get()->toArray();
+        
+        list($total, $data_arr) = $this->reduceArr($data, $key);
+
+        if(strtotime($req->month) && $req->month != 'm' && !$req->has('key') || $req->month == '0') {
+            $months = Appointment::all(DB::raw("distinct DATE_FORMAT(postdate, '%Y-%m') as postdate"));
+            return view('Book.Statistics.searchByMonth', ['total'=>$total, 'data_arr'=>$data_arr, 'months'=>$months, 'current_month'=>$req->month]);
+        } 
+
+        return view('Book.Statistics.listWithoutNav', ['total'=>$total, 'data_arr'=>$data_arr]);
+        
+    }
 
 
 }

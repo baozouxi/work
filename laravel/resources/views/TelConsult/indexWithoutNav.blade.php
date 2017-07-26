@@ -1,42 +1,5 @@
-<!--导航-->
-<div class="guide">
-    <ul class="left">
-        <li><span class="icon">Ă</span><a href="javascript:void(0);" onclick="getChange(0);fastH(this,'main')" url="{{ route('index',['s'=>'1']) }}">首页</a><span class="ider">&gt;</span></li>
-        <li><a href="javascript:void(0);" onclick="fastH(this);set_title('列表');" url="tel.asp">电话记录</a><span class="ider">&gt;</span></li>
-        <li><span id="guide">列表</span></li>
-    </ul>
-    <p class="nlink right"><!-- <a href="javascript:void(0);" onclick="fastL('tel.asp?act=com');" class="sms"><span class="icon">ƀ</span>更新状态</a> --><a href="javascript:void(0);" onclick="fastH(this);set_title('到期回访');" url="{{ route('telConsultTrack') }}" class="sms"><span class="icon">ĝ</span>到期回访</a></p>
-</div>
-<div id="wrap" class="wrap">
-    <!--整体内容-->
-    <div id="container" class="container">
-        <div class="top">
-            <h3 class="left"><span class="icon">ĕ</span>电话列表</h3>
-            <p class="nlink right"><a href="javascript:void(0);" onclick="fundisp()"><span class="icon">Ş</span>切换</a></p>
-        </div>
-        <div class="fun">
-        @if(check_node('tel_add'))
-            <h3 class="left"><a href="javascript:void(0);" onclick="fastH(this,'main')" url="{{ route('tel-consult.create') }}"><span class="icon">ŷ</span>新增电话</a></h3>
-        @endif
-            <div id="fun-s" class="fun-s right block">
-                <form name="form_key" id="form_key" onsubmit="return(fastK(this,'key'));" action="tel.asp?m=">
-                    <input class="inp" id="key" name="key">
-                    <button type="submit" class="search"><span class="icon">ĺ</span></button>
-                </form>
-            </div>
-            <div id="fun-n" class="right none">
-                <form name="form_date" id="form_date" onsubmit="return(fastK(this,'ds'));" action="tel.asp?m=">
-                    <input name="ds" id="ds" class="inp" type="text" value="" onfocus="WdatePicker({onpicked:function(){de.focus();},maxDate:'#F{$dp.$D(\'de\')||\'%y-%M-%d\'}'})"><i class="calendar icon">ğ</i>
-                    <input name="de" id="de" class="inp" value="" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'ds\')}',maxDate:'%y-%M-%d'})">
-                    <button type="submit" class="search"><span class="icon">ĺ</span></button>
-                </form>
-                <select class="select" onchange="To('tel.asp?s=1&amp;to='+this.options[this.selectedIndex].value+'','main');">
-                    <option value="0">按月查询</option>
-                    <option value="2017-5">2017年5月</option>
-                </select>
-            </div>
-        </div>
-        <div id="box" class="box">
+
+    
             <table cellspacing="1" cellpadding="0">
                 <thead>
                     <tr>
@@ -159,7 +122,4 @@
                     </tr>
                 </tbody>
             </table>
-            <input type="hidden" name="this_url" id="this_url" value="/tel.asp">
-        </div>
-    </div>
-</div>
+      

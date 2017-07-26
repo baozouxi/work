@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Consult;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\CallBackController;
 use App\Http\Requests\ConsultRequest;
 use App\Models\Consult;
 use App\Models\Appointment;
@@ -13,9 +14,40 @@ class ConsultController extends Controller
     public function index()
     {
     	$consults = Consult::all()->toArray();
+        
+        $consults = $this->reduceArr($consults);
+
+        return view('consult.index', ['consults'=>$consults]);
+
+    }
+
+
+    public function timeToTrack()
+    {
+        $dateStart = date('Y-m-d 00:00:00', time());
+        $dateEnd = date('Y-m-d 23:59:59', time());
+        $consults = Consult::whereBetween('track_time', [$dateStart, $dateEnd])->get()->toArray();
+        $consults = $this->reduceArr($consults);
+
+        return view('consult.indexWithoutNav', ['consults'=>$consults]);
+    }
+
+
+    public function reduceArr($consults)
+    {
+        if(empty($consults)) return [];
         $phone_num[] = array_column($consults, 'phone');
         
-  		$appointments = Appointment::whereIn('phone',$phone_num)->get(['phone','is_hospital']);
+        $appointments = Appointment::whereIn('phone',$phone_num)->get(['phone','is_hospital']);
+        list($diseases, $doctors, $users, $ways) = array_values(getAuxiliary());
+
+        foreach ($consults as &$consult) {
+            $consult['dis'] = isset($diseases[$consult['dis']]) ? $diseases[$consult['dis']]  : '未知' ;
+            $consult['admin_id'] = isset($users[$consult['admin_id']]) ? $users[$consult['admin_id']]  : '未知' ;
+            list($consult['province'],$consult['city'],$consult['town']) = 
+                array_values(CallBackController::area($consult['province']-1,$consult['city']-1,$consult['town']-1));
+        }
+
         foreach ($appointments as $appItem) {
             foreach ($consults as &$conItem) {
                 if($appItem->phone == $conItem['phone']){
@@ -24,7 +56,8 @@ class ConsultController extends Controller
 
             }
         }
-        return view('consult.index', ['consults'=>$consults]);
+
+        return $consults;
 
     }
 

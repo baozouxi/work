@@ -1,43 +1,4 @@
-<!--导航-->
-<div class="guide">
-    <ul class="left">
-        <li><span class="icon">Ă</span><a href="javascript:void(0);" onclick="getChange(0);fastH(this,'main')" url="{{ route('index',['s'=>'1']) }}">首页</a><span class="ider">&gt;</span></li>
-        <li><a href="javascript:void(0);" onclick="fastH(this);set_title('列表');" url="cons.asp">咨询记录</a><span class="ider">&gt;</span></li>
-        <li><span id="guide">列表</span></li>
-    </ul>
-    <p class="nlink right"><!-- <a href="javascript:void(0);" onclick="fastL('cons.asp?act=com');" class="sms"><span class="icon">ƀ</span>更新状态</a> --><a href="javascript:void(0);" onclick="fastH(this);set_title('到期回访');" url="{{ route('consultTrack') }}" class="sms"><span class="icon">ĝ</span>到期回访</a></p>
-</div>
-<div id="wrap" class="wrap">
-    <!--整体内容-->
-    <div id="container" class="container">
-        <div class="top">
-            <h3 class="left"><span class="icon">Ĳ</span>咨询列表</h3>
-            <p class="nlink right"><a href="javascript:void(0);" onclick="fundisp()"><span class="icon">Ş</span>切换</a></p>
-        </div>
-        <div class="fun">
-        @if(check_node('consult_add'))
-            <h3 class="left"><a href="javascript:void(0);" onclick="fastH(this,'main')" url="{{ route('consult.create') }}"><span class="icon">ŷ</span>新增咨询</a></h3>
-        @endif
-            <div id="fun-s" class="fun-s right block">
-                <form name="form_key" id="form_key" onsubmit="return(fastK(this,'key'));" action="cons.asp?m=">
-                    <input class="inp" id="key" name="key">
-                    <button type="submit" class="search"><span class="icon">ĺ</span></button>
-                </form>
-            </div>
-            <div id="fun-n" class="right none">
-                <form name="form_date" id="form_date" onsubmit="return(fastK(this,'ds'));" action="cons.asp?m=">
-                    <input name="ds" id="ds" class="inp" type="text" value="" onfocus="WdatePicker({onpicked:function(){de.focus();},maxDate:'#F{$dp.$D(\'de\')||\'%y-%M-%d\'}'})"><i class="calendar icon">ğ</i>
-                    <input name="de" id="de" class="inp" value="" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'ds\')}',maxDate:'%y-%M-%d'})">
-                    <button type="submit" class="search"><span class="icon">ĺ</span></button>
-                </form>
-                <select class="select" onchange="To('cons.asp?s=1&amp;to='+this.options[this.selectedIndex].value+'','main');">
-                    <option value="0">按月查询</option>
-                    <option value="2017-6">2017年6月</option>
-                    <option value="2017-5">2017年5月</option>
-                </select>
-            </div>
-        </div>
-        <div id="box" class="box">
+
             <table cellspacing="1" cellpadding="0">
                 <thead>
                     <tr>
@@ -125,13 +86,13 @@
                             <center>PC商务通</center>
                         </td>
                         <td>
-                            <center>{{ $item['city'] }} {{ $item['town'] }}</center>
+                            <center>金牛区</center>
                         </td>
                         <td>
-                            <center>{{ $item['dis'] }}</center>
+                            <center>肾病综合征</center>
                         </td>
                         <td>
-                            <center>{{ $item['admin_id'] }}</center>
+                            <center>一株</center>
                         </td>
                         <td>
 
@@ -155,7 +116,4 @@
                     </tr>
                 </tbody>
             </table>
-            <input type="hidden" name="this_url" id="this_url" value="/cons.asp">
-        </div>
-    </div>
-</div>
+

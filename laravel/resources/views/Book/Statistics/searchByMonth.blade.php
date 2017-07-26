@@ -12,7 +12,7 @@
             <h3 class="left"><span class="icon">ŏ</span>预约统计</h3>
             <p class="nlink right"><a href="javascript:void(0);" onclick="display('fun')"><span class="icon">Ş</span>快捷查找</a></p>
         </div>
-        <div class="fun none" id="fun">
+        <div class="fun block" id="fun">
             <div id="fun-n" class="right block">
                 <form name="form_date" id="form_date" onsubmit="return(fastK(this,'ds'));" action="stat_res.asp?m=">
                     <input name="ds" id="ds" class="inp" type="text" value="" onfocus="WdatePicker({onpicked:function(){de.focus();},maxDate:'#F{$dp.$D(\'de\')||\'%y-%M-%d\'}'})"><i class="calendar icon">ğ</i>
@@ -23,24 +23,28 @@
             <select class="select" id="sta_date" onchange="To('/book/statistics/searchByMonth?month='+this.options[this.selectedIndex].value+'','main');">
                 <option value="0">按月查询</option>
                 @foreach($months as $month)
+                @if($month->postdate == $current_month)
+                <option value="{{ $month->postdate }}" selected="selected">{{ $month->postdate }}月</option>
+                @else
                 <option value="{{ $month->postdate }}">{{ $month->postdate }}月</option>
+                @endif
                 @endforeach
             </select>
         </div>
         <div id="box" class="box">
             <div id="tab">
                <ul>
-                    <li onclick="fastT(0,3,0,&quot;m&quot;,0,0,0)" class="now">按录入</li>
-                    <li onclick="fastT(1,3,1,&quot;m&quot;,0,0,0)">按时段</li>
-                    <li onclick="fastT(2,3,2,&quot;m&quot;,0,0,0)">按日期</li>
-                    <li onclick="fastT(3,3,3,&quot;m&quot;,0,0,0)">按星期</li>
-                    <li onclick="fastT(4,3,4,&quot;m&quot;,0,0,0)">按月份</li>
-                    <li onclick="fastT(5,3,5,&quot;m&quot;,0,0,0)">按病种</li>
-                    <!-- <li onclick="fastT(6,3,6,&quot;m&quot;,0,0,0)">按医生</li> -->
-                    <li onclick="fastT(7,3,7,&quot;m&quot;,0,0,0)">按地区</li>
-                    <li onclick="fastT(8,3,8,&quot;m&quot;,0,0,0)">按途径</li>
-                    <li onclick="fastT(9,3,9,&quot;m&quot;,0,0,0)">按年龄</li>
-                    <li onclick="fastT(10,3,10,&quot;m&quot;,0,0,0)">按性别</li>
+                    <li onclick="fastT(0,3,0,'{{ $current_month }}',0,0,0)" class="now">按录入</li>
+                    <li onclick="fastT(1,3,1,'{{ $current_month }}',0,0,0)">按时段</li>
+                    <li onclick="fastT(2,3,2,'{{ $current_month }}',0,0,0)">按日期</li>
+                    <li onclick="fastT(3,3,3,'{{ $current_month }}',0,0,0)">按星期</li>
+                    <li onclick="fastT(4,3,4,'{{ $current_month }}',0,0,0)">按月份</li>
+                    <li onclick="fastT(5,3,5,'{{ $current_month }}',0,0,0)">按病种</li>
+                    <!-- <li onclick="fastT(6,3,6,'{{ $current_month }}',0,0,0)">按医生</li> -->
+                    <li onclick="fastT(7,3,7,'{{ $current_month }}',0,0,0)">按地区</li>
+                    <li onclick="fastT(8,3,8,'{{ $current_month }}',0,0,0)">按途径</li>
+                    <li onclick="fastT(9,3,9,'{{ $current_month }}',0,0,0)">按年龄</li>
+                    <li onclick="fastT(10,3,10,'{{ $current_month }}',0,0,0)">按性别</li>
                 </ul>
 
             </div>

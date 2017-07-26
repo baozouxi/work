@@ -15,6 +15,26 @@ class TelConsultController extends Controller {
 	{
 		$telConsults = TelConsult::all()->toArray();
 		// 获取电话数组 作为条件查询预约表
+		$telConsults = $this->reduceArr($telConsults);
+
+		return view('TelConsult.index', ['telConsults' => $telConsults]);
+	}
+
+
+
+	public function timeToTrack()
+	{
+		$dateStart = date('Y-m-d 00:00:00', time());
+		$dateEnd = date('Y-m-d 23:59:59', time());
+		$telConsults = TelConsult::whereBetween('track_time', [$dateStart, $dateEnd])->get()->toArray();
+		$telConsults = $this->reduceArr($telConsults);
+		return view('TelConsult.indexWithoutNav', ['telConsults' => $telConsults]);
+	}	
+
+
+	private function reduceArr($telConsults)
+	{
+		if(empty($telConsults)) return [];
 		$phone_nums = array_column($telConsults, 'phone');
 		$appointments = Appointment::where('phone', $phone_nums)->get(['phone', 'is_hospital']);
 
@@ -29,8 +49,7 @@ class TelConsultController extends Controller {
 				}
 			}
 		}
-
-		return view('TelConsult.index', ['telConsults' => $telConsults]);
+		return $telConsults;
 	}
 
 	public function show($id)

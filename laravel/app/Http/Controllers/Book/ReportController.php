@@ -110,8 +110,7 @@ class ReportController extends Controller
 
         list($arr['total'], $arr['data_arr']) =  $this->reduceArr($data);
 
-        if(isset($arr['current_month'])) return view('Book.sheetSearchByMonth', $arr);
+        return view('Book.sheetSearchByMonth', $arr);
 
-        return view('Book.sheet', $arr);
     }
 }

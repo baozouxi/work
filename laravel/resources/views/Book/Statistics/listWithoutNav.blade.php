@@ -1,4 +1,3 @@
-
                 <table cellspacing="1" cellpadding="0">
                     <thead>
                         <tr>
@@ -26,57 +25,46 @@
                                 <center><b><i>合 计</i></b></center>
                             </td>
                             <td>
-                                <center><b><i>{{ $total['app_sum'] }}</i></b></center>
+                                <center><b><i>{{ $total['all_count'] }}</i></b></center>
                             </td>
                             <td>
-                                <center><b><i>{{ $total['patient_sum'] }}</i></b></center>
+                                <center><b><i>{{ $total['arrive'] }}</i></b></center>
                             </td>
                             <td>
                                 <center><b><i>{{ $total['un_arrive'] }}</i></b></center>
                             </td>
                             <td>
-                                <center><b><i>{{ $total['arrive_per'] }}%</i></b></center>
+                                <center><b><i>{{ percent($total['arrive'], $total['all_count']) }}</i></b></center>
                             </td>
-                            <td><b><i>蓝色：预约比例 红色：到诊比例 咨询人次：{{ $total['consult_sum'] }}</i></b></td>
+                            <td><b><i>蓝色：预约比例 红色：到诊比例 咨询人次：</i></b></td>
                         </tr>
-                    @foreach($data as $field => $item)
-                    @if(is_int($loop->index/2))
+                        @foreach($data_arr as $field => $data)
                         <tr class="t2">
-                    @else
-                        <tr class="t1">
-                    @endif
                             <td>
                                 <center><a href="javascript:void(0);" onclick="msgbox(this,500);" url="stat_res.asp?act=stat_s_uid&amp;aid=1&amp;to=m"><i>{{ $field }}</i> </a><a href="javascript:void(0);" onclick="msgbox(this,800);" url="res.asp?m=stat&amp;o=uid&amp;aid=1&amp;to=m" title="医患通详细列表">[详]</a></center>
                             </td>
                             <td>
-                                <center>{{ $item['app_sum'] }}</center>
+                                <center>{{ $data['all_count'] }}</center>
                             </td>
                             <td>
-                                <center>{{ $item['patient_sum'] }}</center>
+                                <center>{{ $data['arrive'] }}</center>
                             </td>
                             <td>
-                                <center>{{ $item['un_arrive'] }}</center>
+                                <center>{{ $data['un_arrive'] }}</center>
                             </td>
                             <td>
-                                <center>{{ $item['arrive'] }}%</center>
+                                <center>{{ percent($data['arrive'], $data['all_count'], 'ceil') }}</center>
                             </td>
                             <td>
-                            
-                            @if($item['app_per'] != '0')
                                 <div class="pers">
-                                    <div class="per" style="width:{{ $item['app_per'] }}%" title="{{ $item['app_per'] }}%"><span>{{ $item['app_per'] }}%</span></div>
+                                    <div class="per" style="width:{{ percent($data['all_count'], $total['all_count'], 'ceil') }}" title="{{ percent($data['all_count'], $total['all_count'], 'ceil') }}"><span>{{ percent($data['all_count'], $total['all_count'], 'ceil') }}</span></div>
                                 </div>
-                            @else
-                                <div class="pers">
-                                    <div class="per" style="width:10.0%;background-color: #999;" title="0%"><span>0%</span></div>
-                                </div>
-                            @endif
-
                                 <div class="perts">
-                                    <div class="pert" style="width:{{ $item['arrive_per'] == '0' ? '10' : $item['arrive_per'] }}%" title="{{$item['arrive_per']}}%"><span class="persize">{{$item['arrive_per']}}%</span></div>
+                                    <div class="pert" style="width:{{ percent($data['arrive'], $total['arrive'], 'ceil') }}" title="{{ percent($data['arrive'], $total['arrive'], 'ceil') }}"><span class="persize">{{ percent($data['arrive'], $total['arrive'], 'ceil') }}</span></div>
                                 </div>
                             </td>
                         </tr>
                     @endforeach
+
                     </tbody>
                 </table>

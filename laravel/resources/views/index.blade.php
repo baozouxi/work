@@ -163,7 +163,7 @@
                 </ol>
             </li>
             <li>
-                <p><a url="rank.asp?s=1" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);sidebar(3);"><span class="icon">ő</span>竞价管理</a></p>
+                <p><a url="{{ route('rank-record.index') }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);sidebar(3);"><span class="icon">ő</span>竞价管理</a></p>
                 <ol id="bar_3">
                     <li><a url="stat_rep_rank.asp?s=1&amp;to=m" href="javascript:void(0);" hidefocus="" onclick="getChange(this,1);fastH(this,&#39;main&#39;);"><span class="icon">Ő</span>竞价报表</a></li>
                     <li><a url="stat_rank.asp?s=1&amp;to=m" href="javascript:void(0);" hidefocus="" onclick="getChange(this,1);fastH(this,&#39;main&#39;);"><span class="icon">ŏ</span>竞价统计</a></li>

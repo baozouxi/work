@@ -31,7 +31,8 @@
 		Route::get('/book/list/residue', 'BookController@residue')->name('bookResidue');
 		Route::get('/book/export/html', 'BookController@exportHtml')->name('bookExportHtml');
 		Route::post('/book/export/html', 'BookController@export')->name('bookExport');
-		Route::get('/book/statistics/{way?}/{date?}', 'StatisticsController@index')->name('bookStatistics');
+		Route::get('/book/statistics/list', 'StatisticsController@index')->name('bookStatistics');
+		Route::get('/book/statistics/searchByMonth', 'StatisticsController@searchByMonth')->name('bookStatisticsSearchByMonth');
 		Route::get('/book/chatlog/{id}', 'BookController@getChatlog')->name('chatlog');
 		Route::get('/book/report/list', 'ReportController@index')->name('bookSheet');
 		Route::get('/book/report/searchByMonth', 'ReportController@searchByMonth')->name('bookSheetSearchByMonth');
@@ -70,11 +71,13 @@
 	Route::group(['namespace'=>'Consult'], function(){
 		Route::Resource('consult', 'ConsultController');
 		Route::get('/consult/status/{consultId}', 'ConsultController@updateStatus')->name('consultUpdateStatus');
+		Route::get('/consult/list/track', 'ConsultController@timeToTrack')->name('consultTrack');
 	});
 
 	//电话记录模块
 	Route::group(['namespace'=>'TelConsult'], function(){
 		Route::Resource('tel-consult', 'TelConsultController');
+		Route::get('/tel-consult/list/track', 'TelConsultController@timeToTrack')->name('telConsultTrack');
 		Route::get('tel-consult/status/{id}', 'TelConsultController@updateStatus')->name('telConsultUpdateStatuss');
 	});
 
@@ -123,6 +126,12 @@
 	//媒介
 	Route::group(['namespace'=>'Ad'], function(){
 		Route::Resource('ad', 'AdController');
+	});
+
+	//竞价模块
+	Route::group(['namespace'=>'Rank'], function(){
+		Route::resource('rank-record', 'RankRecordController');
+		Route::resource('rank', 'RankController');
 	});
 
 	//RBAC
