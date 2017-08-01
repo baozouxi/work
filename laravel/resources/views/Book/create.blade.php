@@ -54,7 +54,7 @@
                         </script>
                         <input name="bid" id="bid" value="" type="hidden">
                         <label class="inline">病种分类：</label>
-                        <select class="select" name="disease" id="dis" style="width:205px;">
+                        <select class="select" name="dis" id="dis" style="width:205px;">
                         @foreach($diseases as $disease)
                             <option value="{{ $disease->id }}">{{ $disease->name }}</option>
                         @endforeach

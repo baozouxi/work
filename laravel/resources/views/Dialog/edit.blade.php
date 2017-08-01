@@ -16,19 +16,14 @@
         <div id="box" class="box">
             <div id="tip" class="tip"><span class="icon" style="cursor:pointer;" onclick="hide(&quot;tip&quot;);">ź</span><i class="icon">Ź</i> 没对话零到诊可以不填,没对话有到诊直接选择日期提交即可！</div>
             <form id="form_sub" name="form_sub" method="post" action="javascript:fastP('{{ route('dialog.update',['id'=>$dialog->id]) }}');">
-        
-                <label class="inline">PC商务通：</label>
-                <input type="text" name="pcswt" id="dia_6" class="input" value="{{$dialog->pcswt }}" style="width:195px;" autocomplete="off" disableautocomplete="" onblur="this.style.backgroundColor='#fff';" onfocus="this.style.backgroundColor='#FFFEF1';">
-                <label class="inline">手机商务通：</label>
+            
+                @foreach($ways as $way)
+                <label class="inline">{{ $way->name }}：</label>
+                <input type="text" name="{{ $way->id }}" id="dia_6" class="input" value="{{$dialog['data'][$way->id] or '0' }}" style="width:195px;" autocomplete="off" disableautocomplete="" onblur="this.style.backgroundColor='#fff';" onfocus="this.style.backgroundColor='#FFFEF1';">
+                @endforeach
                 <input type="hidden" name="_method" value="PUT">
                 {{ csrf_field() }}
-                <input type="text" name="sjswt" id="dia_7" class="input" value="{{ $dialog->sjswt }}" style="width: 195px; background-color: rgb(255, 255, 255);" autocomplete="off" disableautocomplete="" onblur="this.style.backgroundColor='#fff';" onfocus="this.style.backgroundColor='#FFFEF1';">
-                <label class="inline">网站电话：</label>
-                <input type="text" name="web_tel" id="dia_8" class="input" value="{{ $dialog->web_tel }}" style="width:195px;" autocomplete="off" disableautocomplete="" onblur="this.style.backgroundColor='#fff';" onfocus="this.style.backgroundColor='#FFFEF1';">
-                <label class="inline">微信：</label>
-                <input type="text" name="weixin" id="dia_32" class="input" value="{{ $dialog->weixin }}" style="width:195px;" autocomplete="off" disableautocomplete="" onblur="this.style.backgroundColor='#fff';" onfocus="this.style.backgroundColor='#FFFEF1';">
-                <label class="inline">抓取电话：</label>
-                <input type="text" name="zhuaqu" id="dia_33" class="input" value="{{ $dialog->zhuaqu }}" style="width:195px;" autocomplete="off" disableautocomplete="" onblur="this.style.backgroundColor='#fff';" onfocus="this.style.backgroundColor='#FFFEF1';">
+
                 <label class="inline"><em>*</em>日期：</label>
                 <input type="text" name="date" id="dateline" class="Wdate" value="{{ $dialog->date }}" style="width:193px;" autocomplete="off" disableautocomplete="" onblur="this.style.backgroundColor='#fff';" onfocus="this.style.backgroundColor='#FFFEF1';">
                 <script>

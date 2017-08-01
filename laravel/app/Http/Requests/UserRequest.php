@@ -29,7 +29,7 @@ class UserRequest extends FormRequest
             'password' => 'string|required|min:5',
             'weixin' => 'nullable|string',
             'qq' =>  'nullable|numeric',
-            'role_id' => 'required|numeric|min:2',
+            'role_id' => 'required|numeric|min:1',
             'is_use' => 'nullable|numeric|in:0,1',
             'tel' => 'required|numeric'
         ];

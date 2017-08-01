@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TelConsultRequest;
 use App\Models\Appointment;
 use App\Models\TelConsult;
+use App\Models\Way;
+use App\Models\Disease;
 
 class TelConsultController extends Controller {
 	
@@ -14,8 +16,11 @@ class TelConsultController extends Controller {
 	public function index() 
 	{
 		$telConsults = TelConsult::all()->toArray();
+
+
 		// 获取电话数组 作为条件查询预约表
 		$telConsults = $this->reduceArr($telConsults);
+  		
 
 		return view('TelConsult.index', ['telConsults' => $telConsults]);
 	}
@@ -37,8 +42,11 @@ class TelConsultController extends Controller {
 		if(empty($telConsults)) return [];
 		$phone_nums = array_column($telConsults, 'phone');
 		$appointments = Appointment::where('phone', $phone_nums)->get(['phone', 'is_hospital']);
-
+		list($diseases, $doctors, $users, $ways, $ads) = array_values(getAuxiliary());
 		foreach ($telConsults as &$telItem) {
+			$telItem['dis'] = isset($diseases[$telItem['dis']]) ? $diseases[$telItem['dis']] : '未知'  ;
+			$telItem['way'] = isset($ways[$telItem['way']]) ? $ways[$telItem['way']] : '未知';
+			$telItem['admin_id'] = isset($users[$telItem['admin_id']]) ? $users[$telItem['admin_id']] : '未知';
 			$area = CallBackController::area($telItem['province'] - 1, $telItem['town'] - 1, $telItem['city'] - 1);
 			$telItem['province'] = $area['province'];
 			$telItem['city'] = $area['city'];
@@ -63,7 +71,10 @@ class TelConsultController extends Controller {
 
 	public function create()
 	{
-		return view('TelConsult.create');
+		$ways = Way::where('is_use', '1')->get();
+        $diseases = Disease::where('is_use', '1')->get();
+        if($ways->isEmpty() || $diseases->isEmpty()) return  '错误：请至少添加一项途径，病种并且启用它';
+		return view('TelConsult.create', ['ways'=>$ways, 'diseases'=>$diseases]);
 	}
 
 	public function store(TelConsultRequest $req)
@@ -82,8 +93,11 @@ class TelConsultController extends Controller {
 		if (!$telConsult = TelConsult::find($id)) {
 			return;
 		}
+		$ways = Way::where('is_use', '1')->get();
+        $diseases = Disease::where('is_use', '1')->get();
+        if($ways->isEmpty() || $diseases->isEmpty()) return  '错误：请至少添加一项途径，病种并且启用它';
 
-		return view('TelConsult.edit', ['telConsult' => $telConsult]);
+		return view('TelConsult.edit', ['telConsult' => $telConsult, 'diseases'=>$diseases, 'ways'=>$ways]);
 	}
 
 	public function update(TelConsultRequest $req, $id)

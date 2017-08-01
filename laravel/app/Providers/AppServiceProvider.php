@@ -17,14 +17,14 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
 
-        $admin = User::all()->toArray();
-        $admin = array_column($admin, null, 'id');
+        // $admin = User::all()->toArray();
+        // $admin = array_column($admin, null, 'id');
 
-        $roles = Role::all()->toArray();
-        $roles = array_column($roles, 'name', 'id');
+        // $roles = Role::all()->toArray();
+        // $roles = array_column($roles, 'name', 'id');
 
-        View::share('admin', $admin);
-        View::share('roles', $roles);
+        // View::share('admin', $admin);
+        // View::share('roles', $roles);
     }
 
     /**

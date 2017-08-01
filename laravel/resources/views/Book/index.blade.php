@@ -25,7 +25,7 @@
         <div id="container" class="container">
             <div class="top">
                 <h3 class="left"><span class="icon">Ĵ</span>预约列表</h3>
-                <p class="nlink right"><a href="javascript:void(0);" title="显示表格" onclick="msgbox(this,600);" url="user.asp?act=res" class="config"><span class="icon">Ƅ</span>设置</a><a href="javascript:void(0);" onclick="fundisp()"><span class="icon">Ş</span>切换</a>
+                <p class="nlink right"><a href="javascript:void(0);" title="显示表格" onclick="msgbox(this,600);" url="{{ $fieldUrl }}" class="config"><span class="icon">Ƅ</span>设置</a><a href="javascript:void(0);" onclick="fundisp()"><span class="icon">Ş</span>切换</a>
                 <a href="javascript:void(0);" title="导出电子表格" onclick="msgbox(this);" url="{{ route('bookExportHtml') }}" class="excel"><span class="icon">Ľ</span>导出</a>
                 </p>
             </div>
@@ -57,11 +57,13 @@
                 <table cellspacing="1" cellpadding="0">
                     <thead>
                         <tr>
-                            <th width="120">
-                                <center><a href="javascript:void(0);" url="res.asp?t=dateline&amp;go=desc&amp;m=res" title="按时间排序" onclick="fastH(this)">时间</a></center>
+                        @foreach($fields as $field)
+                            <th width="{{ $field['width'] }}">
+                                <center><a href="javascript:void(0);" url="res.asp?t=dateline&amp;go=desc&amp;m=res" title="按时间排序" onclick="fastH(this)">{{ $field['name'] }}</a></center>
                             </th>
+                        @endforeach
                            
-                            <th width="50">
+<!--                             <th width="50">
                                 <center><a href="javascript:void(0);" url="res.asp?t=key&amp;go=desc&amp;m=res" title="按预约号排序" onclick="fastH(this)">预约号</a></center>
                             </th>
                             <th width="80"><center>属性</center></th>
@@ -81,9 +83,9 @@
                             <th width="100">
                                 <center><a href="javascript:void(0);" url="res.asp?t=dis&amp;go=desc&amp;m=res" title="按病种排序" onclick="fastH(this)">病种</a></center>
                             </th>
-                            <!-- <th width="110">
+                            <th width="110">
                                 <center><a href="javascript:void(0);" url="res.asp?t=dep&amp;go=desc&amp;m=res" title="按医生排序" onclick="fastH(this)">医生</a></center>
-                            </th> -->
+                            </th> 
                             <th width="100">
                                 <center><a href="javascript:void(0);" url="res.asp?t=way&amp;go=desc&amp;m=res" title="按途径排序" onclick="fastH(this)">途径</a></center>
                             </th>
@@ -96,7 +98,7 @@
                             <th width="110">
                                 <center><a href="javascript:void(0);" url="res.asp?t=uid&amp;go=desc&amp;m=res" title="按录入员排序" onclick="fastH(this)">录入员</a></center>
                             </th>
-                            <th width="30"><center>删</center></th>
+                            <th width="30"><center>删</center></th> -->
                         </tr>
                     </thead>
                     <tbody id="tablebg">
@@ -172,7 +174,7 @@
                                 <center>{{ $item['city']  }} {{ $item['town']  }} </center>
                             </td>
                             <td>
-                                <center>{{ $item['disease'] }}</center>
+                                <center>{{ $item['dis'] }}</center>
                             </td>
                            <!--  <td>
                                 <center>医生</center>
@@ -195,7 +197,7 @@
                                 </center>
                             </td>
                             <td>
-                                <center>{{ $admin[$item->admin_id]['name'] }}</center>
+                                <center>{{ $item['admin_id'] }}</center>
                             </td>
                             
                             <td>
@@ -241,7 +243,7 @@
 
                     </tbody>
                 </table>
-                <input name="this_url" id="this_url" value="/res.asp?m=res" type="hidden">
+                <input name="this_url" id="this_url" value="{{ route('book.index') }}" type="hidden">
             </div>
         </div>
     </div>

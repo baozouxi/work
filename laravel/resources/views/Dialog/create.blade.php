@@ -16,18 +16,12 @@
         <div id="box" class="box">
             <div id="tip" class="tip"><span class="icon" style="cursor:pointer;" onclick="hide(&quot;tip&quot;);">ź</span><i class="icon">Ź</i> 没对话零到诊可以不填,没对话有到诊直接选择日期提交即可！</div>
             <form id="form_sub" name="form_sub" method="post" action="javascript:fastP('{{ route('dialog.store') }}');">
-                
-                <label class="inline">PC商务通：</label>
-                <input type="text" name="pcswt" id="dia_6" class="input" value="0" style="width:195px;" autocomplete="off" disableautocomplete="" onblur="this.style.backgroundColor='#fff';" onfocus="this.style.backgroundColor='#FFFEF1';">
+            @foreach($ways as $way)                
+                <label class="inline">{{ $way->name }}</label>
+                <input type="text" name="{{ $way->id }}" id="dia_{{ $way->id }}" class="input" value="0" style="width:195px;" autocomplete="off" disableautocomplete="" onblur="this.style.backgroundColor='#fff';" onfocus="this.style.backgroundColor='#FFFEF1';">
+            @endforeach
                 {{ csrf_field() }}
-                <label class="inline">手机商务通：</label>
-                <input type="text" name="sjswt" id="dia_7" class="input" value="0" style="width: 195px; background-color: rgb(255, 255, 255);" autocomplete="off" disableautocomplete="" onblur="this.style.backgroundColor='#fff';" onfocus="this.style.backgroundColor='#FFFEF1';">
-                <label class="inline">网站电话：</label>
-                <input type="text" name="web_tel" id="dia_8" class="input" value="0" style="width: 195px; background-color: rgb(255, 255, 255);" autocomplete="off" disableautocomplete="" onblur="this.style.backgroundColor='#fff';" onfocus="this.style.backgroundColor='#FFFEF1';">
-                <label class="inline">微信：</label>
-                <input type="text" name="weixin" id="dia_32" class="input" value="0" style="width: 195px; background-color: rgb(255, 255, 255);" autocomplete="off" disableautocomplete="" onblur="this.style.backgroundColor='#fff';" onfocus="this.style.backgroundColor='#FFFEF1';">
-                <label class="inline">抓取电话：</label>
-                <input type="text" name="zhuaqu" id="dia_33" class="input" value="0" style="width: 195px; background-color: rgb(255, 255, 255);" autocomplete="off" disableautocomplete="" onblur="this.style.backgroundColor='#fff';" onfocus="this.style.backgroundColor='#FFFEF1';">
+
                 <label class="inline"><em>*</em>日期：</label>
                 <input type="text" name="date" id="dateline" class="Wdate" value="" style="width: 193px; background-color: rgb(255, 255, 255);" autocomplete="off" disableautocomplete="" onblur="this.style.backgroundColor='#fff';" onfocus="this.style.backgroundColor='#FFFEF1';" readonly="">
                 <script>
@@ -43,8 +37,6 @@
                 <label class="inline">备注信息：</label>
                 <textarea name="content" id="content" class="textarea" style="width: 500px; height: 100px; background-color: rgb(255, 255, 255);" onblur="this.style.backgroundColor='#fff';" onfocus="this.style.backgroundColor='#FFFEF1';"></textarea>
                 <label class="inline"></label>
-                <input type="hidden" name="back_url" id="back_url" value="dia.asp?s=1">
-                <input type="hidden" name="up" id="up" value="data">
                 <label class="inline"></label>
                 <div name="msg" id="msg" style="width:484px;" class="msg">请稍后..</div>
                 <label class="inline"></label>
@@ -52,7 +44,6 @@
                 <button type="reset" class="button"><span class="icon">ň</span>重置</button>
                 <button type="button" onclick="To($('back_url').value,'main');" class="button"><span class="icon">ĭ</span>返回</button>
             </form>
-            <input type="hidden" name="this_url" id="this_url" value="/dia.asp?act=add">
         </div>
     </div>
 </div>

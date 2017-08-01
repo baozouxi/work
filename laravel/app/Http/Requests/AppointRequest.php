@@ -35,7 +35,7 @@ class AppointRequest extends FormRequest
                 'required'],
             'postdate' => 'required|date|after:today',
             'undate' => 'numeric|max:1',
-            'disease' => 'required|numeric',
+            'dis' => 'required|numeric',
             'province' => 'required|numeric|not_in:0',
             'city' => 'required|numeric|not_in:0',
             'town' => 'required|numeric|not_in:0',

@@ -59,7 +59,7 @@
                         </script>
                         <input type="hidden" name="_method" value="PUT">
                         <label class="inline">病种分类：</label>
-                        <select class="select" name="disease" id="dis" style="width:205px;">
+                        <select class="select" name="dis" id="dis" style="width:205px;">
                             <option value="2">大骨病</option>
                         </select>
                         <!-- <input name="res" id="res" value="1" type="hidden">

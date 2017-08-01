@@ -137,7 +137,7 @@ function fastP(url,n){
 			if(t==-2){m.innerHTML =icon + s;setvalue('key',result.field)}//生成密钥使用
 			if(t==-3){m.innerHTML =icon + s;if(result.hasOwnProperty("field")){setTimeout('window.location.href="/login/exit";',2000)}else{sb.disabled = false;setTimeout('hide("msg");',1500);}}//修改密码使用
 			if(t==-4){m.innerHTML =icon + s;closeshow();To($("this_url").value, 'main');}//快速提交 返回
-			if(t==-5){m.innerHTML =icon + s;setTimeout('To($("this_url").value);closeshow();',500);}//MSBOX表格属性
+			if(t==-5){m.innerHTML =icon + s;setTimeout('To($("this_url").value, "main");closeshow();',500);}//MSBOX表格属性
 			},
 		// failure:function(xhr,msg){sb.disabled = false;alert(msg)}
 		 failure:function(xhr, msg){
@@ -539,6 +539,8 @@ function fastT(n,u,t,b,c,d,e){
 			case 3	: url="/book/statistics/searchByMonth";break;
 			case 4	: url="/take/statistics/searchByMonth";break;
 			case 5	: url="/take/statistics/list";break;
+			case 6	: url="/dialog/statis/searchByMonth";break;
+			case 7	: url="/rank/statistics/searchByMonth";break;
 			// default	: url="stat_res.asp";
 			}
 		}

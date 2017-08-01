@@ -1,5 +1,8 @@
 <?php
 
+
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,7 +16,7 @@
 
 // 完成后记得对每个路由进行注释
 
- Route::group(['middleware' => 'checkLogin'], function(){
+ // Route::group(['middleware' => 'checkLogin'], function(){
  
 	// Route::controller('request','BookController');
 
@@ -42,6 +45,8 @@
 
 	//患者模块
 	Route::group(['namespace'=>'Patient'], function(){
+		Route::get('/patient/get/field', 'PatientController@field')->name('patientField');
+
 		Route::post('/patient/export', 'PatientController@export')->name('patientExport');
 		Route::get('/patient/export/html', 'PatientController@exportHtml')->name('patientExportHtml');
 		Route::get('/patient/come/track', 'PatientController@timeToTrack')->name('patientNeedTrack'); //到期回访
@@ -58,6 +63,10 @@
 		Route::Resource('patient', 'PatientController');
 	});
 
+
+	//显示列控制器
+	Route::Resource('fields', 'FieldsController');
+	
 	//消费记录
 	Route::group(['namespace'=>'Take'], function(){
 		Route::Resource('take', 'TakeController');
@@ -87,8 +96,10 @@
 
 	//对话模块 
 	Route::group(['namespace'=>'Dialog'], function(){
-
-		Route::get('/dialog/sheet/{date?}/{admin?}', 'DialogController@sheet')->name('dialogSheet');
+		Route::get('/dialog/sheet/searchByMonth', 'DialogController@sheetSearchByMonth')->name('dialogSheetSearchByMonth');
+		Route::get('/dialog/sheet/list', 'DialogController@sheet')->name('dialogSheet');
+		Route::get('/dialog/statis/list', 'StatisticsController@index')->name('dialogStatistics');
+		Route::get('/dialog/statis/searchByMonth', 'StatisticsController@searchByMonth')->name('dialogSearchByMonth');		
 		Route::Resource('dialog', 'DialogController');
 	});
 
@@ -100,7 +111,6 @@
 
 	//短信模块
 	Route::group(['namespace'=>'Sms'], function(){
-	
 		Route::get('/sms/async-send/{admin_id}', 'SmsController@asyncSend')->name('smsAsyncSend');
 		Route::Resource('sms', 'SmsController');
 	});
@@ -132,6 +142,10 @@
 	Route::group(['namespace'=>'Rank'], function(){
 		Route::resource('rank-record', 'RankRecordController');
 		Route::resource('rank', 'RankController');
+		Route::get('/rank/report/list', 'ReportController@index')->name('rankReport');
+		Route::get('/rank/report/searchByMonth', 'ReportController@searchByMonth')->name('rankReportSearchByMonth');
+		Route::get('/rank/statistics/list', 'StatisticsController@index')->name('rankStatistics');
+		Route::get('/rank/statistics/searchByMonth', 'StatisticsController@searchByMonth')->name('rankStatisticsSearchByMonth');
 	});
 
 	//RBAC
@@ -152,7 +166,7 @@
 	Route::get('/callback/uploadhtml', 'CallBackController@uploadHtml')->name('uploadHtml');
 
 
- });
+ // });
 
 
 //登陆

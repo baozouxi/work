@@ -76,7 +76,7 @@
                 @foreach($records as $record)
                     <tr class="t1">
                         <td>
-                            <center><a href="javascript:void(0);" title="竞价备注" onclick="fastC(this,'{{ $record->id }}');" url="rank.asp?act=show&amp;id=2">{{ formatDate($record->rank_date, 'Y-m-d') }}</a></center>
+                            <center><a href="javascript:void(0);" title="竞价备注" onclick="fastC(this,'{{ $record->id }}');" url="{{ route('rank-record.show', ['id'=>$record->id]) }}">{{ formatDate($record->rank_date, 'Y-m-d') }}</a></center>
                         </td>
                         <td><span class="icon">Č</span> <a href="javascript:void(0);" onclick="fastH(this,'main')" url="{{ route('rank-record.edit', ['id'=>$record->id]) }}">{{ $record->rank_way }}</a></td>
                         <td>

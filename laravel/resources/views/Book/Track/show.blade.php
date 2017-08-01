@@ -71,7 +71,6 @@
                                     <center>咨询</center>
                                 </td>
                                 <td>
-                              
                                     <center>
                                     @if(check_node('book_track_del'))
                                     <a href="javascript:void(0);" id="del4" style="color:red" onclick="if(confirm('确定删除吗？\n\n该操作不可恢复')){fast('track.asp?act=del&amp;id=4','del4');}"><span class="icon"><em>ź</em></span></a>

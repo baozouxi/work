@@ -8,15 +8,15 @@ use App\Http\Controllers\CallBackController;
 use App\Http\Requests\ConsultRequest;
 use App\Models\Consult;
 use App\Models\Appointment;
+use App\Models\Way;
+use App\Models\Disease;
 
 class ConsultController extends Controller
 {
     public function index()
     {
     	$consults = Consult::all()->toArray();
-        
         $consults = $this->reduceArr($consults);
-
         return view('consult.index', ['consults'=>$consults]);
 
     }
@@ -43,6 +43,7 @@ class ConsultController extends Controller
 
         foreach ($consults as &$consult) {
             $consult['dis'] = isset($diseases[$consult['dis']]) ? $diseases[$consult['dis']]  : '未知' ;
+            $consult['way'] = isset($ways[$consult['way']]) ? $ways[$consult['way']]  : '未知' ;
             $consult['admin_id'] = isset($users[$consult['admin_id']]) ? $users[$consult['admin_id']]  : '未知' ;
             list($consult['province'],$consult['city'],$consult['town']) = 
                 array_values(CallBackController::area($consult['province']-1,$consult['city']-1,$consult['town']-1));
@@ -69,7 +70,10 @@ class ConsultController extends Controller
 
     public function create()
     {
-    	return view('Consult.create');
+        $ways = Way::where('is_use', '1')->get();
+        $diseases = Disease::where('is_use', '1')->get();
+        if($ways->isEmpty() || $diseases->isEmpty()) return  '错误：请至少添加一项途径，病种并且启用它';
+    	return view('Consult.create', ['ways'=>$ways, 'diseases'=>$diseases]);
     }
 
     public function store(ConsultRequest $req)
@@ -83,8 +87,11 @@ class ConsultController extends Controller
 
     public function edit(Request $req, $id)
     {
+        $ways = Way::where('is_use', '1')->get();
+        $diseases = Disease::where('is_use', '1')->get();
+        if($ways->isEmpty() || $diseases->isEmpty()) return  '错误：请至少添加一项途径，病种并且启用它';
     	if(!$consult = Consult::find($id)) return['code'=>'1', 'msg'=>'该次咨询不存在，请刷新后重试', 'time'=>getNow()];
-    	return view('consult.edit', ['consult'=>$consult]);
+    	return view('consult.edit', ['consult'=>$consult, 'diseases'=>$diseases, 'ways'=>$ways]);
     }
 
     public function update(ConsultRequest $req, $id)

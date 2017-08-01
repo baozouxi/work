@@ -84,6 +84,9 @@ function divide($dividend, $divisor,$precision='2')
 function percent($dividend, $divisor, $mode='normal', $precision='')
 {	
 	$result = divide($dividend, $divisor,'10')*100;
+
+	if($precision)  $result = round($result, (int)$precision);
+
 	switch ($mode) {
 		case 'ceil':
 			$result = ceil($result);

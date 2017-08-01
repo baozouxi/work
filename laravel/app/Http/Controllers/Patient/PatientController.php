@@ -449,7 +449,6 @@ class PatientController extends Controller
                 }
                 $sheet_arr[$patient->id][] = $patient->$key;
             }
-        
         }
 
         array_unshift($sheet_arr, $field_name);
@@ -463,4 +462,12 @@ class PatientController extends Controller
         });
         })->export('xls');
     }
+
+
+    //显示列设置
+    public function field()
+    {
+        return view('Patient.field');
+    }   
+
 }

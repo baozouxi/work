@@ -34,35 +34,15 @@
                 </script>
                 <label class="inline">病种分类：</label>
                 <select class="select" name="dis" id="dis" style="width:205px;">
-                    <option value="8">肾病综合征</option>
-                    <option value="9">肌酐</option>
-                    <option value="11">慢性肾炎</option>
-                    <option value="13">急性肾炎</option>
-                    <option value="14">IgA肾病</option>
-                    <option value="15">紫癜性肾炎</option>
-                    <option value="16">狼疮性肾炎</option>
-                    <option value="17">肾囊肿</option>
-                    <option value="18">多囊肾</option>
-                    <option value="19">肾检</option>
-                    <option value="20">糖尿病肾病</option>
-                    <option value="21">高血压肾病</option>
-                    <option value="22">肾盂肾炎</option>
-                    <option value="23">肾结石/肾积水</option>
-                    <option value="24">肾萎缩</option>
-                    <option value="25">尿蛋白/潜血</option>
-                    <option value="26">肾功能不全</option>
-                    <option value="27">肾衰竭</option>
-                    <option value="28">尿毒症-已透析</option>
-                    <option value="38">膜性肾炎</option>
+                @foreach($diseases as $disease)
+                    <option value="{{ $disease->id }}">{{ $disease->name }}</option>
+                @endforeach
                 </select>
                 <label class="inline">来源途径：</label>
                 <select class="select" name="way" id="way" style="width:205px;">
-                    <option value="6">PC商务通</option>
-                    <option value="7">手机商务通</option>
-                    <option value="8">网站电话</option>
-                    <option value="23">糯米电话</option>
-                    <option value="32">微信</option>
-                    <option value="33">抓取电话</option>
+                @foreach($ways as $way)
+                    <option value="{{ $way->id }}">{{ $way->name }}</option>
+                @endforeach
                 </select>
                 <label class="inline">回访时间：</label>
                 <input type="text" name="track_time" id="postdate" class="Wdate" value="" style="width:193px;" autocomplete="off" disableautocomplete="" onblur="this.style.backgroundColor='#fff';" onfocus="this.style.backgroundColor='#FFFEF1';">

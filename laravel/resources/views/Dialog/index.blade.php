@@ -54,12 +54,11 @@
                         <th width="38">
                             <center><a href="javascript:void(0);" url="dia.asp?t=turn&amp;go=desc" title="按到诊排序" onclick="fastH(this)">到诊</a></center>
                         </th>
+                        @foreach($ways as $way)
                         <th width="*" colspan="3">
-                            <center><a href="javascript:void(0);" url="dia.asp?t=dia_6&amp;go=desc" title="按PC商务通排序" onclick="fastH(this)">PC商务通</a></center>
+                            <center><a href="javascript:void(0);" url="dia.asp?t=dia_6&amp;go=desc" title="按PC商务通排序" onclick="fastH(this)">{{ $way['name'] }}</a></center>
                         </th>
-                        <th width="*" colspan="3">
-                            <center><a href="javascript:void(0);" url="dia.asp?t=dia_33&amp;go=desc" title="按抓取电话排序" onclick="fastH(this)">抓取电话</a></center>
-                        </th>
+                       @endforeach
                         <th width="80">
                             <center><a href="javascript:void(0);" url="dia.asp?t=postdate&amp;go=desc" title="按时间排序" onclick="fastH(this)">时间</a></center>
                         </th>
@@ -76,7 +75,7 @@
                     <tr class="t2">
                 @endif
                         <td>
-                            <center><a href="javascript:void(0);" title="回访内容" onclick="fastC(this,'11');" url="dia.asp?act=show&amp;id=11">{{formatDate($item['date'], 'Y-m-d')}}</a></center>
+                            <center><a href="javascript:void(0);" title="回访内容" onclick="fastC(this,'{{ $item['id'] }}');" url="{{ route('dialog.show', ['id'=>$item['id']]) }}">{{ $item['date'] }}</a></center>
                         </td>
                         <td><span class="icon">Ĵ</span> 
                         @if(check_node('dialog_edit'))
@@ -86,34 +85,28 @@
                         @endif
                         </td>
                         <td>
-                            <center>{{ $item['pcswt'] + $item['zhuaqu'] }}</center>
+                            <center>{{ $item['all_count'] }}</center>
                         </td>
                         <td>
-                            <center>{{ count($item['appoint'], 1) - count($item['appoint']) }}</center>
+                            <center>0</center>
                         </td>
                         <td>
-                            <center>{{ count($item['patient']) }}</center>
+                            <center>0</center>
                         </td>
-                        <td width="20">
-                            <center>{{ $item['pcswt'] }}</center>
-                        </td>
-                        <td width="20">
-                            <center></center>
-                        </td>
-                        <td width="20">
-                            <center></center>
-                        </td>
-                        <td width="20">
-                            <center>{{ $item['zhuaqu'] }}</center>
-                        </td>
-                        <td width="20">
-                            <center></center>
-                        </td>
-                        <td width="20">
-                            <center></center>
-                        </td>
+
+                        @foreach($ways as $way)
+                            <td width="20">
+                                <center>{{ $item['data'][$way['id']] or '0' }}</center>
+                            </td>
+                            <td width="20">
+                                <center></center>
+                            </td>
+                            <td width="20">
+                                <center></center>
+                            </td>
+                        @endforeach
                         <td>
-                            <center>06-23 17:48</center>
+                            <center>{{ formatDate($item['add_time'], 'm-d H:i') }}</center>
                         </td>
                         <td>
                             <center>
@@ -125,8 +118,8 @@
                             </center>
                         </td>
                     </tr>
-                    <tr id="_info11" style="display:none;" class="t1">
-                        <td colspan="13" id="info11"></td>
+                    <tr id="_info{{ $item['id'] }}" style="display:none;" class="t1">
+                        <td colspan="13" id="info{{ $item['id'] }}"></td>
                     </tr>
                 @endforeach
                     <tr class="t1">

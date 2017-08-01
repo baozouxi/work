@@ -31,13 +31,10 @@ class RankRecordController extends Controller
 
     public function store(RankRecordRequest $req)
     {
-
         $data = $req->all();
         $data['admin_id'] = '1';
         if(RankRecord::create($data)) return code(route('rank-record.index'), '0');
-
         return code('添加失败，请刷新后重试', '1');
-
     }
 
     public function edit($id)
@@ -62,6 +59,9 @@ class RankRecordController extends Controller
 
     public function show($id)
     {
-
+        $rank = RankRecord::findOrFail($id);
+        return $rank->content;
     }
+
+
 }

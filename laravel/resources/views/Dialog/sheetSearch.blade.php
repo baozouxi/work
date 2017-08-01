@@ -11,19 +11,26 @@
             <h3 class="left"><span class="icon">Ő</span>对话报表</h3>
             <p class="nlink right"><a href="javascript:void(0);" onclick="display('fun')"><span class="icon">Ş</span>快捷查找</a></p>
         </div>
-        <div class="fun none" id="fun" style="display: block;">
+        <div class="fun block" id="fun" style="display: block;">
             <div id="fun-n" class="right block"></div>
             <select class="select" onchange="To('{{ route('dialogSheetSearchByMonth') }}?month='+this.options[this.selectedIndex].value+'','main');">
                 <option value="0">按月查询</option>
                 @foreach($months as $month)
+                @if($month->date == $current_month)
+                    <option value="{{ $month->date }}" selected="selected">{{ $month->date }}月</option>
+                @else
                     <option value="{{ $month->date }}">{{ $month->date }}月</option>
+                @endif
                 @endforeach
-                <option value="2017-07">2017-07月</option>
             </select>
-            <select class="select" onchange="To('{{ route('dialogSheetSearchByMonth') }}?admin_id='+this.options[this.selectedIndex].value+'','main');">
+            <select class="select" onchange="To('{{ route('dialogSheetSearchByMonth') }}?month={{ $current_month }}&admin_id='+this.options[this.selectedIndex].value+'','main');">
                 <option value="0" selected="selected">所有用户</option>
                 @foreach($users as $user)
-                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                @if($user->id == $admin_id)
+                    <option value="{{ $user->id }}" selected="selected">{{ $user->name }}</option>
+                @else
+                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                @endif
                 @endforeach
             </select>
         </div>

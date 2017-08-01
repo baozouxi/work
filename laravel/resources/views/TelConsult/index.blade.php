@@ -128,16 +128,16 @@
                             <center>{{ $item['phone'] }}</center>
                         </td>
                         <td>
-                            <center>PC商务通</center>
+                            <center>{{ $item['way'] }}</center>
                         </td>
                         <td>
                             <center>{{ $item['city'] }} {{ $item['town'] }}</center>
                         </td>
                         <td>
-                            <center>肾病综合征</center>
+                            <center>{{ $item['dis'] }}</center>
                         </td>
                         <td>
-                            <center>咨询(<i>医患通</i>)</center>
+                            <center>{{ $item['admin_id'] }}</center>
                         </td>
                         <td>
                             <center>

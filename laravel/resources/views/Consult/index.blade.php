@@ -122,7 +122,7 @@
                             <center>{{ $item['age'] }}</center>
                         </td>
                         <td>
-                            <center>PC商务通</center>
+                            <center>{{ $item['way'] }}</center>
                         </td>
                         <td>
                             <center>{{ $item['city'] }} {{ $item['town'] }}</center>

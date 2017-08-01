@@ -16,8 +16,8 @@ class DoctorController extends Controller
         $doc = Doctor::all()->toArray();
 
         foreach ($dis as &$disItem) {
+            if(!isset($disItem['docs'])) $disItem['docs'] = [];
             foreach ($doc as $docItem) {
-                if(!isset($disItem['docs'])) $disItem['docs'] = [];
                 if ($disItem['id'] == $docItem['dis_id']) {
                     $disItem['docs'][] = $docItem;
                 }

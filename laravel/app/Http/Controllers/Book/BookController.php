@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Book;
 
 use App\Http\Controllers\CallBackController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\FieldsController;
 use App\Http\Requests\AppointRequest;
 use App\Http\Requests\BookUpdateRequest;
 use App\Models\Appointment;
@@ -12,6 +13,7 @@ use App\Models\Patient;
 use App\Models\Way;
 use App\Models\Track;
 use App\Models\Nav;
+use App\Models\Field;
 use App\Models\Disease;
 use App\Models\Doctor;
 use DB;
@@ -22,11 +24,14 @@ class BookController extends Controller {
 
 	public function index() 
 	{
+
+		
 		$appointData = Appointment::orderBy('add_time', 'desc')->paginate('20');
 		$count = Appointment::count();
-		
-		$appointData = $this->reduceArr($appointData);
-		return view('Book.index', ['data' => $appointData, 'count' => $count]);
+		$fieldUrl = route('fields.create');
+		if($fields = Field::where('admin_id', '1')->where('type', '1')->first()) $fieldUrl = route('fields.edit', ['id'=>$fields->id]);
+		list($appointData, $fields_list) = $this->reduceArr($appointData);
+		return view('Book.index', ['data' => $appointData, 'count' => $count, 'fieldUrl'=>$fieldUrl, 'fields'=>$fields_list]);
 	}
 
 
@@ -68,18 +73,26 @@ class BookController extends Controller {
 	}
 
 	private function reduceArr($appointData)
-	{
+	{	
+		//显示项权限
+		$fields_list = array('id'=>['name'=>'编号', 'width'=>'50'],'add_time'=>['name'=>'添加时间', 'width'=>'120'], 'name'=>['name'=>'姓名', 'width'=>'*']);
+		$admin_fields = Field::where('admin_id', '1')->where('type', '1')->first();
+		if ($admin_fields) {
+			$origin_fields = FieldsController::getFields('1');
+			$admin_fields = array_flip(unserialize($admin_fields->fields));
+			foreach ($admin_fields as $key=>&$v) {
+				if(isset($origin_fields[$key])) $v = $origin_fields[$key];
+			}
+			$fields_list = array_merge($fields_list, $admin_fields);
+		}
+
+
+
+
 		//ID数组
 		$ids = array();
 
-		$ways = Way::all()->toArray();
-		$ways = array_column($ways, 'name', 'id');
-
-		$diseases = Disease::all()->toArray();
-		$diseases = array_column($diseases, 'name', 'id');
-
-		$doctors = Doctor::all()->toArray();
-		$doctors = array_column($doctors, 'name', 'id');
+		list($diseases, $doctors, $users, $ways) = array_values(getAuxiliary()); 
 
 		foreach ($appointData as &$item) {
 			$item->status = '1';
@@ -107,14 +120,15 @@ class BookController extends Controller {
 			$item->province = $area['province'];
 			$item->city = $area['city'];
 			$item->town = $area['town'];
-			$item->disease = isset($diseases[$item->disease])? $diseases[$item->disease] : '----' ;
+			$item->dis = isset($diseases[$item->dis])? $diseases[$item->dis] : '----' ;
 			$item->way  = isset($ways[$item->way]) ? $ways[$item->way] : '----' ;
-
+			$item->admin_id  = isset($users[$item->admin_id]) ? $users[$item->admin_id] : '----' ;
 		}
 		$Track = Track::whereIn('book_id', $ids)->orderBy('next_time', 'desc')->get();
 
 		$ChatLog = Chatlog::whereIn('book_id', $ids)->get();
 
+		dd($appointData);
 		foreach ($appointData as &$item) {
 			$item->track = [];
 			foreach ($Track as $trackItem) {
@@ -131,8 +145,8 @@ class BookController extends Controller {
 
 			}
 		}
-
-		return $appointData;
+		
+		return [$appointData, $fields_list];
 	}
 
 

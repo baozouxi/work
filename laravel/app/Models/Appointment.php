@@ -12,5 +12,5 @@ class Appointment extends Model
 
     public $primaryKey = 'id';
 
-    public $fillable = ['name','age','gender','phone','disease','way','postdate','filepath','province','city','town','address','content','job','qq','weixin','keyword','website','source','admin_id','res','undate'];
+    public $fillable = ['name','age','gender','phone','dis','way','postdate','filepath','province','city','town','address','content','job','qq','weixin','keyword','website','source','admin_id','res','undate'];
 }

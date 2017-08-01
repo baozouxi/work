@@ -16,7 +16,7 @@
         <div id="container" class="container">
             <div class="top">
                 <h3 class="left"><span class="icon">Ķ</span>患者列表</h3>
-                <p class="nlink right"><a href="javascript:void(0);" onclick="fundisp()"><span class="icon">Ş</span>切换</a><a href="javascript:void(0);" title="显示表格" onclick="msgbox(this,600);" url="user.asp?act=turn" class="config"><span class="icon">Ƅ</span>设置</a>
+                <p class="nlink right"><a href="javascript:void(0);" onclick="fundisp()"><span class="icon">Ş</span>切换</a><a href="javascript:void(0);" title="显示表格" onclick="msgbox(this,600);" url="{{ route('fields.create', ['type'=>'2']) }}" class="config"><span class="icon">Ƅ</span>设置</a>
                 @if(check_node('patient_export'))
                 <a href="javascript:void(0);" title="导出电子表格" onclick="msgbox(this);" url="{{ route('patientExportHtml') }}" class="excel"><span class="icon">Ľ</span>导出</a>
                 @endif
@@ -217,7 +217,7 @@
                         
                     </tbody>
                 </table>
-                <input type="hidden" name="this_url" id="this_url" value="/turn.asp?m=turn">
+                <input type="hidden" name="this_url" id="this_url" value="{{ route('patient.index') }}">
             </div>
         </div>
     </div>

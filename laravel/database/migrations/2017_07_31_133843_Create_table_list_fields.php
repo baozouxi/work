@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableDialogs extends Migration
+class CreateTableListFields extends Migration
 {
     /**
      * Run the migrations.
@@ -14,13 +14,12 @@ class CreateTableDialogs extends Migration
      */
     public function up()
     {
-        Schema::create('dialogs', function (Blueprint $table) {
+        Schema::create('list_fields', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamp('add_time')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->datetime('date');
-            $table->binary('data');
             $table->integer('admin_id');
-            $table->text('content')->nullable();
+            $table->binary('fields');
+            $table->tinyInteger('type')->comment('分类：1为预约，2为患者');
+            $table->timestamp('add_time')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 
@@ -31,6 +30,6 @@ class CreateTableDialogs extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dialogs');
+        Schema::dropIfExists('list_fieldss');
     }
 }
