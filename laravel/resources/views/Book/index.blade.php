@@ -109,112 +109,10 @@
                         @else
                             <tr class="t2">
                         @endif
-
-                            <td>
-                                <center>{{ date('Y-m-d H:i', strtotime($item['add_time'])) }}</center>
-                            </td>
-                            <td>
-                                <center>{{ $item['id']  }}</center>
-                            </td> 
-                            <td>
-                                <center>
-                                @if($item->status == '1')
-                                    <u class="icon">ű 未到诊</u>
-                                @elseif($item->status == '2')
-                                    <i class="icon">Ű 已到诊</i>
-                                @elseif($item->status == '3') 
-                                    <em class="icon">Ų 已逾期</em>
-                                @endif
-                                    
-                                </center>
-                            </td>
-                            <td>
-                                <span title="“{{ $item['name']  }}”的详细资料" onclick="msgbox(this,600);" url="{{ route('book.show', ['id'=>$item['id'] ]) }}" style="cursor:pointer;" class="icon">Ĵ
-                                </span> 
-                                @if(check_node('book_edit'))
-                                    <a href="javascript:void(0);" onclick="fastH(this,'main')" url="{{ $item->url }}">
-                                    @if($item->status == '1')
-                                        <u>{{ $item['name']  }}</u> 
-                                    @elseif($item->status == '2')
-                                        <i>{{ $item['name']  }}</i>
-                                    @elseif($item->status == '3') 
-                                        <em>{{ $item['name'] }}</em>
-                                    @endif
-                                    </a>
-                                @else
-                                    @if($item->status == '1')
-                                        <u>{{ $item['name']  }}</u> 
-                                    @elseif($item->status == '2')
-                                        <i>{{ $item['name']  }}</i>
-                                    @elseif($item->status == '3') 
-                                        <em>{{ $item['name'] }}</em>
-                                    @endif
-                                @endif
-                            </td>
-                            
-                            <td>   
-                                @if(isset($item['chatlog'] ))
-                                    <center class="file">
-                                        <a href="javascript:void(0);" title="“{{ $item['name'] }}”预约号{{ $item['id'] }}的咨询记录" onclick="msgbox(this,850);" url="{{ route('chatlog',['id'=>$item['chatlog'] ]) }}">
-                                        <span class="icon">ĉ</span>
-                                        </a>
-                                    </center>
-                                @else
-                                    <center><span class="icon">-</span></center>
-                                @endif
-                            </td>
-
-                            <td>
-                                <center><u>{{ $item['gender'] == '1' ? '男' : '女' }}</u></center>
-                            </td>
-                            <td>
-                                <center>{{ $item['age'] }}</center>
-                            </td>
-                            <td>
-                                <center>{{ $item['city']  }} {{ $item['town']  }} </center>
-                            </td>
-                            <td>
-                                <center>{{ $item['dis'] }}</center>
-                            </td>
-                           <!--  <td>
-                                <center>医生</center>
-                            </td> -->
-                            <td>
-                                <center>{{ $item->way }}</center>
-                            </td>
-                            <td>
-                                <center>{{ date('m-d H:i', strtotime($item->postdate)) }}</center>
-                            </td>
-                            <td>
-                                <center>
-                                    <a href="javascript:void(0);" onclick="fastH(this,'main')" url="{{ route('booktrack.show', ['id'=>$item['id'] ])}}">
-                                    @if(count($item['track']) < 1)
-                                        <span>没有记录</span>
-                                    @else
-                                        <i>{{ date('m-d H:i', strtotime($item['track'][0]['next_time'])) }}({{ count($item['track']) }})</i>
-                                    @endif
-                                    </a>
-                                </center>
-                            </td>
-                            <td>
-                                <center>{{ $item['admin_id'] }}</center>
-                            </td>
-                            
-                            <td>
-                                <center>
-                                    @if($item->is_hospital == '0')
-                                        @if(check_node('book_del'))
-                                        <a href="javascript:void(0);" id="del21" onclick="if(confirm('确定删除吗？\n\n该操作不可恢复')){fast('res.asp?act=del&amp;id=21','del21');}">
-                                            <span class="icon"><em>ź</em></span>
-                                        </a>
-                                        @else
-                                        <span>-</span>
-                                        @endif
-                                    @else
-                                        <span class="icon"><i>ŝ</i></span>
-                                    @endif
-                                </center>
-                            </td>                           
+                            @foreach($item as $v)
+                                {!! $v !!}
+                            @endforeach
+                                                    
                         </tr>
                     @endforeach
 
@@ -247,4 +145,3 @@
             </div>
         </div>
     </div>
-

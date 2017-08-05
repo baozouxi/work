@@ -16,7 +16,7 @@
         <div id="container" class="container">
             <div class="top">
                 <h3 class="left"><span class="icon">Ķ</span>患者列表</h3>
-                <p class="nlink right"><a href="javascript:void(0);" onclick="fundisp()"><span class="icon">Ş</span>切换</a><a href="javascript:void(0);" title="显示表格" onclick="msgbox(this,600);" url="{{ route('fields.create', ['type'=>'2']) }}" class="config"><span class="icon">Ƅ</span>设置</a>
+                <p class="nlink right"><a href="javascript:void(0);" onclick="fundisp()"><span class="icon">Ş</span>切换</a><a href="javascript:void(0);" title="显示表格" onclick="msgbox(this,600);" url="{{ $fieldUrl }}" class="config"><span class="icon">Ƅ</span>设置</a>
                 @if(check_node('patient_export'))
                 <a href="javascript:void(0);" title="导出电子表格" onclick="msgbox(this);" url="{{ route('patientExportHtml') }}" class="excel"><span class="icon">Ľ</span>导出</a>
                 @endif
@@ -48,10 +48,12 @@
                 <table cellspacing="1" cellpadding="0">
                     <thead>
                         <tr>
-                            <th width="50">
-                                <center><a href="javascript:void(0);" url="turn.asp?t=id&amp;go=desc&amp;m=turn" title="按编号排序" onclick="fastH(this)">编号</a></center>
+                        @foreach($fields_list as $list)
+                            <th width="{{ $list['width'] }}">
+                                <center><a href="javascript:void(0);" url="turn.asp?t=id&amp;go=desc&amp;m=turn" title="按编号排序" onclick="fastH(this)">{{ $list['name'] }}</a></center>
                             </th>
-                            <th width="120">
+                        @endforeach
+<!--                             <th width="120">
                                 <center><a href="javascript:void(0);" url="turn.asp?t=dateline&amp;go=desc&amp;m=turn" title="按时间排序" onclick="fastH(this)">时间</a></center>
                             </th>
                             <th width="120">
@@ -91,7 +93,7 @@
                             </th>
                             <th width="30">
                                 <center>删</center>
-                            </th>
+                            </th> -->
                         </tr>
                     </thead>
                     <tbody id="tablebg">
@@ -101,102 +103,9 @@
                     @else
                         <tr class="t2">
                     @endif
-                            <td>
-                                <center>{{ $item->id }}</center>
-                            </td>
-                            <td>
-                                <center>{{ formatDate($item->add_time) }}</center>
-                            </td>
-                            <td>
-                                <center>{!! $item->medical_num !!}</center>
-                            </td>
-                           <td>
-                            <span title="“{{ $item->name }}”的详细资料" onclick="msgbox(this,600);" url="{{ route('patient.show', ['id'=>$item->id]) }}" style="cursor:pointer;" class="icon">Ĵ
-                            </span>
-                            @if(check_node('patient_edit'))
-                                <a href="javascript:void(0);" onclick="fastH(this,'main')" url="{{ route('patient.edit', ['id'=>$item->id]) }}">
-                                @if($item->book_id == '0')
-                                    <u>{!!$item->name !!}</u>
-                                @else
-                                    <i>{!! $item->name !!}</i>
-                                @endif
-                                </a>
-                            @else
-                                @if($item->book_id == '0')
-                                    <u>{!! $item->name !!}</u>
-                                @else
-                                    <i>{!! $item->name !!}</i>
-                                @endif
-
-                            @endif
-                            </td>
-
-
-                            <td>
-                                <center><u>{{ $item->gender == '1' ? '男' : '女' }}</u></center>
-                            </td>
-                            <td>
-                                <center>{!! $item->phone !!}</center>
-                            </td>
-                            <td>
-                                <center>{{ $item->age }}</center>
-                            </td>
-                            <td>
-                                <center>
-                                @if(check_node('take_show'))
-                                    @if(check_node('take_edit'))
-                                        <a href="javascript:void(0);" onclick="fastH(this,'main')" url="{{ route('takeWithInfo',['patientId'=>$item->id]) }}">{{ $item->sum or '0' }}</a>
-                                    @else
-                                        <a>{{ $item->sum or '0' }}</a>
-                                    @endif
-                                @else
-                                    @if(check_node('take_edit'))
-                                        <a href="javascript:void(0);" onclick="fastH(this,'main')" url="{{ route('takeWithInfo',['patientId'=>$item->id]) }}">0</a>
-                                    @else
-                                        <i>0</i>
-                                    @endif
-                                @endif
-                                </center>
-                            </td>
-                            <td>
-                                <center>{{ $item->city }} {{ $item->town }}</center>
-                            </td>
-                            <td>
-                                <center>{{ $item->ads }}</center>
-                            </td>
-                            <td>
-                                <center>{{ $item->dis }}</center>
-                            </td>
-                            <td>
-                                <center>{{ $item->dep }}</center>
-                            </td>
-                            <td>
-                                <center><a href="javascript:void(0);" onclick="fastH(this,'main')" url="{{ route('trackWithInfo',['id'=>$item->id]) }}">
-                                @if(count($item->tracks) < 1)
-                                    <span>没有记录</span>
-                                @else
-                                    {{ formatDate($item->tracks['0']['next_time'], 'm-d H:i') }}({{ count($item->tracks) }})
-                                @endif
-                                </a>
-                                </center>
-                            </td>
-                            <td>
-                                <center>{{ $admin[$item->admin_id]['name'] }}(<i>{{ $roles[$admin[$item->admin_id]['role_id']] }}</i>)</center>
-                            </td>
-                            <td>
-                                <center>
-                                @if($item->book_id == '0')
-                                    @if(check_node('patient_del'))
-                                    <a href="javascript:void(0);" id="del{{$item->id}}" onclick="if(confirm('确定删除吗？\n\n该操作不可恢复')){fastDel('{{ route('patient.destroy',['id'=>$item->id]) }}','del{{$item->id}}','{{ csrf_token() }}');}"><span class="icon"><em>ź</em></span>
-                                    </a>
-                                    @else
-                                         <span>-</span>      
-                                    @endif
-                                @else
-                                    <span>-</span>
-                                @endif
-                                </center>
-                            </td>
+                           @foreach($item as $v)
+                            {!! $v !!}
+                           @endforeach
                         </tr>
                     @endforeach
                     
@@ -211,7 +120,7 @@
                         </tr>
                     @else
                         <tr class="t1">
-                            <td colspan="13">&nbsp;&nbsp;记录:<i>{{ $count }}</i>条</td>
+                            <td colspan="20">&nbsp;&nbsp;记录:<i>{{ $count }}</i>条</td>
                         </tr>
                     @endif
                         

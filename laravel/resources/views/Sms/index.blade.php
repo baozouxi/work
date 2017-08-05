@@ -69,7 +69,6 @@
                             <td width="*">{{ $item->content }}</th>
                             <td width="70">
                                 <center>
-
                                     @if($item->send_status == '0')
                                         <span style="cursor:pointer;" id="status2" onclick="fast('http://c.com/tel-consult/status/3','status2');"><em>发送中</em></span>
                                     @elseif($item->send_status == '1')
@@ -77,9 +76,7 @@
                                     @elseif($item->send_status == '2')
                                         <em>发送失败</em>
                                     @endif
-
                                 </center>
-                                
                             </td>
                             <td width="80">
                                 <center>{{ $item->admin_id }}</center>

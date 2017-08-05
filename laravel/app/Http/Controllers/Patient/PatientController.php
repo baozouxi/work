@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\PatientStoreRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\CallBackController;
+use App\Http\Controllers\FieldsController;
 use App\Models\Patient;
 use App\Models\PatientTrack;
 use App\Models\Appointment;
@@ -15,6 +16,7 @@ use App\Models\Doctor;
 use App\Models\Ad;
 use App\Models\Way;
 use App\Models\User;
+use App\Models\Field;
 use DB;
 use Excel;
 
@@ -24,28 +26,35 @@ class PatientController extends Controller
 	// 列表显示
     public function index(Request $req)
     {
-        $data = Patient::orderBy('add_time','desc')->paginate('20');
+        $data  = Patient::orderBy('add_time','desc')->paginate('20');
         $count = Patient::count(); 
-        $data = $this->reduceArr($data);
-    	return view('Patient.index', ['data'=>$data, 'count'=>$count]);
+        $fieldUrl = route('fields.create', ['type'=>'2']);
+        if($fields = Field::where('admin_id', '1')->where('type', '2')->first()) $fieldUrl = route('fields.edit', ['id'=>$fields->id]);
+        list($data, $fields_list)  = $this->reduceArr($data);
+    	return view('Patient.index', ['data'=>$data, 'count'=>$count, 'fields_list'=>$fields_list, 'fieldUrl'=>$fieldUrl]);
     }
 
 
     //重构数组  
     public function reduceArr($data)
     {
-        $doctors = Doctor::all()->toArray();
-        $doctors = array_column($doctors, 'name', 'id');
-        
-        $ways = Way::all()->toArray();
-        $ways = array_column($ways, 'name', 'id');
 
-        $ads = Ad::all()->toArray();
-        $ads = array_column($ads, 'name', 'id');
+                //显示项权限
+        $fields_list = array('id'=>['name'=>'编号', 'width'=>'50'],'add_time'=>['name'=>'添加时间', 'width'=>'120'], 'name'=>['name'=>'姓名', 'width'=>'*']);
+        $admin_fields = Field::where('admin_id', '1')->where('type', '2')->first();
+        if ($admin_fields) {
+            $origin_fields = FieldsController::getFields('2');
+            $admin_fields = array_flip(unserialize($admin_fields->fields));
 
-        $diseases = Disease::all()->toArray();
-        $diseases = array_column($diseases, 'name', 'id');
+            foreach ($admin_fields as $key=>&$v) {
+                if(isset($origin_fields[$key])) $v = $origin_fields[$key];
+            }
 
+            $fields_list = array_merge($fields_list, $admin_fields);
+
+        }
+
+        list($diseases, $doctors, $users, $ways, $ads) = array_values(getAuxiliary());
         $takes = Take::groupBy('patient_id')->select(DB::raw('sum(check_cost+treatment_cost+drug_cost+hospitalization_cost) as sum'), 'patient_id')->get();
         $ids = array();
         foreach ($data as &$item) {
@@ -53,20 +62,19 @@ class PatientController extends Controller
                 if($take_item->patient_id == $item->id) $item->sum = $take_item->sum;
             }
             $ids[] = $item->id;
-            $area = CallBackController::area($item->province-1, $item->city-1, $item->town-1);
-            $item->province = $area['province'];
-            $item->city = $area['city'];
-            $item->town = $area['town'];
+            list($item->province, $item->city, $item->town) = array_values(CallBackController::area($item->province-1, $item->city-1, $item->town-1));
             $item->dis =  isset($diseases[$item->dis]) ?  $diseases[$item->dis] : '----';
             $item->dep = isset($doctors[$item->dep]) ? $doctors[$item->dep] : '----';
+            $item->admin_id = isset($users[$item->admin_id]) ? $users[$item->admin_id] : '----';
+            $item->add_time = formatDate($item->add_time, 'Y-m-d H:i');
+            $item->gender = $item->gender == '1' ? '男' : '女' ;
             if ($item->book_id > 0) {
                 $item->ads = isset($ads[$item->book_id]) ? $ads[$item->book_id] : '----' ;
-            }else{
+            } else {
                 $item->ads = isset($ways[$item->book_id]) ? $ways[$item->book_id] : '----' ;
             }
         }
         unset($doctors);
-      
         $tracks = PatientTrack::whereIn('patient_id',$ids)->orderBy('next_time','desc')->get(['patient_id','next_time'])->toArray();
 
         foreach ($data as &$patientItem) {
@@ -74,11 +82,59 @@ class PatientController extends Controller
             foreach ($tracks as $trackItem) {
                 if ($patientItem->id == $trackItem['patient_id']) {
                     $tmp[] = $trackItem;
-                }   
+                }
             }
             $patientItem->tracks = $tmp;
         }
-        return $data;
+        
+        $data_arr = [];
+        foreach ($data as $key => $value) {
+            foreach ($fields_list as $name => $item) {
+                switch ($name) {
+                    case 'gender':
+                        $value->gender = '<u>'.$value->gender.'</u>';
+                        $data_arr[$key][$name] = '<td><center>'.$value->gender.'</center></td>';  
+                        break;
+
+                    case 'name':
+                        $name = $value->name;
+                        $value->name = '<u>'.$name.'</u>';
+                        if($value->book_id != '0') $value->name = '<i>'.$name.'</i>'; 
+                        $info_html = '';
+                        if(check_node('patient_info')) $info_html = 'title="“'.$name.'”的详细资料" onclick="msgbox(this,600);" url="'.route('patient.show', ['id'=>$value->id]).'" style="cursor:pointer;" class="icon"';
+                        if(check_node('patient_edit')) $value->name =  '<a href="javascript:void(0);" onclick="fastH(this,\'main\')" url="'.route('patient.edit', ['id'=>$value->id]).'">'.$value->name.'</a>';                      
+                        $data_arr[$key][$name] = '<td><span '.$info_html.'>Ĵ</span>'.$value->name.'</td>';
+                        break;
+
+                    case 'sum':
+                        if($value->sum == null || !check_node('take_show') ) $value->sum = 0;
+                        if (check_node('take_edit')) {
+                            $value->sum = '<a href="javascript:void(0);" onclick="fastH(this,\'main\')" url="'.route('takeWithInfo',['patientId'=>$value->id]).'">'.$value->sum.'</a>';
+                        } else {
+                            $value->sum = '<u>'.$value->sum.'</u>';
+                        }
+                        $data_arr[$key][$name] = '<td><center>'.$value->sum.'</center></td>';
+                        break;
+
+                    case 'track':
+                        $track = '<span>没有记录</span>';
+                        if(count($value->tracks)) $track = '<u>'.formatDate($value->tracks['0']['next_time'], 'm-d H:i').'('.count($value->tracks).')</u>';
+                        if(check_node('track_edit')) $track = '<a href="javascript:void(0);" onclick="fastH(this,\'main\')" url="'.route('trackWithInfo', ['id'=>$value->id]).'">'.$track.'</a>';
+                        $data_arr[$key][$name] = '<td><center>'.$track.'</center></td>';
+                        break;
+
+                    case 'do':
+                        $data_arr[$key][$name] = '<td><center>-</center></td>';
+                        break;
+                    
+                    default:
+                        $data_arr[$key][$name] = '<td><center>'.$value->$name.'</center></td>';  
+                        break;
+                }
+            }
+        }
+        //dd($data_arr);
+        return [$data_arr, $fields_list];
     }
 
     public function create(Request $req)
@@ -91,7 +147,6 @@ class PatientController extends Controller
         $dis = Disease::all();
         $doctors = Doctor::all();
         $ads  = Ad::all();
-
         if($dis->isEmpty())  $error = '错误：请至少添加一个病种选项并且启用它';
         if($doctors->isEmpty())  $error = '错误：请至少添加一个医生选项并且启用它';
 
@@ -158,10 +213,8 @@ class PatientController extends Controller
                 if (!$book = Appointment::find($data->book_id)) throw new \Exception("预约修改失败，请稍后重试");
                 if (!$book->update($infoData)) throw new \Exception('预约信息修改失败，请联系管理员');
             } 
-
             DB::commit();
             return ['code'=>'0', 'msg'=>route('patient.index'), 'time'=>getNow()];
-
         } catch(\Exception $e){
             DB::rollback();
             return ['code'=>'1', 'msg'=>$e->getMessage(), 'time'=>getNow()];
@@ -171,7 +224,7 @@ class PatientController extends Controller
 
 
     //考虑是否开放该功能
-    public function destroy( $id)
+    public function destroy($id)
     {
         return code('<em>禁止</em>','0');
     }
@@ -190,8 +243,7 @@ class PatientController extends Controller
 
 
     public function patientBookUpdate($id)
-    {
-    	               
+    { 
     	return view('Patient.bookUpdate');
     }
 
@@ -229,7 +281,7 @@ class PatientController extends Controller
             $sum_item_arr[$date_index] += 1;
             if(!isset($data[$date_index]['web'])) $data[$date_index]['web'] = null;
             if(!isset($data[$date_index]['another'])) $data[$date_index]['another'] = null;
-        }
+        }    
 
 
         return view('Patient.report.index', ['data'=>$data,'web'=>$web,'another'=>$another, 'sum'=>$sum, 'item_sum'=>$sum_item_arr, 'doctors'=>$doctors, 'months'=>$months ]);
@@ -245,7 +297,6 @@ class PatientController extends Controller
         $patients = Patient::all()->toArray();
         $patients = $this->staReduceArr($patients, $key);
         if($req->has('key')) return view('Patient.statistics.listWithoutNav',['all_count'=>$count,'data'=>$patients]);
-
         return view('Patient.statistics.index', ['all_count'=>$count,'data'=>$patients, 'months'=>$months]);
     }
 
@@ -260,6 +311,7 @@ class PatientController extends Controller
             $patient['admin_id'] = isset($users[$patient['admin_id']]) ? $users[$patient['admin_id']] : '----' ;
             $patient['dis'] =  isset($diseases[$patient['dis']])  ? $diseases[$patient['dis']] : '----' ;
             $patient['dep'] = isset($doctors[$patient['dep']]) ? $doctors[$patient['dep']] : '----' ;
+            $patient['admin_id'] = isset($users[$patient['admin_id']]) ? $users[$patient['admin_id']] : '----' ;
             if ($patient['book_id'] == '0') {
                 $patient['ads'] = isset($ads[$patient['ads']])? $ads[$patient['ads']] :'----';
             }else{
@@ -286,8 +338,6 @@ class PatientController extends Controller
         $count = Patient::whereBetween('add_time', [$monthStart, $monthEnd])->count();
         $patients = Patient::whereBetween('add_time', [$monthStart, $monthEnd])->get()->toArray();
         $patients = $this->staReduceArr($patients, $key);
-
-        
         if($req->has('key')) return view('Patient.statistics.listWithoutNav',['all_count'=>$count, 
                                                             'data'=>$patients, 
                                                             'current_month'=>$month,
@@ -374,8 +424,10 @@ class PatientController extends Controller
         $end = date('Y-m-d 23:59:59', time());
         $patients = Patient::whereBetween('add_time', [$begin, $end])->get();
         $count = count($patients);
-        $data = $this->reduceArr($patients);
-        return view('Patient.index', ['data'=>$data, 'count'=>$count]);
+        $fieldUrl = route('fields.create', ['type'=>'2']);
+        if($fields = Field::where('admin_id', '1')->where('type', '2')->first()) $fieldUrl = route('fields.edit', ['id'=>$fields->id]);
+        list($data, $fields_list)  = $this->reduceArr($patients);
+        return view('Patient.index', ['data'=>$data, 'count'=>$count, 'fields_list'=>$fields_list, 'fieldUrl'=>$fieldUrl]);
     }
 
     //到期回访
@@ -386,18 +438,17 @@ class PatientController extends Controller
         $end = strtotime(date('Y-m-d 23:59:59', time()));
         $patient_id_arr = [];
         $tracks = PatientTrack::groupBy('patient_id')->get([DB::raw('max(next_time) as next_time'),'patient_id']);
-
         foreach ($tracks as $track) {
             if($start <= strtotime($track->next_time) && strtotime($track->next_time) <= $end) {
                 $patient_id_arr[] = $track->patient_id;
             } 
         }
-
         $patients = Patient::whereIn('id', $patient_id_arr)->get();
-
-        $data = $this->reduceArr($patients);
         $count = count($patients);
-        return view('Patient.index', ['data'=>$data, 'count'=>$count]);
+        $fieldUrl = route('fields.create', ['type'=>'2']);
+        if($fields = Field::where('admin_id', '1')->where('type', '2')->first()) $fieldUrl = route('fields.edit', ['id'=>$fields->id]);
+        list($data, $fields_list)  = $this->reduceArr($patients);
+        return view('Patient.index', ['data'=>$data, 'count'=>$count, 'fields_list'=>$fields_list, 'fieldUrl'=>$fieldUrl]);
     }
     
     //导出表单
@@ -463,11 +514,5 @@ class PatientController extends Controller
         })->export('xls');
     }
 
-
-    //显示列设置
-    public function field()
-    {
-        return view('Patient.field');
-    }   
 
 }

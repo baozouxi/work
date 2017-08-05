@@ -13,12 +13,17 @@ class SmsController extends Controller {
 	public function index() 
 	{
 		$sms_data = Sms::all();
+		$users = getAuxiliary()['users'];
+		foreach ($sms_data as $item) {
+			$item->admin_id = isset($users[$item->admin_id]) ? $users[$item->admin_id] : '----' ;
+		}
+
 		return view('Sms.index', ['data'=>$sms_data]);
 	}
 
 	public function create(Request $req) 
 	{
-		dd($req->path());
+
 		$csrf = csrf_field();
 		$submit_url = route('sms.store');
 		return <<<SSS

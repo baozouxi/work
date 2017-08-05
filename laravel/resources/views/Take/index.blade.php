@@ -85,12 +85,12 @@
                         <td>
                             <center>{{ $item->check_cost+$item->drug_cost+$item->treatment_cost+$item->hospitalization_cost }}</center>
                         </td>
-                        <td>sadasdasdas&nbsp;</td>
+                        <td>{{ $item->content }}</td>
                         <td>
                             <center>赵中献</center>
                         </td>
                         <td>
-                            <center>{{ $admin[$item->admin_id]['name'] }}</center>
+                            <center>{{ $item->admin_id }}</center>
                         </td>
                     </tr>
                 @endforeach

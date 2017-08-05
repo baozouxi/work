@@ -16,6 +16,10 @@ class TakeController extends Controller
     public function index()
 	{
         $takes = Take::leftJoin('patients', 'takes.patient_id', '=', 'patients.id')->orderBy('add_time','desc')->get(['patients.name','takes.*', 'patients.id as patientId']);
+        $users  = getAuxiliary()['users'];
+        foreach ($takes as $take) {
+            $take->admin_id =  isset($users[$take->admin_id]) ? $users[$take->admin_id] : '----' ;
+        }
         return view('take.index', ['takes' => $takes]);
     }
 

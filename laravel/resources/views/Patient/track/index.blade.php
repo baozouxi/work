@@ -50,7 +50,7 @@
                             </td>
                             <td>{{ $item->content }}&nbsp;</td>
                             <td>
-                                <center>{{ $admin[$item->admin_id]['name']  }}</center>
+                                <center>{{ $item->admin_id  }}</center>
                             </td>
                         </tr>
                     @endforeach

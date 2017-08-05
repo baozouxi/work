@@ -24,13 +24,13 @@ class BookController extends Controller {
 
 	public function index() 
 	{
-
-		
 		$appointData = Appointment::orderBy('add_time', 'desc')->paginate('20');
 		$count = Appointment::count();
-		$fieldUrl = route('fields.create');
+		$fieldUrl = route('fields.create', ['type'=>'1']);
 		if($fields = Field::where('admin_id', '1')->where('type', '1')->first()) $fieldUrl = route('fields.edit', ['id'=>$fields->id]);
 		list($appointData, $fields_list) = $this->reduceArr($appointData);
+	
+		//dd($appointData);
 		return view('Book.index', ['data' => $appointData, 'count' => $count, 'fieldUrl'=>$fieldUrl, 'fields'=>$fields_list]);
 	}
 
@@ -39,13 +39,11 @@ class BookController extends Controller {
 	{
 		$start = date('Y-m-d 00:00:00', time());
 		$end = date('Y-m-d 23:59:59', time());
-
 		$apps = Appointment::whereBetween('postdate', [$start,$end])->get();
-
 		$count = Appointment::whereBetween('postdate', [$start,$end])->count();
-		$apps = $this->reduceArr($apps);
-
-		return view('Book.index', ['data'=>$apps, 'count'=>$count]);
+		if($fields = Field::where('admin_id', '1')->where('type', '1')->first()) $fieldUrl = route('fields.edit', ['id'=>$fields->id]);
+		list($apps, $fields_list) = $this->reduceArr($apps);
+		return view('Book.index', ['data'=>$apps, 'count'=>$count, 'fieldUrl'=>$fieldUrl, 'fields'=>$fields_list]);
 	}
 
 
@@ -53,13 +51,11 @@ class BookController extends Controller {
 	{
 		$start = date('Y-m-d 00:00:00', strtotime('tomorrow'));
 		$end = date('Y-m-d 23:59:59', strtotime('tomorrow'));
-
 		$apps = Appointment::whereBetween('postdate', [$start,$end])->get();
-
 		$count = Appointment::whereBetween('postdate', [$start,$end])->count();
-		$apps = $this->reduceArr($apps);
-
-		return view('Book.index', ['data'=>$apps, 'count'=>$count]);
+		if($fields = Field::where('admin_id', '1')->where('type', '1')->first()) $fieldUrl = route('fields.edit', ['id'=>$fields->id]);
+		list($apps, $fields_list) = $this->reduceArr($apps);
+		return view('Book.index', ['data'=>$apps, 'count'=>$count, 'fieldUrl'=>$fieldUrl, 'fields'=>$fields_list]);
 	}
 
 	//预约库存
@@ -67,9 +63,10 @@ class BookController extends Controller {
 	{
 		$start = date('Y-m-d 00:00:00', time());
 		$apps = Appointment::where('postdate', '>=', $start)->where('is_hospital', '0')->get();
-		$apps = $this->reduceArr($apps);
 		$count = Appointment::where('postdate', '>=', $start)->where('is_hospital', '0')->count();
-		return view('book.index', ['data'=>$apps, 'count'=>$count]);
+		if($fields = Field::where('admin_id', '1')->where('type', '1')->first()) $fieldUrl = route('fields.edit', ['id'=>$fields->id]);
+		list($apps, $fields_list) = $this->reduceArr($apps);
+		return view('Book.index', ['data'=>$apps, 'count'=>$count, 'fieldUrl'=>$fieldUrl, 'fields'=>$fields_list]);
 	}
 
 	private function reduceArr($appointData)
@@ -80,32 +77,23 @@ class BookController extends Controller {
 		if ($admin_fields) {
 			$origin_fields = FieldsController::getFields('1');
 			$admin_fields = array_flip(unserialize($admin_fields->fields));
+
 			foreach ($admin_fields as $key=>&$v) {
 				if(isset($origin_fields[$key])) $v = $origin_fields[$key];
 			}
+
 			$fields_list = array_merge($fields_list, $admin_fields);
+
 		}
-
-
-
+	
 
 		//ID数组
-		$ids = array();
-
-		list($diseases, $doctors, $users, $ways) = array_values(getAuxiliary()); 
+		$ids = [];
+		list($diseases, $users, $ways) = [getAuxiliary()['diseases'], getAuxiliary()['users'], getAuxiliary()['ways']];
 
 		foreach ($appointData as &$item) {
 			$item->status = '1';
 
-			//此处可以做权限判断 是否有权限生成病人 以便生成路由
-			$item->url = route('book.edit', ['id' => $item->id]);
-
-			//$item->url = route('patient.create', ['bookId' => $item->id]);
-			// 此处加判断以更改编辑患者入口
-			// if($item->is_hospital !== '0'){
-	  //               $patient = Patient::where('book_id',$item->id)->first();
-	  //               $item->url = route('patient.edit', ['id'=>$patient->id]);
-	  //        }
 
 			if (strtotime($item->postdate) < strtotime('today')) {
 				$item->status = '3';
@@ -113,22 +101,21 @@ class BookController extends Controller {
 
 			if ($item->is_hospital == '1') {
 				$item->status = '2';
-
 			}
 			$ids[] = $item->id;
-			$area = CallBackController::area($item->province - 1, $item->city - 1, $item->town - 1);
-			$item->province = $area['province'];
-			$item->city = $area['city'];
-			$item->town = $area['town'];
+			list($item->province, $item->city, $item->town) = array_values(CallBackController::area($item->province - 1, $item->city - 1, $item->town - 1));
 			$item->dis = isset($diseases[$item->dis])? $diseases[$item->dis] : '----' ;
 			$item->way  = isset($ways[$item->way]) ? $ways[$item->way] : '----' ;
 			$item->admin_id  = isset($users[$item->admin_id]) ? $users[$item->admin_id] : '----' ;
+			$item->postdate = formatDate($item->postdate, 'm-d H:i');
+			$item->add_time = formatDate($item->add_time, 'Y-m-d H:i');
+			$item->gender = $item->gender == '1' ? '男' : '女' ;
 		}
+		
 		$Track = Track::whereIn('book_id', $ids)->orderBy('next_time', 'desc')->get();
-
 		$ChatLog = Chatlog::whereIn('book_id', $ids)->get();
 
-		dd($appointData);
+		$arr = [];
 		foreach ($appointData as &$item) {
 			$item->track = [];
 			foreach ($Track as $trackItem) {
@@ -142,15 +129,88 @@ class BookController extends Controller {
 				if ($chatItem->book_id == $item->id) {
 					$item->chatlog = $chatItem->id;
 				}
-
 			}
 		}
+
+		$data_arr = [];
+		foreach ($fields_list as $k => $value) {
+			foreach ($appointData as $num =>  $item) {
+				if($item->$k == null)  $item->$k = '-';
+				switch ($k) {
+					case 'track':
+						$url = route('booktrack.show', ['id'=>$item->id]);
+						if ($count = count($item->track)) {
+							$date = formatDate($item->track['0']['next_time'], 'm-d H:i');
+							$item->$k = '<a href="javascript:void(0);" onclick="fastH(this,\'main\')" url="'.$url.'">'.$date.'('.$count.')</a>';			
+						} else {
+							$item->$k = '<span>暂无记录</span>';
+						}
+						$data_arr[$num][$k] = '<td><center>'.$item->$k.'</center></td>';
+						break;
+
+					case 'name':
+						$name = $item->name;
+						switch ($item->status) {
+							case '1':
+								$item->$k = '<u>'.$item->$k.'</u>';
+								break;
+							case '2':
+								$item->$k = '<i>'.$item->$k.'</i>';
+								break;
+							case '3':
+								$item->$k = '<em>'.$item->$k.'</em>';
+								break;
+						}
+						$info_html = '';
+						$info_url = route('book.show', ['id'=>$item->id]);
+						$url = check_node('book_edit') ? route('book.edit', ['id'=>$item->id]) : '';
+						if(check_node('patient_create')) $url = route('patient.create', ['bookId'=>$item->id]);
+						if ($url) {
+							$item->$k = '<a href="javascript:void(0);" onclick="fastH(this,\'main\')" url="'.$url.'">'.$item->$k.'</a>';
+						}
+						if(check_node('book_info'))  $info_html = 'title="“'.$name.'”的详细资料" onclick="msgbox(this,600);" url="'.$info_url.'" style="cursor:pointer;"';
+
+						$data_arr[$num][$k] = '<td><span '.$info_html.' class="icon">Ĵ</span> '.$item->$k.'</td>';
+						break;
+					
+					case 'attribute':
+						switch ($item->status) {
+							case '1':
+								$data_arr[$num][$k] = '<td><center><u class="icon">ű 未到诊</u></center></td>';
+								break;
+							case '2':
+								$data_arr[$num][$k] = '<td><center><i class="icon">Ű 已到诊</i></center></td>';
+								break;
+							case '3':
+								$data_arr[$num][$k] = '<td><center><em class="icon">Ų 已逾期</em></center></td>';
+								break;
+						}
+						break;
+
+					case 'file':
+						if($item->chatlog) $data_arr[$num][$k] = '<td><center class="file"><a href="javascript:void(0);" title="“'.$name.'”的咨询记录" onclick="msgbox(this,850);" url="'.route('chatlog',['id'=>$item->id]).'"><span class="icon">ĉ</span></a></center></td>';
+
+						if($item->filepath) $data_arr[$num][$k] = '<td><center class="file"><a href="javascript:void(0);" title="“'.$name.'”的咨询记录" onclick="msgbox(this,850);" url="'.route('chatlog',['id'=>$item->id]).'"><span class="icon">Ċ</span></a></center></td>';
+						break;
+
+
+					case 'do':
+						$data_arr[$num][$k] = '<td><center><span class="icon"><i>ŝ</i></span></center></td>';
+						break;
+
+					default:
+						$data_arr[$num][$k] = '<td><center>'.$item->$k.'</center></td>';
+						break;
+				}
+			}
+		}
+
+		return [$data_arr, $fields_list];
 		
-		return [$appointData, $fields_list];
 	}
 
 
-	public function create(Request $req) 
+	public function create(Request $req)
 	{
 		$diseases = disease::where('is_use', '1')->get();
 		$ways = Way::where('is_use', '1')->get();
@@ -274,12 +334,9 @@ class BookController extends Controller {
 	}
 
 
-
-
-
-	public function sheetSearchByMonth(Request $req)
+	public function destory($id)
 	{
-
+		
 	}
 
 
@@ -306,7 +363,7 @@ class BookController extends Controller {
 		$end = date('Y-m-d 23:59:59', strtotime("last day of $start "));
 		$Appos = Appointment::whereBetween('postdate', [$start, $end]);
 
-		$fields = ['编号'=>'id','添加时间'=>'add_time','姓名'=>'name','性别'=>'gender',
+		$fields = [ '编号'=>'id','添加时间'=>'add_time','姓名'=>'name','性别'=>'gender',
                     '年龄'=>'age','电话'=>'phone','城市'=>'city','地区'=>'town',
                     '病种'=>'disease','预约时间'=>'postdate','途径'=>'way',
                     '操作员'=>'admin_id'];
@@ -382,9 +439,9 @@ class BookController extends Controller {
         }
 
         $count = count($patients);
-        $data = $this->reduceArr($patients);
-
-        return view('Patient.index', ['data'=>$data, 'count'=>$count]);
+		if($fields = Field::where('admin_id', '1')->where('type', '1')->first()) $fieldUrl = route('fields.edit', ['id'=>$fields->id]);
+		list($apps, $fields_list) = $this->reduceArr($apps);
+		return view('Book.index', ['data'=>$apps, 'count'=>$count, 'fieldUrl'=>$fieldUrl, 'fields'=>$fields_list]);
 
 
 	}

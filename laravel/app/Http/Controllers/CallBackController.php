@@ -51,8 +51,10 @@ class CallBackController extends Controller
     // 上传文件表单   暂不知为什么要把表单通过后台传回
     public function uploadHtml()
     {
+        $url = route('uploadFile');
+        $csrf = csrf_field();
         $uploadHtml =<<<SSS
-        <div id="uploadstate"><form method="post" enctype="multipart/form-data" action="upload.asp?act=upload&cid=0" name="frmupload" id="frmupload" target="frameupload"><label class="inline"><input type="file" name="files1" class="files" id="files1" /></label><label class="inline"></label><button type="button" id="doupload" name="doupload" style="width:62px;" class="submit" onclick="if(\$('files1').value==''){alert('文件不能为空！');return false;}else{\$('frmupload').submit();this.disabled='disabled';\$('uploadstate').innerHTML='<div id=loading><img src=\'http://cdn.ehis.cc/2.3/baidu.gif\' style=\'margin-bottom:-4px;\'> 正在上传中,请稍等...</div>';}" class="button"><i class="icon">&#298;</i>上传</button><button type="button" onclick="closeshow();" class="button"><i class="icon">&#378;</i>关闭</button></form></div><iframe name="frameupload" id="frameupload" style="display:none;"></iframe>
+        <div id="uploadstate"><form method="post" enctype="multipart/form-data" action="{$url}" name="frmupload" id="frmupload" target="frameupload"><label class="inline"><input type="file" name="files1" class="files" id="files1" />{$csrf}</label><label class="inline"></label><button type="button" id="doupload" name="doupload" style="width:62px;" class="submit" onclick="if(\$('files1').value==''){alert('文件不能为空！');return false;}else{\$('frmupload').submit();this.disabled='disabled';\$('uploadstate').innerHTML='<div id=loading><img src=\'http://cdn.ehis.cc/2.3/baidu.gif\' style=\'margin-bottom:-4px;\'> 正在上传中,请稍等...</div>';}" class="button"><i class="icon">&#298;</i>上传</button><button type="button" onclick="closeshow();" class="button"><i class="icon">&#378;</i>关闭</button></form></div><iframe name="frameupload" id="frameupload" style="display:none;"></iframe>
 SSS;
 
         echo $uploadHtml;

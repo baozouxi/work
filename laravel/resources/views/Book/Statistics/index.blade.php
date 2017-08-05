@@ -37,10 +37,10 @@
                     <li onclick="fastT(4,3,4,&quot;m&quot;,0,0,0)">按月份</li>
                     <li onclick="fastT(5,3,5,&quot;m&quot;,0,0,0)">按病种</li>
                     <!-- <li onclick="fastT(6,3,6,&quot;m&quot;,0,0,0)">按医生</li> -->
-                    <li onclick="fastT(7,3,7,&quot;m&quot;,0,0,0)">按地区</li>
-                    <li onclick="fastT(8,3,8,&quot;m&quot;,0,0,0)">按途径</li>
-                    <li onclick="fastT(9,3,9,&quot;m&quot;,0,0,0)">按年龄</li>
-                    <li onclick="fastT(10,3,10,&quot;m&quot;,0,0,0)">按性别</li>
+                    <li onclick="fastT(6,3,7,&quot;m&quot;,0,0,0)">按地区</li>
+                    <li onclick="fastT(7,3,8,&quot;m&quot;,0,0,0)">按途径</li>
+                    <li onclick="fastT(8,3,9,&quot;m&quot;,0,0,0)">按年龄</li>
+                    <li onclick="fastT(9,3,10,&quot;m&quot;,0,0,0)">按性别</li>
                 </ul>
 
             </div>

@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 class RbacController extends Controller
 {
 	
-
 	//根据传入节点名称，检查权限
 	static public function check_node($node)
 	{

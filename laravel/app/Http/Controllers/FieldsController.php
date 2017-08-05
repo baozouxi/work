@@ -7,7 +7,8 @@ use App\Models\Field;
 
 class FieldsController extends Controller
 {
-    private static $appFields = [   'file' => Array ('width' => '50', 'name' => '附件' ) ,
+    private static $appFields = [   'attribute' => Array ('width' => '80', 'name' => '属性' ) ,
+                                    'file' => Array ('width' => '50', 'name' => '附件' ) ,
                                     'gender' => Array ('width' => '50', 'name' => '性别' ) ,
                                     'age' => Array ('width' => '50', 'name' => '年龄' ) ,
                                     'job' => Array ('width' => '80', 'name' => '职业' ) ,
@@ -22,8 +23,30 @@ class FieldsController extends Controller
                                     'postdate' => Array ('width' => '100', 'name' => '预约到诊' ) ,
                                     'track' => Array ('width' => '110', 'name' => '回访时间' ) ,
                                     'admin_id' => Array ('width' => '110', 'name' => '录入员' ),
+                                    'do' => Array ('width' => '110', 'name' => '操作' ),
                                 ];
-    private static $patientFields = [];
+    private static $patientFields = [   'id' => Array ('width' => '50', 'name' => '编号' ),
+                                        'add_time' => Array ('width' => '120', 'name' => '时间' ),
+                                        'medical_num' => Array ('width' => '120', 'name' => '病历号' ),
+                                        'gender' => Array ('width' => '50', 'name' => '性别' ),
+                                        'age' => Array ('width' => '50', 'name' => '年龄' ),
+                                        'phone' => Array ('width' => '100', 'name' => '手机' ),
+                                        //'6' => Array ('width' => '50', 'name' => '就诊' ),
+                                        //'7' => Array ('width' => '50', 'name' => '周期' ),
+                                        'sum' => Array ('width' => '80', 'name' => '消费' ),
+                                        'town' => Array ('width' => '140', 'name' => '地区' ),
+                                        'ads' => Array ('width' => '100', 'name' => '媒介' ),
+                                        'dis' => Array ('width' => '100', 'name' => '病种' ),
+                                        'dep' => Array ('width' => '100', 'name' => '医生' ),
+                                        'track' => Array ('width' => '100', 'name' => '回访时间' ),
+                                        'admin_id' => Array ('width' => '120', 'name' => '操作员' ),
+                                        'do' => Array ('width' => '30', 'name' => '删' ),
+                                ];
+
+
+
+
+
 
 
     static public function getFields($type=0)
@@ -45,7 +68,6 @@ class FieldsController extends Controller
 
     public function create(Request $req)
     {
-
         $fields = self::getFields($req->type);
         $fields = array_chunk($fields, 4, true);
         return view('Fields.create', ['fields'=>$fields, 'type'=>(int)$req->type]);
@@ -73,7 +95,6 @@ class FieldsController extends Controller
     {
         $field = Field::findOrFail((int)$id);
         $field->fields = unserialize($field->fields);
-
         $origin_fields = self::getFields($field->type);
         $origin_fields = array_chunk($origin_fields, 4, true);
         return view('fields.edit',['fields'=>$field->fields, 'origin_fields'=>$origin_fields, 'type'=>$field->type,'id'=>$field->id]);

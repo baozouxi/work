@@ -17,6 +17,7 @@ class TrackController extends Controller
 
     public function index()
     {
+        $users = getAuxiliary()['users'];
         $data = Track::orderBy('add_time','desc')->get();
         $count = Track::count();
         $ids = array();
@@ -27,10 +28,12 @@ class TrackController extends Controller
         $AppData = Appointment::whereIn('id', $ids)->get(['id','name']);
 
         foreach ($data as &$dataItem) {
+            $dataItem->admin_id = isset($users[$dataItem->admin_id]) ? $users[$dataItem->admin_id] : '----';
             foreach ($AppData as $appItem) {
                 if ($dataItem->book_id == $appItem->id)  $dataItem->name = $appItem->name; 
             }
         }
+
 
         return view('book.track.index', ['data'=>$data,'count'=>$count]);
     }

@@ -174,3 +174,16 @@ function guideHtml($name, $url='')
 
 	return '<li><span id="guide">'.$name.'</span></li>';
 }
+
+
+function fileHtml($url, $name)
+{
+	$html = '<center class="file"><a href="javascript:void(0);" title="“'.$name.'”的咨询记录" onclick="msgbox(this,850);" url="'.$url.'"><span class="icon">Ċ</span></a></center>';
+	return $html;
+}
+
+
+function chatLogHtml($url,$name)
+{
+	$html = '<center class="file"><a href="javascript:void(0);" title="“'.$name.'”的咨询记录" onclick="msgbox(this,850);" url="'.$url.'"><span class="icon">ĉ</span></a></center>';
+}

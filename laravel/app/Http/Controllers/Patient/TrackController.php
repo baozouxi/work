@@ -24,7 +24,6 @@ class TrackController extends Controller
     public function index()
     {
         $tracks = PatientTrack::orderBy('add_time','desc')->get();
-
         $tracks = $this->reduceArr($tracks);
         return view('patient.track.index',['tracks' => $tracks]);
     }
@@ -47,16 +46,18 @@ class TrackController extends Controller
         foreach ($tracks as $item) {
             $ids[] = $item->patient_id;
         }
-
         $patients = Patient::whereIn('id',$ids)->get(['id','name']);
-
+        $users = getAuxiliary()['users'];
         foreach ($patients as $patientItem) {
+           
             foreach ($tracks as &$item) {
                 if($item->patient_id == $patientItem->id) $item->name = $patientItem->name;
+                $item->admin_id = isset($users[$item->admin_id]) ? $users[$item->admin_id] : '----' ;
             }
         }
         // 销毁变量
         unset($patients);
+
         return $tracks;
     }
 

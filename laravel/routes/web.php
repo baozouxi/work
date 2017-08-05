@@ -1,8 +1,4 @@
 <?php
-
-
-
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -46,7 +42,6 @@
 	//患者模块
 	Route::group(['namespace'=>'Patient'], function(){
 		Route::get('/patient/get/field', 'PatientController@field')->name('patientField');
-
 		Route::post('/patient/export', 'PatientController@export')->name('patientExport');
 		Route::get('/patient/export/html', 'PatientController@exportHtml')->name('patientExportHtml');
 		Route::get('/patient/come/track', 'PatientController@timeToTrack')->name('patientNeedTrack'); //到期回访
@@ -114,6 +109,9 @@
 		Route::get('/sms/async-send/{admin_id}', 'SmsController@asyncSend')->name('smsAsyncSend');
 		Route::Resource('sms', 'SmsController');
 	});
+
+
+	Route::post('/upload', 'UploadController@upload')->name('uploadFile');
 
 
 	//设置部分

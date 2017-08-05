@@ -14,28 +14,7 @@ class IndexController extends Controller
     * 根据导航权限数组 取出对应导航数组
     */
 	public function index(Request $req)
-	{		  
-
-        // $cookie = "ASPSESSIONIDQADSBSCR:OEALPHBAEMADCMAGDGOLMJOE; login%5F4%5F171%2E88%2E179%2E245=; his%5Fjj%5Fgk=ECEDE42691C51FC2771ADEFBA491D4FC";
-
-        // $ch = curl_init('http://test.ehis.cc/res.asp?s=1&m=res&req=0.19531342590355516');
-        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        // curl_setopt($ch, CURLOPT_COOKIE,  $cookie);
-
-        // $data = curl_exec($ch);
-   
-
-        // $pattern = '/<th\swidth="(\d+)"><center><a.*>(.*)<\/a><\/center><\/th>/U';
-        // preg_match_all($pattern, $data, $match);
-        // unset($match['0']);
-        // $tempArr = [];
-        // foreach ($match['1'] as $key => $item) {
-        //     $tempArr[$key]['name'] = $item;
-        //     $tempArr[$key]['width'] = $match['2'][$key];
-        // }
-        // echo '<pre>';
-        // print_r($tempArr);
-
+	{	
         $role_id = $req->session()->get('role_id');
         $acc_nav = RoleWithNav::where('role_id', $role_id)->first(['nodes']);
         $acc_nav = isset($acc_nav->nodes) ?unserialize($acc_nav->nodes) : [];
