@@ -170,8 +170,8 @@
                 </ol>
             </li>
             <li><a url="{{ route('sms.index') }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);"><span class="icon">ė</span>短信记录</a></li>
-            <li><a url="file.asp?s=1" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);"><span class="icon">ū</span>上传记录</a></li>
-            <li><a url="log.asp?s=1" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);"><span class="icon">Š</span>操作记录</a></li>
+            <li><a url="{{ route('uploadList') }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);"><span class="icon">ū</span>上传记录</a></li>
+            <!-- <li><a url="log.asp?s=1" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);"><span class="icon">Š</span>操作记录</a></li> -->
         </ul>
         <ul id="nav_1">
             <li><a url="{{ route('disease.index') }}" href="javascript:void(0);" hidefocus="" onclick="getChange(this);fastH(this,&#39;main&#39;);"><span class="icon">Ĉ</span>病种管理</a></li>

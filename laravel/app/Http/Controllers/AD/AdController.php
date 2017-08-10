@@ -13,6 +13,7 @@ class AdController extends Controller
     {
         $ads = Ad::all();
     	return view('Ad.index', ['ads'=>$ads]);
+    
     }
 
     public function create()

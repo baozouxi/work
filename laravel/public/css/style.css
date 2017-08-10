@@ -277,6 +277,7 @@ F
 #his_show h4 span{z-index:999;width:40px;text-align:center;background-color:#4F4F4F;color:#FFF;cursor:pointer;}
 #his_show .his_content{padding:8px;background-color:#FFF;border:1px solid #F5F5F5;border-top:0;}
 #his_show .his_content .chat_log{height:500px;overflow:auto;}/*聊天记录*/
+#his_show .his_content .file{height:100px;overflow:auto;}/*文件播放*/
 
 /*信息*/
 .post{padding:5px 5px 3px;background:#FFFBDF; border:1px solid #EF9B8F;color:#fb4f1b;}

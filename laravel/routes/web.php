@@ -112,7 +112,8 @@
 
 
 	Route::post('/upload', 'UploadController@upload')->name('uploadFile');
-
+	Route::get('/upload/list', 'UploadController@index')->name('uploadList');
+	Route::get('/upload/play', 'UploadController@play')->name('uploadPlay');
 
 	//设置部分
 
@@ -134,6 +135,7 @@
 	//媒介
 	Route::group(['namespace'=>'Ad'], function(){
 		Route::Resource('ad', 'AdController');
+	
 	});
 
 	//竞价模块

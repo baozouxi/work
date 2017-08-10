@@ -190,7 +190,7 @@ class BookController extends Controller {
 					case 'file':
 						if($item->chatlog) $data_arr[$num][$k] = '<td><center class="file"><a href="javascript:void(0);" title="“'.$name.'”的咨询记录" onclick="msgbox(this,850);" url="'.route('chatlog',['id'=>$item->id]).'"><span class="icon">ĉ</span></a></center></td>';
 
-						if($item->filepath) $data_arr[$num][$k] = '<td><center class="file"><a href="javascript:void(0);" title="“'.$name.'”的咨询记录" onclick="msgbox(this,850);" url="'.route('chatlog',['id'=>$item->id]).'"><span class="icon">Ċ</span></a></center></td>';
+						if($item->filepath) $data_arr[$num][$k] = '<td><center class="file"><a href="javascript:void(0);" title="“'.$name.'”的咨询记录" onclick="msgbox(this,350);" url="'.route('uploadPlay').'?path='.$item->filepath.'"><span class="icon">Ċ</span></a></center></td>';
 						break;
 
 
@@ -342,7 +342,7 @@ class BookController extends Controller {
 
 	public function getChatlog($id) {
 		$id = (int) $id;
-		$data = Chatlog::find($id);
+		$data = Chatlog::findOrFail($id);
 		return view('book.chatlog', ['data' => $data]);
 	}
 

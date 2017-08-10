@@ -15,6 +15,7 @@ class IndexController extends Controller
     */
 	public function index(Request $req)
 	{	
+
         $role_id = $req->session()->get('role_id');
         $acc_nav = RoleWithNav::where('role_id', $role_id)->first(['nodes']);
         $acc_nav = isset($acc_nav->nodes) ?unserialize($acc_nav->nodes) : [];
@@ -40,9 +41,6 @@ class IndexController extends Controller
 
    	    return view('index', ['nav'=>$nav_reduce, 'setting_nav' => $nav_setting_arr]);
    	}
-
-
-
 
 
  }
